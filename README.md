@@ -52,14 +52,14 @@ app.use('/mocks', express.static(__dirname + '/src/mocks'));
 ### Publish Command
 
 修改完相关配置，直接执行 `gulp`，默认使用测试模式的配置进行打包并上传，如果想使用正式模式需在后边加参数 `-p`：
-```
+``` js
 gulp -p
 ```
 
 ### Directory Structure
 
 打包后的文件本地存储在 `dist` 目录下，不附加版本及 hash 打包后的结构比较简单，依照文件分类平行存放：
-```
+``` js
 dist/
   css/
   img/
@@ -67,7 +67,7 @@ dist/
   index.html
 ```
 附带版本及 hash 会根据文件的设置存放在不同目录下：
-```
+``` js
 dist/
   [version]/
     css/

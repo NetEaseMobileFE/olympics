@@ -56,7 +56,7 @@ module.exports = {
 			},
 			{
 				test: /\.png|jpe?g|gif$/,
-				loader: "url-loader?limit=1&name=img/[hash].[ext]",
+				loader: 'url-loader?limit=2000&name=img/[hash].[ext]',
 				include: path.join(__dirname, 'src/img')
 			}
 		]
@@ -64,7 +64,7 @@ module.exports = {
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
 		alias: {
-			js: path.join(__dirname, "src/js")
+			js: path.join(__dirname, 'src/js')
 		}
 	},
 	postcss: function() {
@@ -74,8 +74,8 @@ module.exports = {
 				loadPaths: ['./src/img/'],
 				relative: true
 			}),
-			require("postcss-cssnext")({
-				browsers: ["> 1%", "last 2 version", "Android >= 4.0"]
+			require('postcss-cssnext')({
+				browsers: ['> 1%', 'last 2 version', 'Android >= 4.0']
 			}),
 			require('postcss-sprites')({
 				stylesheetPath: './src/css',

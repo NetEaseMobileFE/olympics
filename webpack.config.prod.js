@@ -16,7 +16,7 @@ module.exports = {
 		vendor: [
 			'react', 'react-dom'
 		],
-		webpackBootstrap: [] // Extract the webpackBootstrap from chunks
+		webpackBootstrap: [] // Extract the webpackBootstrap from entry chunks
 	},
 	output: {
 		path: path.join(__dirname, 'dist'),
@@ -30,9 +30,7 @@ module.exports = {
 			filename: 'js/[name]' + hash + '.js',
 			minChunks: Infinity
 		}),
-		new ExtractTextPlugin(revision + 'css/app.css', {
-			allChunks: false
-		}),
+		new ExtractTextPlugin(revision + 'css/app.css'),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.DefinePlugin({
 			'process.env': {
@@ -50,7 +48,8 @@ module.exports = {
 			{
 				test: /\.jsx?/,
 				loaders: ['babel'],
-				include: path.join(__dirname, 'src/js')
+				include: path.join(__dirname, 'src/js'),
+				exclude: path.join(__dirname, 'src/js/plugins')
 			}, {
 				test: /\.css$/,
 				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1!postcss'),
@@ -77,6 +76,7 @@ module.exports = {
 	resolve: {
 		extensions: ['', '.js', '.jsx'],
 		alias: {
+			css: path.join(__dirname, 'src/css'),
 			js: path.join(__dirname, 'src/js')
 		}
 	},

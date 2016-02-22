@@ -11,7 +11,7 @@ var htmlmin = require('gulp-htmlmin');
 var imageisux = require('gulp-imageisux');
 var imageisuxPoll = require('gulp-imageisux-poll');
 var webpackStream = require('webpack-stream');
-var fileInsert = require("gulp-file-insert");
+var replace = require('gulp-replace');
 var gulpIgnore = require('gulp-ignore');
 
 /**
@@ -20,16 +20,16 @@ var gulpIgnore = require('gulp-ignore');
 var deployConfig = {
 	test: { 					// Publish mode. Default: 'test'
 		htmlFtp: 'galaxy',		// Ftp name uesed to upload html files. Required
-		htmlRoot: 'test',		// Root dir where keep html files. Default: ''
+		htmlRoot: 'test/3',		// Root dir where keep html files. Default: ''
 		assetFtp: 'galaxy', 	// Same as htmlFtp. Default: 'img'
-		assetRoot: 'test/2',	// Same as htmlRoot
+		assetRoot: 'test/3',	// Same as htmlRoot
 		revision: false,		// If append revision to asset path. Default: true
 		withHash: false        // If build "vendor" file with hash. Default: true. Equals to "js/vendor.[chunkhash].js"
 	},
 	pro: {
 		htmlFtp: 'c_m',
-		htmlRoot: 'test',
-		assetRoot: 'apps/test/hh'
+		htmlRoot: 'test/3',
+		assetRoot: 'apps/test/3'
 	}
 };
 
@@ -68,7 +68,7 @@ gulp.task('assets', ['clean'], function() {
 				cachedAssets: true
 			});
 
-			fs.writeFile('./analyse.log', JSON.stringify(webpackStats), null, 2);
+			fs.writeFile('./analyse.log', JSON.stringify(webpackStats, null, 2));
 		}))
 		.pipe(gulp.dest('dist'))
 		.pipe(gulpIgnore.exclude(['**/*.map', '**/{img,img/**}', '**/webpackBootstrap.*.js']))
@@ -80,6 +80,8 @@ gulp.task('html', ['assets'], function() {
 	var apr = publishConfig.assetPathRevised;
 	var conn = createConnection(publishConfig.htmlFtp);
 	var assetsNames = webpackStats.assetsByChunkName;
+	var webpackBootstrapSource = fs.readFileSync(path.join('dist', assetsNames.webpackBootstrap[0]), 'utf-8');
+
 
 	return gulp.src('src/*.html')
 		.pipe(htmlreplace({
@@ -87,9 +89,7 @@ gulp.task('html', ['assets'], function() {
 			'bundle': apr + 'js/bundle.js',
 			'vendor': publishConfig.assetPath + assetsNames.vendor[0]
 		}))
-		.pipe(fileInsert({
-			"/*webpackBootstrap*/": path.join('dist', assetsNames.webpackBootstrap[0])
-		}))
+		.pipe(replace('/*webpackBootstrap*/', webpackBootstrapSource))
 		.pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
 		.pipe(gulp.dest('dist'))
 		.pipe(conn.dest(publishConfig.htmlDir));
@@ -101,7 +101,7 @@ gulp.task('isux', function() {
 
 	rimraf.sync('dist/img/' + dest);
 	return gulp.src(['dist/img/*'])
-		.pipe(imageisux('/min/', true))
+		.pipe(imageisux('/_min/', false))
 		.pipe(imageisuxPoll(dest));
 });
 

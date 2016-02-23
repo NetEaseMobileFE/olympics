@@ -52,7 +52,7 @@ module.exports = {
 				exclude: path.join(__dirname, 'src/js/plugins')
 			}, {
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1!postcss'),
+				loader: ExtractTextPlugin.extract('style', 'css!postcss'),
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.scss$/,

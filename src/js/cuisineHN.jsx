@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../css/cuisineHN.css';
+import '../css/cuisineHN.css';
 
 
 class Cuisine extends Component {

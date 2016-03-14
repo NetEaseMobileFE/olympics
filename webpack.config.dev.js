@@ -5,14 +5,16 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
 	devtool: 'cheap-module-eval-source-map',
-	entry: [
-		'webpack-hot-middleware/client',
-		'./src/js/index'
-	],
+	entry: {
+		index: [
+			'webpack-hot-middleware/client',
+			'./src/js/index'
+		]
+	},
 	output: {
 		path: path.join(__dirname, 'dist'),
-		filename: 'js/bundle.js',
-		chunkFilename: 'js/[id].bundle.js',
+		filename: 'js/[name].js',
+		chunkFilename: 'js/[id].[name].js',
 		publicPath: '/static/',
 		pathinfo: true
 	},
@@ -22,7 +24,7 @@ module.exports = {
 		new webpack.DefinePlugin({
 			DEBUG: true
 		}),
-		new ExtractTextPlugin('css/app.css')
+		new ExtractTextPlugin('css/[name].css')
 	],
 	module: {
 		loaders: [
@@ -33,19 +35,11 @@ module.exports = {
 				exclude: path.join(__dirname, 'src/js/plugins')
 			}, {
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss'),
+				loader: ExtractTextPlugin.extract('style', 'css'),
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass'),
-				include: path.join(__dirname, 'src/css')
-			}, {
-				test: /\.less$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!less'),
-				include: path.join(__dirname, 'src/css')
-			}, {
-				test: /\.styl$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!stylus'),
+				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!postcss!sass'),
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.png|jpe?g|gif$/,
@@ -68,21 +62,8 @@ module.exports = {
 				loadPaths: ['./src/img/'],
 				relative: true
 			}),
-			require('postcss-cssnext')({
+			require('autoprefixer')({
 				browsers: ['> 1%', 'last 2 version', 'Android >= 4.0']
-			}),
-			require('postcss-sprites')({
-				stylesheetPath: './src/css',
-				spritePath: './src/img/sprite.png',
-				outputDimensions: true,
-				skipPrefix: true,
-				filterBy: function(img) {
-					return /\/sp\-/.test(img.url);
-				},
-				groupBy: function(img) {
-					var match = img.url.match(/\/(sp\-[^\/]+)\//);
-					return match ? match[1] : null;
-				}
 			})
 		];
 	}

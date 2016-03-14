@@ -4,7 +4,8 @@ import styles from '../css/menu.scss';
 import Loading from './loading.jsx';
 
 
-class Menu extends Component {
+@CSSModules(styles)
+export default class extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -15,7 +16,7 @@ class Menu extends Component {
 	}
 
 	componentDidMount() {
-		this._getCuisines(800)
+		this._getCuisines(800) // 模拟异步模块
 			.then((cuisines) => {
 				this.setState(cuisines);
 			});
@@ -27,8 +28,7 @@ class Menu extends Component {
 				require.ensure([], require => {
 					resolve({
 						CuisineHN: require('./cuisineHN.jsx').default,
-						CuisineSC: require('./cuisineSC.jsx').default,
-						CuisineGD: require('./cuisineGD.jsx').default
+						CuisineSC: require('./cuisineSC.jsx').default
 					});
 				});
 			}, delay);
@@ -36,27 +36,19 @@ class Menu extends Component {
 	}
 
 	render() {
-		let { CuisineHN, CuisineSC, CuisineGD } = this.state;
+		let { CuisineHN, CuisineSC } = this.state;
 		return (
 			<menu>
 				<section styleName="menu">
-					<h3 styleName="title"><i/>湘菜</h3>
-					{ CuisineGD ? <CuisineHN/> : <Loading/> }
+					<h3 styleName="menu__title"><i/>湘菜</h3>
+					{ CuisineHN ? <CuisineHN/> : <Loading/> }
 				</section>
 
 				<section styleName="menu">
-					<h3 styleName="title"><i/>川菜</h3>
+					<h3 styleName="menu__title"><i/>川菜</h3>
 					{ CuisineSC ? <CuisineSC/> : <Loading/> }
-				</section>
-
-				<section styleName="menu">
-					<h3 styleName="title"><i/>粤菜</h3>
-					{ CuisineGD ? <CuisineGD/> : <Loading/> }
 				</section>
 			</menu>
 		);
 	}
 }
-
-
-export default CSSModules(Menu, styles);

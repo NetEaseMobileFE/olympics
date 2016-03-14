@@ -20,16 +20,16 @@ var gulpIgnore = require('gulp-ignore');
 var deployConfig = {
 	test: { 					// Publish mode. Default: 'test'
 		htmlFtp: 'galaxy',		// Ftp name uesed to upload html files. Required
-		htmlRoot: 'test/3',		// Root dir where keep html files. Default: ''
+		htmlRoot: 'test/4',		// Root dir where keep html files. Default: ''
 		assetFtp: 'galaxy', 	// Same as htmlFtp. Default: 'img'
-		assetRoot: 'test/3',	// Same as htmlRoot
+		assetRoot: 'test/4',	// Same as htmlRoot
 		revision: false,		// If append revision to asset path. Default: true
 		withHash: false        // If build "vendor" file with hash. Default: true. Equals to "js/vendor.[chunkhash].js"
 	},
 	pro: {
 		htmlFtp: 'c_m',
-		htmlRoot: 'test/3',
-		assetRoot: 'apps/test/3'
+		htmlRoot: 'test/4',
+		assetRoot: 'apps/test/4'
 	}
 };
 
@@ -85,12 +85,18 @@ gulp.task('html', ['assets'], function() {
 
 	return gulp.src('src/*.html')
 		.pipe(htmlreplace({
-			'css': apr + 'css/app.css',
-			'bundle': apr + 'js/bundle.js',
-			'vendor': publishConfig.assetPath + assetsNames.vendor[0]
+			css: {
+				src: apr + 'css',
+				tpl: '<link rel="stylesheet" href="%s/%f.css">'
+			},
+			js: {
+				src: apr + 'js',
+				tpl: '<script src="%s/%f.js"></script>'
+			},
+			vendor: publishConfig.assetPath + assetsNames.vendor[0]
 		}))
 		.pipe(replace('/*webpackBootstrap*/', webpackBootstrapSource))
-		.pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
+		.pipe(htmlmin({ collapseWhitespace: true, removeComments: true, minifyJS: true, minifyCSS: true }))
 		.pipe(gulp.dest('dist'))
 		.pipe(conn.dest(publishConfig.htmlDir));
 });

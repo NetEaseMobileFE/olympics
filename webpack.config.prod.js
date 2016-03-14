@@ -12,16 +12,16 @@ var hash = publishConfig.hash ? '.[chunkhash]' : '';
 module.exports = {
 	devtool: 'source-map-hidden',
 	entry: {
-		app: './src/js/index',
+		index: './src/js/index',
 		vendor: [
-			'react', 'react-dom'
+			'react', 'react-dom', 'core-js/fn/symbol', 'react-css-modules'
 		],
 		webpackBootstrap: [] // Extract the webpackBootstrap from entry chunks
 	},
 	output: {
 		path: path.join(__dirname, 'dist'),
-		filename: revision + 'js/bundle.js',
-		chunkFilename: revision + 'js/[id].bundle.js',
+		filename: revision + 'js/[name].js',
+		chunkFilename: revision + 'js/[id].[name].js',
 		publicPath: publicPath
 	},
 	plugins: [
@@ -30,7 +30,7 @@ module.exports = {
 			filename: 'js/[name]' + hash + '.js',
 			minChunks: Infinity
 		}),
-		new ExtractTextPlugin(revision + 'css/app.css'),
+		new ExtractTextPlugin(revision + 'css/[name].css'),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.DefinePlugin({
 			'process.env': {
@@ -52,19 +52,11 @@ module.exports = {
 				exclude: path.join(__dirname, 'src/js/plugins')
 			}, {
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1!postcss'),
+				loader: ExtractTextPlugin.extract('style', 'css'),
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.scss$/,
 				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1!postcss!sass'),
-				include: path.join(__dirname, 'src/css')
-			}, {
-				test: /\.less$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1!postcss!less'),
-				include: path.join(__dirname, 'src/css')
-			}, {
-				test: /\.styl$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1!postcss!stylus'),
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.png|jpe?g|gif$/,
@@ -87,21 +79,8 @@ module.exports = {
 				loadPaths: ['./src/img/'],
 				relative: true
 			}),
-			require('postcss-cssnext')({
+			require('autoprefixer')({
 				browsers: ['> 1%', 'last 2 version', 'Android >= 4.0']
-			}),
-			require('postcss-sprites')({
-				stylesheetPath: './src/css',
-				spritePath: './src/img/sprite.png',
-				outputDimensions: true,
-				skipPrefix: true,
-				filterBy: function(img) {
-					return /\/sp\-/.test(img.url);
-				},
-				groupBy: function(img) {
-					var match = img.url.match(/\/(sp\-[^\/]+)\//);
-					return match ? match[1] : null;
-				}
 			})
 		];
 	}

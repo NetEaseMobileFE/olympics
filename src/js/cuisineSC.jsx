@@ -3,7 +3,8 @@ import CSSModules from 'react-css-modules';
 import styles from '../css/modules/cuisineSC.scss';
 
 
-class Cuisine extends Component {
+@CSSModules(styles)
+export default class extends Component {
 	render() {
 		return (
 			<ul styleName="dishes">
@@ -19,6 +20,3 @@ class Cuisine extends Component {
 		);
 	}
 }
-
-
-export default CSSModules(Cuisine, styles);

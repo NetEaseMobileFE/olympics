@@ -1,4 +1,5 @@
 此处仅介绍跟配置选项相关的部分，打包思路及详细说明请参考该[文章](https://app.classeur.io/#!/files/3xAiWQ42tsXxS52vG9ne)。
+该样板线上示例地址[http://c.m.163.com/nc/qa/test/4/webpack-postcss-boilerplate/index.html](http://c.m.163.com/nc/qa/test/4/webpack-postcss-boilerplate/index.html)。
 
 ---
 
@@ -86,3 +87,12 @@ dist/
 	webpackBootstrap.[hash].js
   index.html
 ```
+
+
+## Change Log
+### version 1.0.0
+- 移除了 postcss-cssnext 及 postcss-sprite，可根据需求自行添加
+- 移除了 less 及 stylus 的示例代码，建议统一使用 sass
+- 支持多入口文件
+- 将 'react-css-modules' 模块正确的加入了依赖（dependencies）
+- Entry trunk 引入了 'core-js/fn/symbol'， 'react-css-modules' 依赖 symbol 特性

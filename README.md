@@ -21,7 +21,7 @@ app.use('/mocks', express.static(__dirname + '/src/mocks'));
 
 ## Publish
 
-部署发布仍使用 GulpJs， 为配合打版本，`webpack.config.prod.js` 增加了部分动态内容，由 `gulpfile.js` 引入时通过 `global` 参数传递。***发布之前需要确认三个文件中的设置：***
+部署发布仍使用 GulpJs， 为配合打版本，`webpack.config.prod.js` 增加了部分动态内容，由 `gulpfile.js` 引入时通过 `global` 参数传递。__发布之前需要确认三个文件中的设置：__
 
 > 建议路径及项目名称均使用小写，防止因为服务器设置造成的访问问题。
 
@@ -91,8 +91,8 @@ dist/
 ---
 ## Change Log
 ### version 1.0.0
-- 移除了 postcss-cssnext 及 postcss-sprite，可根据需求自行添加
+- 移除了 `postcss-cssnext` 及 `postcss-sprite`，可根据需求自行添加
 - 移除了 less 及 stylus 的示例代码，建议统一使用 sass
 - 支持多入口文件
-- 将 'react-css-modules' 模块正确的加入了依赖（dependencies）
-- Entry trunk 引入了 'core-js/fn/symbol'， 'react-css-modules' 依赖 symbol 特性
+- 将 `react-css-modules` 模块正确的加入了依赖（dependencies）
+- Entry trunk 引入了 `core-js/fn/symbol`， `react-css-modules` 依赖 symbol 特性

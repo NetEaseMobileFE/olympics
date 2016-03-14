@@ -21,7 +21,7 @@ app.use('/mocks', express.static(__dirname + '/src/mocks'));
 
 ## Publish
 
-部署发布仍使用 GulpJs， 为配合打版本，`webpack.config.prod.js` 增加了部分动态内容，由 `gulpfile.js` 引入时通过 `global` 参数传递。**发布之前需要确认三个文件中的设置：**
+部署发布仍使用 GulpJs， 为配合打版本，`webpack.config.prod.js` 增加了部分动态内容，由 `gulpfile.js` 引入时通过 `global` 参数传递。***发布之前需要确认三个文件中的设置：***
 
 > 建议路径及项目名称均使用小写，防止因为服务器设置造成的访问问题。
 
@@ -88,7 +88,7 @@ dist/
   index.html
 ```
 
-
+---
 ## Change Log
 ### version 1.0.0
 - 移除了 postcss-cssnext 及 postcss-sprite，可根据需求自行添加

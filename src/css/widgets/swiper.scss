@@ -1,0 +1,44 @@
+@import "../base/variables";
+
+:global {
+    .swiper-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .swiper-wrapper {
+        width: 100%;
+        display: flex;
+        transition-property: transform;
+        will-change: transform;
+    }
+
+    .swiper-slide {
+        flex-shrink: 0;
+    }
+
+    .swiper-pagination {
+        position: absolute;
+        right: 30px/$ppr;
+        bottom: 10px/$ppr;
+        display: inline-block;
+        padding: 6px/$ppr;
+        font-size: 0;
+        background-color: rgba(0,0,0,.2);
+        border-radius: 12px/$ppr;
+
+        > span {
+            display: inline-block;
+            margin: 0 3px/$ppr;
+            width: 10px/$ppr;
+            height: 10px/$ppr;
+            background-color: rgba(0,0,0,.4);
+            border-radius: 50%;
+            transition: backgroundColor .5s ease-in-out;
+
+            &.swiper-pagination-bullet-active {
+                background-color: #fff;
+            }
+        }
+    }
+}

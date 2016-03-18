@@ -1,0 +1,65 @@
+@import "variables";
+//
+// Preset
+// 预设一些常用标签的样式，非常用标签使用时自行处理
+// -----------------------------------------------------------------
+
+
+*,
+:before, :after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    width: 640px/$ppr;
+    margin: 0 auto;
+    font: normal (22px/$ppr)/#{$line-hight} $f-hiragino, $f-yahei;
+}
+
+:global #root {
+	height: 100%;
+	background: #fff resolve('bg-def.jpg') no-repeat center;
+	background-size: 164px/$ppr 181px/$ppr;
+}
+
+dl, ol, ul,
+fieldset {
+    margin: 0;
+    padding: 0;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+
+// 标题 段落
+// -------------------------
+figure, p {
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: normal;
+}
+
+section, p, div,
+h1, h2, h3, h4, h5, h6 {
+    max-height:999999px; // mobile chrome FontBoosting bug
+}
+
+a {
+    color: #010101;
+    text-decoration: none;
+}

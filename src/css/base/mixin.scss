@@ -1,0 +1,18 @@
+//
+// Mixin
+// 常用的方法
+// -------------------------------
+
+@mixin font-size-dpr($fs) {
+	font-size: $fs/2;
+	[data-dpr="2"] & {
+		font-size: $fs;
+	}
+}
+
+// 折行问题
+@mixin fix-break-word {
+	background: transparent url(about:blank);
+	display: block;
+	word-break: break-all;
+}

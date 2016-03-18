@@ -1,14 +1,18 @@
+@import "../base/variables";
+
 .loading {
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
+    align-self: center;
     height: 100px;
 
     &:after {
         content: "";
         display: inline-block;
-        width: 22px;
-        height: 22px;
+        width: 30px/$ppr;
+        height: 30px/$ppr;
         opacity: 0;
         border: 3px solid #333;
         border-radius: 50%;
@@ -17,16 +21,15 @@
     }
 }
 
+
 @keyframes pulsate {
     0% {
         transform: scale(.1);
         opacity: 0;
     }
-
     50% {
         opacity: 1;
     }
-
     100% {
         transform: scale(1.2);
         opacity: 0;

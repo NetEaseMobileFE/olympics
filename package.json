@@ -1,7 +1,7 @@
 {
-  "name": "webpack-postcss-boilerplate",
+  "name": "olympics",
   "version": "1.0.0",
-  "description": "A Webpack boilerplate with postcss. Usage of react-css-modules and assets resolving",
+  "description": "Olympics h5 pages",
   "scripts": {
     "clean": "rimraf dist",
     "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
@@ -58,17 +58,15 @@
     "gulp-imageisux-poll": "0.0.1",
     "gulp-replace": "^0.5.4",
     "gulp-util": "^3.0.7",
-    "less": "^2.5.3",
-    "less-loader": "^2.2.2",
     "node-sass": "^3.4.2",
     "postcss-assets": "^4.0.1",
+    "postcss-border-width": "0.0.2",
     "postcss-loader": "^0.8.0",
     "postcss-original-path": "0.0.2",
-    "postcss-sprites": "^2.0.3",
+    "postcss-pxtorem": "^3.3.1",
     "rimraf": "^2.4.3",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
-    "stylus-loader": "^1.4.3",
     "url-loader": "^0.5.7",
     "vinyl-ftp": "^0.4.5",
     "webpack": "^1.12.9",
@@ -77,9 +75,12 @@
     "webpack-stream": "^3.1.0"
   },
   "dependencies": {
+    "core-js": "^2.1.3",
     "react": "^0.14.3",
+    "react-css-modules": "^3.7.6",
     "react-dom": "^0.14.3",
-    "react-css-modules": "3.6.3",
-    "core-js": "^2.1.3"
+    "react-redux": "^4.4.1",
+    "redux": "^3.3.1",
+    "redux-thunk": "^2.0.1"
   }
 }

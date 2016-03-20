@@ -8,3 +8,29 @@ export default function configureStore() {
 
   return store
 }
+
+
+let storeStructure  = {
+	onlyChina: true,
+	selectedEvents: 'football',
+	onlyFinal: true,
+	selectedDate: '2016-08-08',
+	schedules: [
+		{
+			'0801': {
+				events: [
+					{
+						name: '男子足球决赛',
+						event: 'football',
+						time: '22:00:00',
+						isFinal: true,
+						chinaCompeteIn: true,
+						detail: {}
+					}
+				]
+			}
+		}
+	]
+
+};
+

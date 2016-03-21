@@ -8,7 +8,7 @@ module.exports = {
 	entry: {
 		schedule: [
 			'webpack-hot-middleware/client',
-			'./src/js/schedule'
+			'./src/js/schedules'
 		]
 	},
 	output: {

@@ -1,0 +1,5 @@
+@mixin icon($url) {
+    width: width($url);
+    height: height($url);
+    background: resolve($url) no-repeat;
+}

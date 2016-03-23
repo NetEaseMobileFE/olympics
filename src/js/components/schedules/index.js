@@ -23,7 +23,7 @@ class App extends Component {
 
 	handleEventChange = e => {
 		const {dispatch} = this.props;
-		dispatch(selectEvent(e.target.value))
+		dispatch(selectEvent(e.target.value));
 	};
 
 	handleDateChange = e => {
@@ -84,6 +84,95 @@ class App extends Component {
 					</div>
 				</section>
 
+				<main>
+					<section styleName="panel">
+						<div styleName="tag-wrapper">
+							<div styleName="tag">精选赛程</div>
+						</div>
+						<ul styleName="list">
+							<li styleName="list__item">
+								<div styleName="schedule">
+									<div styleName="clip-group">
+										<div styleName="clip--red">
+											<i styleName="clip--red__handle"/>
+											<div styleName="clip--red__entity">中国</div>
+										</div>
+										<div styleName="clip--yellow">
+											<i styleName="clip--yellow__handle"/>
+											<div styleName="clip--yellow__entity">决赛</div>
+										</div>
+									</div>
+									<div styleName="schedule__detail">
+										<span styleName="schedule__detail__time">18:30</span>
+										<span styleName="schedule__detail__event">游泳</span>
+										<span styleName="schedule__detail__title">女子双打第2轮/1/4决赛</span>
+										<div styleName="stat-wrapper">
+											<div styleName="stat--live">
+												<i styleName="stat--live__icon"/>
+												<span styleName="stat--live__txt">正在直播</span>
+											</div>
+										</div>
+									</div>
+									<i styleName="schedule__gt"/>
+								</div>
+
+								<div styleName="matches">
+									<div styleName="match">
+										<div>13:00 - 13:10</div>
+										<div styleName="match__group">第1组</div>
+										<ul styleName="competitions">
+											<li styleName="competition">
+												<div styleName="competition__rival">
+													<span styleName="competition__rival__nation">中国</span>
+													<img styleName="competition__rival__flag" src="/mocks/pic/flag1.png"/>
+												</div>
+												<div styleName="competition__score">vs</div>
+												<div styleName="competition__rival">
+													<img styleName="competition__rival__flag" src="/mocks/pic/flag2.png"/>
+													<span styleName="competition__rival__nation">中国</span>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<i styleName="matches__sharp"/>
+								</div>
+								
+							</li>
+
+							<li styleName="list__item">
+								<div styleName="schedule">
+									<div styleName="clip-group">
+										<div styleName="clip--red">
+											<i styleName="clip--red__handle"/>
+											<div styleName="clip--red__entity">中国</div>
+										</div>
+										<div styleName="clip--yellow">
+											<i styleName="clip--yellow__handle"/>
+											<div styleName="clip--yellow__entity">决赛</div>
+										</div>
+									</div>
+									<div styleName="schedule__detail">
+										<span styleName="schedule__detail__time">18:30</span>
+										<span styleName="schedule__detail__event">游泳</span>
+										<span styleName="schedule__detail__title">1/8淘汰赛5</span>
+										<div styleName="stat-wrapper">
+											<div styleName="stat--live">
+												<i styleName="stat--live__icon"/>
+												<span styleName="stat--live__txt">正在直播</span>
+											</div>
+										</div>
+									</div>
+									<i styleName="schedule__gt"/>
+								</div>
+							</li>
+						</ul>
+					</section>
+					<section styleName="panel">
+						<div styleName="tag-wrapper">
+							<div styleName="tag">14/<small>8月</small> 精选赛程</div>
+						</div>
+					</section>
+				</main>
 
 				<hr/>
 				<hr/>

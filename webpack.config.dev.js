@@ -39,7 +39,7 @@ module.exports = {
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]!postcss!sass'),
+				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[local]___[hash:base64:2]!postcss!sass'),
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.png|jpe?g|gif$/,

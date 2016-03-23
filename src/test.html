@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper-container {
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .swiper-wrapper {
+            width: 100%;
+            display: flex;
+            transition-property: transform;
+            will-change: transform;
+        }
+
+        .swiper-slide {
+            flex-shrink: 0;
+        }
+
+        .swiper-pagination {
+            position: absolute;
+            right: 30px;
+            bottom: 10px;
+            display: inline-block;
+            padding: 6px;
+            font-size: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+        .swiper-pagination > span {
+            display: inline-block;
+            margin: 0 3px;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            transition: backgroundColor .5s ease-in-out;
+        }
+        .swiper-pagination > span.swiper-pagination-bullet-active {
+            background-color: #fff;
+        }
+
+
+        .datepicker {
+            margin-bottom: 19px;
+            height: 166px;
+            border-top: 1px solid #100b07;
+        }
+
+        .datepicker__bg {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 146px;
+            background-color: #004071;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, .75);
+            z-index: -1;
+        }
+
+        .datepicker__rail {
+             display: flex;
+         }
+
+        .tab {
+            width: 104px;
+            height: 146px;
+            text-align: center;
+            background-color: #004071;
+        }
+        .tab__month {
+            margin-top: 20px;
+            font-size: 24px;
+            color: rgba(154, 154, 154, 0.3);
+        }
+        .tab__day {
+            margin-top: 12px;
+            font-size: 42px;
+            color: rgba(219, 219, 219, 0.3);
+        }
+        .tab:nth-child(even) {
+            background-color: #015697;
+        }
+        .tab.swiper-slide-active {
+            position: relative;
+            z-index: 1;
+            background-color: #02518d;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.75);
+        }
+        .tab:nth-child(even).swiper-slide-active {
+            background-color: #0060aa;
+        }
+        .tab.swiper-slide-active .tab__month {
+            color: rgba(154, 154, 154, 0.5);
+        }
+        .tab.swiper-slide-active .tab__day {
+            margin-top: 0;
+            color: #fff;
+            font-size: 58px;
+        }
+
+
+        .ctnr {
+            position: relative;
+            width: 750px;
+        }
+
+        .line {
+            height: 1000px;
+            width: 1px;
+            position: absolute;
+            left: 50%;
+            top: 0;
+            background-color: indianred;
+        }
+    </style>
+    <title>Title</title>
+</head>
+<body>
+<div class="ctnr">
+    <div class="line"></div>
+    <div class="swiper-container datepicker">
+        <div class="swiper-wrapper datepicker__rail">
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">03</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">04</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">05</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">06</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">07</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">08</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">09</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">10</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">11</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">12</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">13</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">14</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">15</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">16</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">17</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">18</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">19</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">20</p>
+            </div>
+            <div class="swiper-slide tab">
+                <p class="tab__month">8月</p>
+                <p class="tab__day">21</p>
+            </div>
+        </div>
+        <div class="datepicker__bg"></div>
+    </div>
+</div>
+
+
+<script src="http://img3.cache.netease.com/utf8/3g/libs/zepto_1.1.4.min.js"></script>
+<script src="js/widgets/swiper.js"></script>
+<script>
+    var swiper = new Swiper ('.swiper-container', {
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        freeMode : true,
+        freeModeSticky: true,
+        freeModeMomentumRatio: .3,
+        watchSlidesProgress : true,
+        onSetTranslate: function(s) {
+            var transform = s.translate;
+            var center = s.isHorizontal() ? -transform + s.width / 2 : -transform + s.height / 2;
+            var rotate = s.isHorizontal() ? 50: -50;
+            var translate = 100;
+            //Each slide offset from center
+            for (var i = 0, length = s.slides.length; i < length; i++) {
+                var slide = s.slides.eq(i);
+                var slideSize = s.slidesSizesGrid[i];
+                var slideOffset = slide[0].swiperSlideOffset;
+                var offsetMultiplier = Math.abs((center - slideOffset - slideSize / 2) / slideSize);
+
+                if ( i < 3 ) {
+//                    console.log(center, slideOffset, slideSize, offsetMultiplier); // todo
+                }
+//                var rotateY = s.isHorizontal() ? rotate * offsetMultiplier : 0;
+
+                //Fix for ultra small values
+//                if (Math.abs(rotateY) < 0.001) rotateY = 0;
+
+
+                if ( offsetMultiplier > 1 ) {
+                    offsetMultiplier = 1;
+                }
+
+                var scale = 1 + (1-offsetMultiplier) * (126/104 - 1);
+                console.log(scale); // todo
+                var slideTransform = 'scale(' + scale + ')';
+                slide.transform(slideTransform);
+                slide[0].style.zIndex = -Math.abs(Math.round(offsetMultiplier)) + 1;
+            }
+        }
+    });
+
+    $('.tab').on('click', function() {
+        swiper.slideTo($(this).index()); // todo
+    });
+</script>
+</body>
+</html>

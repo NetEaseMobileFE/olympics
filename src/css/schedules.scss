@@ -17,7 +17,6 @@
     align-items: center;
 
     &__box {
-        position: relative;
         margin-right: 18px;
         width: 34px;
         height: 34px;
@@ -30,6 +29,7 @@
     }
 
     &:global(.is-checked) &__box {
+        position: relative;
         border-color: #3bd5fb;
 
         i {
@@ -61,6 +61,7 @@
 
 ///
 .datepicker {
+    margin-bottom: 19px;
     height: 146px;
     background-color: #004071;
     border-top: 1px solid #100b07;
@@ -111,5 +112,252 @@
         margin-top: 0;
         color: #fff;
         font-size: 58px;
+    }
+}
+
+
+.panel {
+    margin: 0 20px;
+
+    & + & {
+        margin-top: 19px;
+    }
+}
+
+.tag-wrapper {
+    overflow: hidden;
+}
+.tag {
+    float: left;
+    height: 43px;
+    padding: 0 17px;
+    line-height: 43px;
+    font-size: 26px;
+    color: #ae911b;
+    text-align: center;
+    background-color: #ffda44;
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 -2px 2px rgba(0,0,0,.05) inset;
+
+    > small {
+        font-size: 16px;
+    }
+}
+
+
+.list {
+    background-color: #fff;
+    border-bottom: 1px solid #dfdfdf;
+
+    &__item + &__item {
+        border-top: 1px solid #f2f2f2;
+    }
+}
+
+//
+%clip {
+    width: 65px;
+    height: 40px;
+
+    &__handle {
+        float: left;
+        margin-left: -9px;
+        width: 9px;
+        height: 100%;
+        border-radius: 4px 0 0 4px;
+    }
+
+    &__entity {
+        float: right;
+        width: 100%;
+        line-height: 40px;
+        font-size: 22px;
+        text-align: center;
+        background-color: #f9f9f9;
+        border-radius: 0 4px 4px 0;
+        box-shadow: -2px 0 2px rgba(0,0,0,.06);
+    }
+}
+
+.clip--red {
+    @extend %clip;
+
+    &__handle {
+        @extend %clip__handle;
+        background-color: #ff4444;
+    }
+
+    &__entity {
+        @extend %clip__entity;
+        color: #ff4444;
+    }
+}
+
+.clip--yellow {
+    @extend %clip;
+
+    &__handle {
+        @extend %clip__handle;
+        background-color: #ffda44;
+    }
+
+    &__entity {
+        @extend %clip__entity;
+        color: #f8c701;
+    }
+}
+
+.clip-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 88px;
+}
+
+
+.schedule {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px 12px 0;
+
+    &__detail {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        flex-wrap: wrap;
+        padding: 14px 24px 14px 32px;
+
+        &__time {
+            font-size: 28px;
+            color: #5b5b5b;
+        }
+
+        &__event {
+            margin-left: 24px;
+            width: 98px;
+            text-align: center;
+            font-size: 24px;
+            color: #fff;
+            background-color: #3bd5fb;
+            border-radius: 20px;
+        }
+
+        &__title {
+            flex: 1;
+            margin-left: 22px;
+            font-size: 28px;
+            color: #5b5b5b;
+            white-space: nowrap;
+        }
+    }
+
+    &__gt {
+        @include icon('gt.png');
+    }
+}
+
+//
+%stat {
+    float: right;
+    display: flex;
+    align-items: center;
+
+    &__txt {
+        padding: 0 2px;
+        font-size: 26px;
+        line-height: 30px;
+        border: 1px solid;
+        border-radius: 4px;
+    }
+}
+
+.stat-wrapper {
+    flex: 1;
+    padding: 12px;
+}
+.stat--live {
+    @extend %stat;
+
+    &__icon {
+        margin-right: 9px;
+        @include icon('play.png');
+    }
+
+    &__txt {
+        @extend %stat__txt;
+        color: #004b88;
+        border-color: #b2c9db;
+    }
+}
+
+.matches {
+    position: relative;
+    background-color: #f3f8fc;
+
+    &__sharp {
+        position: absolute;
+        top: -15px;
+        right: 18px;
+        @include icon('sharp.png');
+    }
+}
+
+.match {
+    display: flex;
+    align-items: flex-start;
+    padding: 24px 14px;
+    color: #888;
+    font-size: 26px;
+
+    &__time {}
+
+    &__group {
+        margin: 5px 0 0 35px;
+        padding: 0 4px;
+        line-height: 30px;
+        background-color: #e4f5fe;
+    }
+}
+
+.competitions {
+    margin-left: 12px;
+    flex: 1;
+    flex-direction: column;
+}
+
+.competition {
+    display: flex;
+    justify-content: center;
+
+    &__rival {
+        white-space: nowrap;
+
+        &__nation {
+
+        }
+
+        &__flag {
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 9px;
+            box-sizing: content-box;
+            width: 39px;
+            height: 23px;
+            border: 1px solid #d9d9d9;
+        }
+
+        &__nation + &__flag, &__flag + &__nation {
+            margin-left: 11px;
+        }
+    }
+
+    &__score {
+        width: 110px;
+        text-align: center;
+
+        &:global(.is-noscore) {
+            color: #fc4444;
+        }
     }
 }

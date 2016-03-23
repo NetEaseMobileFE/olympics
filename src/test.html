@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+	<script src="js/utils/rem.js"></script>
     <style>
         * {
             margin: 0;
@@ -26,19 +28,19 @@
 
         .swiper-pagination {
             position: absolute;
-            right: 30px;
-            bottom: 10px;
+            right: .3rem;
+            bottom: .1rem;
             display: inline-block;
-            padding: 6px;
+            padding: .06rem;
             font-size: 0;
             background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
+            border-radius: .12rem;
         }
         .swiper-pagination > span {
             display: inline-block;
-            margin: 0 3px;
-            width: 10px;
-            height: 10px;
+            margin: 0 .03rem;
+            width: .1rem;
+            height: .1rem;
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 50%;
             transition: backgroundColor .5s ease-in-out;
@@ -49,8 +51,8 @@
 
 
         .datepicker {
-            margin-bottom: 19px;
-            height: 166px;
+            margin-bottom: .19rem;
+            height: 1.86rem;
             border-top: 1px solid #100b07;
         }
 
@@ -59,9 +61,9 @@
             left: 0;
             right: 0;
             top: 0;
-            height: 146px;
+            height: 1.46rem;
             background-color: #004071;
-            box-shadow: 0 2px 3px rgba(0, 0, 0, .75);
+            box-shadow: 0 .02rem .03rem rgba(0, 0, 0, .75);
             z-index: -1;
         }
 
@@ -70,19 +72,19 @@
          }
 
         .tab {
-            width: 104px;
-            height: 146px;
+            width: 1.04rem;
+            height: 1.46rem;
             text-align: center;
             background-color: #004071;
         }
         .tab__month {
-            margin-top: 20px;
-            font-size: 24px;
+            margin-top: .20rem;
+            font-size: .24rem;
             color: rgba(154, 154, 154, 0.3);
         }
         .tab__day {
-            margin-top: 12px;
-            font-size: 42px;
+            margin-top: .12rem;
+            font-size: .42rem;
             color: rgba(219, 219, 219, 0.3);
         }
         .tab:nth-child(even) {
@@ -92,7 +94,7 @@
             position: relative;
             z-index: 1;
             background-color: #02518d;
-            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.75);
+            box-shadow: 0 .02rem .03rem rgba(0, 0, 0, 0.75);
         }
         .tab:nth-child(even).swiper-slide-active {
             background-color: #0060aa;
@@ -103,18 +105,18 @@
         .tab.swiper-slide-active .tab__day {
             margin-top: 0;
             color: #fff;
-            font-size: 58px;
+            font-size: .58rem;
         }
 
 
         .ctnr {
             position: relative;
-            width: 750px;
+            width: 7.50rem;
         }
 
         .line {
-            height: 1000px;
-            width: 1px;
+            height: 10rem;
+            width: .01rem;
             position: absolute;
             left: 50%;
             top: 0;
@@ -218,8 +220,10 @@
         centeredSlides: true,
         freeMode : true,
         freeModeSticky: true,
-        freeModeMomentumRatio: .3,
+        freeModeMomentumRatio:.15,
         watchSlidesProgress : true,
+	    resistanceRatio: 0,
+	    speed: 3000,
         onSetTranslate: function(s) {
             var transform = s.translate;
             var center = s.isHorizontal() ? -transform + s.width / 2 : -transform + s.height / 2;
@@ -246,12 +250,14 @@
                 }
 
                 var scale = 1 + (1-offsetMultiplier) * (126/104 - 1);
-                console.log(scale); // todo
                 var slideTransform = 'scale(' + scale + ')';
                 slide.transform(slideTransform);
                 slide[0].style.zIndex = -Math.abs(Math.round(offsetMultiplier)) + 1;
             }
-        }
+        },
+	    setTransition: function (duration) {
+		    swiper.slides.transition(duration);
+	    }
     });
 
     $('.tab').on('click', function() {

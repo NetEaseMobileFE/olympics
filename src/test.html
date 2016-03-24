@@ -8,6 +8,7 @@
         * {
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
         }
 
         .swiper-container {
@@ -17,12 +18,20 @@
 
         .swiper-wrapper {
             width: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-transition-property: -webkit-transform;
+            transition-property: -webkit-transform;
             transition-property: transform;
+            transition-property: transform, -webkit-transform;
             will-change: transform;
         }
 
         .swiper-slide {
+            -webkit-flex-shrink: 0;
+            -ms-flex-negative: 0;
             flex-shrink: 0;
         }
 
@@ -43,6 +52,7 @@
             height: .1rem;
             background-color: rgba(0, 0, 0, 0.4);
             border-radius: 50%;
+            -webkit-transition: backgroundColor .5s ease-in-out;
             transition: backgroundColor .5s ease-in-out;
         }
         .swiper-pagination > span.swiper-pagination-bullet-active {
@@ -63,29 +73,34 @@
             top: 0;
             height: 1.46rem;
             background-color: #004071;
-            box-shadow: 0 .02rem .03rem rgba(0, 0, 0, .75);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
             z-index: -1;
         }
 
         .datepicker__rail {
-             display: flex;
-         }
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+        }
 
         .tab {
-            width: 1.04rem;
+            width: 1.07rem;
             height: 1.46rem;
             text-align: center;
+            color: rgba(255,255,255,.16);
             background-color: #004071;
+            will-change: transform, backgroud-color, color;
+            transform-origin: top center;
+            -webkit-transform-origin: top center;
         }
         .tab__month {
-            margin-top: .20rem;
+            padding-top: .20rem;
             font-size: .24rem;
-            color: rgba(154, 154, 154, 0.3);
         }
         .tab__day {
             margin-top: .12rem;
             font-size: .42rem;
-            color: rgba(219, 219, 219, 0.3);
         }
         .tab:nth-child(even) {
             background-color: #015697;
@@ -93,18 +108,16 @@
         .tab.swiper-slide-active {
             position: relative;
             z-index: 1;
+            color: #fff;
             background-color: #02518d;
-            box-shadow: 0 .02rem .03rem rgba(0, 0, 0, 0.75);
         }
         .tab:nth-child(even).swiper-slide-active {
             background-color: #0060aa;
         }
         .tab.swiper-slide-active .tab__month {
-            color: rgba(154, 154, 154, 0.5);
         }
         .tab.swiper-slide-active .tab__day {
             margin-top: 0;
-            color: #fff;
             font-size: .58rem;
         }
 
@@ -116,7 +129,7 @@
 
         .line {
             height: 10rem;
-            width: .01rem;
+            width: 1px;
             position: absolute;
             left: 50%;
             top: 0;
@@ -215,54 +228,73 @@
 <script src="http://img3.cache.netease.com/utf8/3g/libs/zepto_1.1.4.min.js"></script>
 <script src="js/widgets/swiper.js"></script>
 <script>
+    var maxScaleX = 130 / 107;
+    var maxScaleY = 168 / 146;
+    var slideSize;
+
+
     var swiper = new Swiper ('.swiper-container', {
-        slidesPerView: 'auto',
+        slidesPerView: 7,
         centeredSlides: true,
         freeMode : true,
         freeModeSticky: true,
-        freeModeMomentumRatio:.15,
+        freeModeMomentumRatio:.2,
+        freeModeMomentumBounce: false,
         watchSlidesProgress : true,
 	    resistanceRatio: 0,
-	    speed: 3000,
+//        simulateTouch: false, todo
+//        speed: 1000,
         onSetTranslate: function(s) {
             var transform = s.translate;
-            var center = s.isHorizontal() ? -transform + s.width / 2 : -transform + s.height / 2;
-            var rotate = s.isHorizontal() ? 50: -50;
-            var translate = 100;
+            var center = -transform + s.width / 2;
+            var slide, slideOffset, offsetMultiplier, scaleX, scaleY, slideTransform;
+            var BOXSHADOW = '0 1px 2px rgba(0, 0, 0, 0.75)';
+            slideSize = slideSize || s.slidesSizesGrid[0];
+
             //Each slide offset from center
             for (var i = 0, length = s.slides.length; i < length; i++) {
-                var slide = s.slides.eq(i);
-                var slideSize = s.slidesSizesGrid[i];
-                var slideOffset = slide[0].swiperSlideOffset;
-                var offsetMultiplier = Math.abs((center - slideOffset - slideSize / 2) / slideSize);
+                slide = s.slides.eq(i);
+                slideOffset = slide[0].swiperSlideOffset;
+                offsetMultiplier = Math.abs((center - slideOffset - slideSize / 2) / slideSize);
+                offsetMultiplier = Math.min(round(offsetMultiplier, 2), 1);
 
-                if ( i < 3 ) {
-//                    console.log(center, slideOffset, slideSize, offsetMultiplier); // todo
-                }
-//                var rotateY = s.isHorizontal() ? rotate * offsetMultiplier : 0;
+                scaleX = 1 + (1 - offsetMultiplier) * (maxScaleX - 1);
+                scaleY = 1 + (1 - offsetMultiplier) * (maxScaleY - 1);
 
-                //Fix for ultra small values
-//                if (Math.abs(rotateY) < 0.001) rotateY = 0;
+                if ( scaleX < 1.004 ) scaleX = 1;
+                if ( scaleY < 1.004 ) scaleY = 1;
 
-
-                if ( offsetMultiplier > 1 ) {
-                    offsetMultiplier = 1;
-                }
-
-                var scale = 1 + (1-offsetMultiplier) * (126/104 - 1);
-                var slideTransform = 'scale(' + scale + ')';
+                slideTransform = 'scale3d(' + scaleX + ', ' + scaleY + ', 1)';
                 slide.transform(slideTransform);
-                slide[0].style.zIndex = -Math.abs(Math.round(offsetMultiplier)) + 1;
+
+                if ( scaleX > 1 && scaleY > 1 ) {
+                    slide[0].style.boxShadow = BOXSHADOW;
+                } else {
+                    slide[0].style.boxShadow = '';
+                }
             }
         },
-	    setTransition: function (duration) {
-		    swiper.slides.transition(duration);
+        onSetTransition: function (s, transition) {
+//            s.slides.transition(transition);
+            var start = Math.min(s.activeIndex, s.previousIndex);
+            var end = Math.max(s.activeIndex, s.previousIndex);
+            var slides = s.$([]);
+            for ( var i = start; i <= end; i ++ ) {
+                slides.add(s.slides.eq(i));
+            }
+            slides.transition(transition);
+
 	    }
     });
 
     $('.tab').on('click', function() {
         swiper.slideTo($(this).index()); // todo
     });
+
+    function round(val, dec) {
+        var multiplier = Math.pow(10, dec);
+        return Math.round(multiplier * val) /multiplier;
+    }
 </script>
 </body>
 </html>

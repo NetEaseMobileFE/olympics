@@ -2,12 +2,12 @@ import 'core-js/fn/symbol';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import App from './components/schedules';
-import store from './redux/schedules/store';
+import Schedule from './components/schedule';
+import store from './redux/schedule/store';
 
 
 render((
 	<Provider store={store}>
-		<App />
+		<Schedule />
 	</Provider>
 ), document.getElementById('root'));

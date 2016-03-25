@@ -1,0 +1,61 @@
+// 赛程左侧中国/决赛标签
+// -----------------------
+
+.clip-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 88px;
+}
+
+%clip {
+    width: 65px;
+    height: 40px;
+
+    &__handle {
+        float: left;
+        margin-left: -9px;
+        width: 9px;
+        height: 100%;
+        border-radius: 4px 0 0 4px;
+    }
+
+    &__entity {
+        float: right;
+        width: 100%;
+        line-height: 40px;
+        font-size: 22px;
+        text-align: center;
+        background-color: #f9f9f9;
+        border-radius: 0 4px 4px 0;
+        box-shadow: -2px 0 2px rgba(0,0,0,.06);
+    }
+}
+
+.clip--red {
+    @extend %clip;
+
+    &__handle {
+        @extend %clip__handle;
+        background-color: #ff4444;
+    }
+
+    &__entity {
+        @extend %clip__entity;
+        color: #ff4444;
+    }
+}
+
+.clip--yellow {
+    @extend %clip;
+
+    &__handle {
+        @extend %clip__handle;
+        background-color: #ffda44;
+    }
+
+    &__entity {
+        @extend %clip__entity;
+        color: #f8c701;
+    }
+}

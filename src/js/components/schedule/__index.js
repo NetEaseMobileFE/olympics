@@ -1,12 +1,12 @@
 import 'css/base/normalize.css';
-import styles from 'css/schedules.scss';
+import styles from 'css/schedule.scss';
 import CSSModules from 'react-css-modules';
 
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import {
-	selectChina, selectFinal, selectEvent, selectDate
-} from '../../redux/schedules/actions';
+// import { connect } from 'react-redux';
+// import {
+// 	selectChina, selectFinal, selectEvent, selectDate
+// } from '../../redux/schedules/actions';
 
 
 @CSSModules(styles)

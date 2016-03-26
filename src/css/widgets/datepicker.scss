@@ -1,0 +1,66 @@
+.datepicker {
+    margin-bottom: 19px;
+    height: 186px;
+    border-top: 1px solid #100b07;
+
+    &__rail {
+        position: relative;
+        z-index: 1;
+    }
+
+    &__bg {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 1.46rem;
+        background-color: #004071;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+        z-index: 0;
+    }
+}
+
+.tab {
+    width: (100%/7);
+    height: 146px;
+    text-align: center;
+    background-color: #004071;
+    transform-origin: top center;
+    will-change: transform;
+
+    &__month {
+        margin-top: 20px;
+        font-size: 24px;
+        color: rgba(154,154,154,.3);
+    }
+
+    &__day {
+        margin-top: 12px;
+        font-size: 42px;
+        color: rgba(219,219,219,.3);
+    }
+
+    &:nth-child(even) {
+        background-color: #015697;
+    }
+
+    &:global(.swiper-slide-active) {
+        position: relative;
+        z-index: 1;
+        background-color: #02518d;
+    }
+
+    &:nth-child(even):global(.swiper-slide-active) {
+        background-color: #0060aa;
+    }
+
+    &:global(.swiper-slide-active) &__month {
+        color: rgba(154,154,154,.5);
+    }
+
+    &:global(.swiper-slide-active) &__day {
+        margin-top: 0;
+        color: #fff;
+        font-size: 58px;
+    }
+}

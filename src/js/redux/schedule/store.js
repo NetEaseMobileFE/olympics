@@ -1,7 +1,11 @@
-import { createStore } from 'redux'
-import reducers from './reducers'
+import { createStore } from 'redux';
+import reducers from './reducers';
+import { sportsDates, disciplines } from 'js/config';
 
-export default createStore(reducers);
+export default createStore(reducers, {
+	sportsDates,
+	disciplines
+});
 
 /*
 let storeStructure  = {

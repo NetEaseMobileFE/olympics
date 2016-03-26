@@ -7,61 +7,6 @@
 
 
 ///
-.datepicker {
-    margin-bottom: 19px;
-    height: 146px;
-    background-color: #004071;
-    border-top: 1px solid #100b07;
-    box-shadow: 0 2px 3px rgba(0,0,0,.75);
-
-    &__rail {
-        display: flex;
-    }
-}
-
-.tab {
-    flex: 1;
-    height: 146px;
-    text-align: center;
-    background-color: #004071;
-
-    &__month {
-        margin-top: 20px;
-        font-size: 24px;
-        color: rgba(154,154,154,.3);
-    }
-
-    &__day {
-        margin-top: 12px;
-        font-size: 42px;
-        color: rgba(219,219,219,.3);
-    }
-
-    &:nth-child(even) {
-        background-color: #015697;
-    }
-
-    &:global(.is-selected) {
-        flex: inherit;
-        position: relative;
-        z-index: 1;
-        width: 130px;
-        height: 168px;
-        background-color: #0060aa;
-        box-shadow: 0 2px 3px rgba(0,0,0,.75);
-    }
-
-    &:global(.is-selected) &__month {
-        color: rgba(154,154,154,.5);
-    }
-
-    &:global(.is-selected) &__day {
-        margin-top: 0;
-        color: #fff;
-        font-size: 58px;
-    }
-}
-
 
 .panel {
     margin: 0 20px;

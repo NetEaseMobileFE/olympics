@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import {
-	SELECT_CHINA, SELECT_FINAL, SELECT_EVENT,
+	SELECT_CHINA, SELECT_FINAL, SELECT_DISCIPLINE,
 	SELECT_DATE,
 	SHOW_DETAIL,
 	SHOW_FINISHED
@@ -25,29 +25,37 @@ function onlyFinal(state = false, action) {
 	}
 }
 
-function selectedEvent(state = null, action) {
+function selectedDiscipline(state = null, action) {
 	switch ( action.type ) {
-		case SELECT_EVENT:
-			return action.event;
+		case SELECT_DISCIPLINE:
+			return action.discipline;
 		default:
 			return state;
 	}
 }
 
-function selectedDate(state = '0802', action) {
+function selectedDate(state, action) {
 	switch ( action.type ) {
 		case SELECT_DATE:
 			return action.date;
 		default:
-			return state;
+			let date = new Date();
+			let month = date.getMonth() + 1;
+			let day = ('0' + date.getDate()).slice(-2);
+			return month + '-' + day;
 	}
 }
 
-const rootReducer = combineReducers({
+
+function doNothing(state = null) {
+	return state;
+}
+
+export default combineReducers({
 	onlyChina,
 	onlyFinal,
-	selectedEvent,
+	disciplines: doNothing,
+	selectedDiscipline,
+	sportsDates: doNothing,
 	selectedDate
 });
-
-export default rootReducer

@@ -1,6 +1,6 @@
 export const SELECT_CHINA = 'SELECT_CHINA';
 export const SELECT_FINAL = 'SELECT_FINAL';
-export const SELECT_EVENT = 'SELECT_EVENT';
+export const SELECT_DISCIPLINE = 'SELECT_DISCIPLINE';
 export const SELECT_DATE = 'SELECT_DATE';
 export const SHOW_DETAIL = 'SHOW_DETAIL';
 export const SHOW_FINISHED = 'SHOW_FINISHED';
@@ -19,10 +19,10 @@ export function selectFinal(checked) {
 	}
 }
 
-export function selectEvent(event) {
+export function selectDiscipline(discipline) {
 	return {
-		type: SELECT_EVENT,
-		event
+		type: SELECT_DISCIPLINE,
+		discipline
 	}
 }
 

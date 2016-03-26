@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import styles from 'css/modules/common/filter.scss';
-import CSSModules from 'react-css-modules';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-
 import { connect } from 'react-redux';
-import {
-	selectChina, selectFinal, selectEvent, selectDate
-} from '../../redux/schedule/actions';
+import CSSModules from 'react-css-modules';
+import styles from 'css/modules/common/filter.scss';
+import { selectChina, selectFinal, selectDiscipline } from '../../redux/schedule/actions';
+
 import DP from './discipline-picker';
 
 
@@ -51,13 +49,16 @@ class Filter extends Component {
 
 	handleDisciplineChange = (value) => {
 		let { dispatch } = this.props;
-		dispatch(selectEvent(value));
+		dispatch(selectDiscipline(value));
 	};
 
 	render() {
-		let { onlyChina, onlyFinal, selectedEvent } = this.props;
-		selectedEvent = selectedEvent || {};
-		let dp = this.state.showDP ? <DP key={1} disciplineName={selectedEvent.name} hide={this.showDP} onChange={this.handleDisciplineChange}/> : null;
+		let { onlyChina, onlyFinal, disciplines, selectedDiscipline } = this.props;
+		selectedDiscipline = selectedDiscipline || {};
+		let dp = this.state.showDP ?
+			<DP key={1} disciplines={disciplines} disciplineName={selectedDiscipline.name}
+				hide={this.showDP} onChange={this.handleDisciplineChange}/>
+			: null;
 
 		return (
 			<header>
@@ -66,7 +67,7 @@ class Filter extends Component {
 					<Checkbox label="金牌赛程" isChecked={onlyFinal} onChange={this.handleOnlyFinalChange}/>
 
 					<div styleName="selector" onClick={this.showDP}>
-						<div styleName="selector__label">{selectedEvent.name || '项目筛选'}</div>
+						<div styleName="selector__label">{selectedDiscipline.name || '项目筛选'}</div>
 						<i styleName="selector__arrow"/>
 					</div>
 				</div>
@@ -79,10 +80,12 @@ class Filter extends Component {
 	}
 }
 
-
-function mapStateToProps({onlyChina, onlyFinal, selectedEvent}) {
+function mapStateToProps({ onlyChina, onlyFinal, disciplines, selectedDiscipline }) {
 	return {
-		onlyChina, onlyFinal, selectedEvent
+		onlyChina, 
+		onlyFinal,
+		disciplines,
+		selectedDiscipline
 	}
 }
 

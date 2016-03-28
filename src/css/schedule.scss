@@ -1,6 +1,8 @@
 @import "base/mixins";
 @import "base/preset";
 
+@import "widgets/clip";
+
 .page {
     background-color: #f6f6f6;
 }
@@ -47,42 +49,44 @@
 }
 
 //
-
-.schedule {
+.event {
     display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
+    padding: 35px 21px 28px 0;
+
+    & + & {
+        border-top: 1px solid #f2f2f2;
+    }
+
+    &__time {
+        margin: 0 33px 0 20px;
+        font-size: 28px;
+        color: #5b5b5b;
+    }
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.tags {
+    display: flex;
     align-items: center;
-    padding: 12px 20px 12px 0;
 
-    &__detail {
-        display: flex;
-        align-items: center;
+    &__discipline {
+        margin-right: 15px;
+        padding: 0 20px;
+        text-align: center;
+        font-size: 24px;
+        color: #fff;
+        background-color: #3bd5fb;
+        border-radius: 20px;
+    }
+
+    &__stat {
         flex: 1;
-        flex-wrap: wrap;
-        padding: 14px 24px 14px 32px;
-
-        &__time {
-            font-size: 28px;
-            color: #5b5b5b;
-        }
-
-        &__event {
-            margin-left: 24px;
-            width: 98px;
-            text-align: center;
-            font-size: 24px;
-            color: #fff;
-            background-color: #3bd5fb;
-            border-radius: 20px;
-        }
-
-        &__title {
-            flex: 1;
-            margin-left: 22px;
-            font-size: 28px;
-            color: #5b5b5b;
-            white-space: nowrap;
-        }
     }
 
     &__gt {
@@ -90,11 +94,14 @@
     }
 }
 
+
 //
 %stat {
     float: right;
     display: flex;
     align-items: center;
+    padding-left: 17px;
+    background-color: #fff;
 
     &__txt {
         padding: 0 2px;
@@ -107,7 +114,7 @@
 
 .stat-wrapper {
     flex: 1;
-    padding: 12px;
+    background: resolve('dot.gif') repeat-x right center;
 }
 .stat--live {
     @extend %stat;
@@ -161,7 +168,6 @@
 
 .competition {
     display: flex;
-    justify-content: center;
 
     &__rival {
         white-space: nowrap;

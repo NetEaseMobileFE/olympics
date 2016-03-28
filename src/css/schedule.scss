@@ -116,6 +116,7 @@
     flex: 1;
     background: resolve('dot.gif') repeat-x right center;
 }
+
 .stat--live {
     @extend %stat;
 
@@ -128,6 +129,24 @@
         @extend %stat__txt;
         color: #004b88;
         border-color: #b2c9db;
+    }
+
+    // d2d2d2
+    // #999
+}
+
+.stat--live--fade {
+    @extend %stat;
+
+    &__icon {
+        margin-right: 9px;
+        @include icon('play-fade.png');
+    }
+
+    &__txt {
+        @extend %stat__txt;
+        color: #d2d2d2;
+        border-color: #999;
     }
 }
 
@@ -155,7 +174,7 @@
     &__group {
         margin: 5px 0 0 35px;
         padding: 0 4px;
-        line-height: 30px;
+        color: #3bd5fb;
         background-color: #e4f5fe;
     }
 }

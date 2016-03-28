@@ -34,8 +34,8 @@ class Schedule extends Component {
 										</div>
 									</div>
 									<div styleName="event__time">18:30</div>
-									<ul styleName="rows">
-										<li styleName="tags">
+									<div styleName="event__detail">
+										<div styleName="tags">
 											<div styleName="tags__discipline">游泳</div>
 											<div styleName="stat-wrapper">
 												<div styleName="stat--live">
@@ -43,26 +43,8 @@ class Schedule extends Component {
 													<span styleName="stat--live__txt">正在直播</span>
 												</div>
 											</div>
-										</li>
-										<li>女子双打第2轮/1/4决赛</li>
-										<li styleName="competition">
-											<div styleName="competition__rival">
-												<span styleName="competition__rival__nation">中国</span>
-												<img styleName="competition__rival__flag" src="/mocks/pic/flag1.png"/>
-											</div>
-											<div styleName="competition__score">vs</div>
-											<div styleName="competition__rival">
-												<img styleName="competition__rival__flag" src="/mocks/pic/flag2.png"/>
-												<span styleName="competition__rival__nation">中国</span>
-											</div>
-										</li>
-									</ul>
-								</div>
-
-								<ul styleName="matches">
-									<li styleName="match">
-										<div>13:00 - 13:10</div>
-										<div styleName="match__group">第1组</div>
+										</div>
+										<div styleName="event-name">女子双打第2轮/1/4决赛</div>
 										<div styleName="competition">
 											<div styleName="competition__rival">
 												<span styleName="competition__rival__nation">中国</span>
@@ -72,6 +54,26 @@ class Schedule extends Component {
 											<div styleName="competition__rival">
 												<img styleName="competition__rival__flag" src="/mocks/pic/flag2.png"/>
 												<span styleName="competition__rival__nation">中国</span>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<ul styleName="matches">
+									<li styleName="match">
+										<div>13:00<span styleName="match__time__sep">-</span>13:10</div>
+										<div styleName="match__detail">
+											<p><span styleName="match__detail__group">第1组</span></p>
+											<div styleName="competition">
+												<div styleName="competition__rival">
+													<span styleName="competition__rival__nation">中国</span>
+													<img styleName="competition__rival__flag" src="/mocks/pic/flag1.png"/>
+												</div>
+												<div styleName="competition__score">vs</div>
+												<div styleName="competition__rival">
+													<img styleName="competition__rival__flag" src="/mocks/pic/flag2.png"/>
+													<span styleName="competition__rival__nation">中国</span>
+												</div>
 											</div>
 										</div>
 									</li>

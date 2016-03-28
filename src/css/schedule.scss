@@ -51,24 +51,27 @@
 //
 .event {
     display: flex;
-    align-items: flex-start;
     padding: 35px 21px 28px 0;
 
-    & + & {
-        border-top: 1px solid #f2f2f2;
-    }
+	&__clip {
+		margin-top: 6px;
+	}
 
-    &__time {
-        margin: 0 33px 0 20px;
-        font-size: 28px;
-        color: #5b5b5b;
-    }
-}
+	&__time {
+		margin: 0 33px 0 20px;
+		font-size: 28px;
+		color: #5b5b5b;
+	}
 
-.rows {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+	&__detail {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	& + & {
+		border-top: 1px solid #f2f2f2;
+	}
 }
 
 .tags {
@@ -88,10 +91,18 @@
     &__stat {
         flex: 1;
     }
+}
 
-    &__gt {
-        @include icon('gt.png');
-    }
+.event-name {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding:  6px 0;
+
+	&:after {
+		content: '';
+		@include icon('gt.png');
+	}
 }
 
 
@@ -169,14 +180,23 @@
     color: #888;
     font-size: 26px;
 
-    &__time {}
+    &__time {
 
-    &__group {
-        margin: 5px 0 0 35px;
-        padding: 0 4px;
-        color: #3bd5fb;
-        background-color: #e4f5fe;
+	    &__sep {
+		    margin: 0 6px;
+	    }
     }
+
+	&__detail {
+		flex: 1;
+
+		&__group {
+			display: inline-block;
+			padding: 0 4px;
+			color: #3bd5fb;
+			background-color: #e4f5fe;
+		}
+	}
 }
 
 .competitions {

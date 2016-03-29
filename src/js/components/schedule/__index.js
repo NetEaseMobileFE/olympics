@@ -118,7 +118,7 @@ class App extends Component {
 
 								<div styleName="matches">
 									<div styleName="match">
-										<div>13:00 - 13:10</div>
+										<div styleName="match__time">13:00 - 13:10</div>
 										<div styleName="match__group">第1组</div>
 										<ul styleName="competitions">
 											<li styleName="competition">

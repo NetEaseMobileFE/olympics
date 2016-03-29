@@ -14,11 +14,11 @@ function createConnect(mix) {
 	} else {
 		return connect(state => {
 			let props = {};
-			for ( let k of mix ) {
+			for ( let i = 0; i < mix.length; i++ ) {
+				let k = mix[i];
 				props[k] = state[k];
 			}
 
-			console.log(props); // todo
 			return props;
 		});
 	}

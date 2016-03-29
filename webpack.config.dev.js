@@ -64,7 +64,13 @@ module.exports = {
 			}),
 			require('autoprefixer')({
 				browsers: ['> 1%', 'last 2 version', 'Android >= 4.0']
-			})
+			}),
+			require('postcss-pxtorem')({
+				rootValue: 100,
+				propWhiteList: [],
+				minPixelValue: 3
+			}),
+			require('postcss-border-width')
 		];
 	}
 };

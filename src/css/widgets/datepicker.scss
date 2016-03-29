@@ -1,5 +1,4 @@
 .datepicker {
-    margin-bottom: 19px;
     height: 186px;
     border-top: 1px solid #100b07;
 
@@ -55,12 +54,13 @@
     }
 
     &:global(.swiper-slide-active) &__month {
+        margin-top: 16px;
         color: rgba(154,154,154,.5);
     }
 
     &:global(.swiper-slide-active) &__day {
         margin-top: 0;
         color: #fff;
-        font-size: 58px;
+        font-size: 50px;
     }
 }

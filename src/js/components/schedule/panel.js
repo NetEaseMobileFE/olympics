@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CSSModules from 'react-css-modules';
-import styles from 'css/schedule.scss';
+import styles from 'css/modules/schedule/panel.scss';
 
 import Clip from '../common/clip';
 import State from '../common/state';
+
 const clips = [
 	{ type: 'red', 'text': '中国' },
 	{ type: 'yellow', 'text': '决赛' }
 ];
 
 
+// 单场比赛对手情况
 @CSSModules(styles)
 class Competetion extends Component {
 	render() {
@@ -26,15 +29,16 @@ class Competetion extends Component {
 					score ?
 						(
 							<div styleName="competition__vs">
-								<span styleName="competition__vs__score">12</span>
+								<span styleName="competition__vs__score">{score[0]}</span>
 								<span styleName="competition__vs__sep">:</span>
-								<span styleName="competition__vs__score">9</span>
+								<span styleName="competition__vs__score">{score[1]}</span>
 							</div>
 						) :
 						(
 							<div styleName="competition__vs" className="is-noscore">vs</div>
 						)
 				}
+
 				<div styleName="competition__rival">
 					<img styleName="competition__rival__flag" src={`/mocks/pic/${away.flag}.png`}/>
 					<span styleName="competition__rival__nation">{away.nation}</span>
@@ -45,6 +49,7 @@ class Competetion extends Component {
 }
 
 
+// 小组赛分组情况
 @CSSModules(styles)
 class Matches extends Component {
 	render() {
@@ -70,6 +75,7 @@ class Matches extends Component {
 }
 
 
+// 小项赛程
 @CSSModules(styles)
 class Event extends Component {
 	constructor(props) {
@@ -99,8 +105,10 @@ class Event extends Component {
 			v && clipProp.push(clips[i]);
 		});
 
+		let matchesComp = hasMatch && this.state.unfold ? <Matches matches={matches}/> : null;
+
 		return (
-			<div>
+			<div styleName="event-ctnr">
 				<div styleName="event" onClick={hasMatch ? this.toggleFold : null}>
 					{
 						clipProp.length ? <Clip clips={clipProp} pcn={styles.event__clip}/> : null
@@ -117,35 +125,34 @@ class Event extends Component {
 						}
 					</div>
 				</div>
-				{
-					hasMatch && this.state.unfold ? <Matches matches={matches}/> : null
-				}
+
+
+				<ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+					{matchesComp}
+				</ReactCSSTransitionGroup>
 			</div>
 		)
 	}
 }
 
 
+// 小项列表
 @CSSModules(styles)
-export default class Section extends Component {
+export default class extends Component {
 	render() {
 		let { label, events, selectedDate } = this.props;
 		return (
 			<section styleName="panel">
-				<div styleName="tag-wrapper">
-					<div styleName="tag">{label}</div>
+				<div styleName="panel__tag">
+					<div styleName="panel__tag__entity">{label}</div>
 				</div>
-				<ul styleName="list">
+				<div styleName="panel__main">
 					{
-						events.map((event, i) => {
-							return (
-								<li key={i} styleName="list__item">
-									<Event {...event} selectedDate={selectedDate}/>
-								</li>
-							)
-						})
+						events.map((event, i) =>
+							<Event key={i} {...event} selectedDate={selectedDate}/>
+						)
 					}
-				</ul>
+				</div>
 			</section>
 		)
 	}

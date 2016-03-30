@@ -5,7 +5,7 @@ import styles from 'css/schedule.scss';
 
 import Filter from './../common/filter';
 import Datepicker from './../common/datepicker';
-import Section from './section';
+import Panel from './panel';
 
 const testData = {
 	"hot": [
@@ -54,6 +54,32 @@ const testData = {
 					]
 				}
 			]
+		},
+		{
+			"discipline": "场地自行车",
+			"startTime": "14:48",
+			"finishTime": "15: 22",
+			"event": "女子50米步枪三种姿势资格赛",
+			"china": false,
+			"final": false,
+			"liveSupported": false,
+			"matches": [
+				{
+					"group": "第1组",
+					"startTime": "13:00",
+					"finishTime": "13:40",
+					"rivals": [
+						{
+							"nation": "中国",
+							"flag": "flag1"
+						},
+						{
+							"nation": "法国",
+							"flag": "flag2"
+						}
+					]
+				}
+			]
 		}
 	]
 };
@@ -67,16 +93,13 @@ class Schedule extends Component {
 
 		return (
 			<div styleName="page">
-				<Filter/>
-				<Datepicker/>
+				<header styleName="page__hd">
+					<Filter/>
+					<Datepicker/>
+				</header>
 
-				<main styleName="page__body">
-					<Section label={label} events={events} selectedDate={selectedDate}/>
-					<section styleName="panel">
-						<div styleName="tag-wrapper">
-							<div styleName="tag">14/<small>8月</small> 精选赛程</div>
-						</div>
-					</section>
+				<main styleName="page__bd">
+					<Panel label={label} events={events} selectedDate={selectedDate}/>
 				</main>
 
 

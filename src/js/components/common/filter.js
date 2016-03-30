@@ -34,7 +34,8 @@ class Filter extends Component {
 	showDP = () => {
 		this.setState({
 			showDP: !this.state.showDP
-		})
+		});
+		document.querySelector('#root').classList.toggle('disable-scroll');
 	};
 
 	handleOnlyChinaChange = () => {
@@ -62,7 +63,7 @@ class Filter extends Component {
 			: null;
 
 		return (
-			<header>
+			<section className="page__header">
 				<div styleName="filter">
 					<Checkbox label="中国赛程" isChecked={onlyChina} onChange={this.handleOnlyChinaChange}/>
 					<Checkbox label="金牌赛程" isChecked={onlyFinal} onChange={this.handleOnlyFinalChange}/>
@@ -76,7 +77,7 @@ class Filter extends Component {
 				<ReactCSSTransitionGroup transitionName="dp" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
 					{dp}
 				</ReactCSSTransitionGroup>
-			</header>
+			</section>
 		)
 	}
 }

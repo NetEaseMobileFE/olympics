@@ -1,0 +1,72 @@
+// 每项赛事的状态标签
+// -----------------------
+
+@import "../base/mixins";
+
+%state {
+    float: right;
+    display: flex;
+    align-items: center;
+    padding-left: 17px;
+    background-color: #fff;
+
+    &__txt {
+        padding: 1px 2px 0;
+        font-size: 26px;
+        line-height: 28px;
+        border: 1px solid;
+        border-radius: 4px;
+    }
+}
+
+.state-wrapper {
+    flex: 1;
+    background: resolve('dot.gif') repeat-x right center;
+    background-size: .06rem .01rem;
+}
+
+.state--live {
+    @extend %state;
+
+    &__icon {
+        margin-right: 9px;
+        @include icon('play.png');
+    }
+
+    &__txt {
+        @extend %state__txt;
+        color: #004b88;
+        border-color: #b2c9db;
+    }
+}
+
+.state--live--fade {
+    @extend %state;
+
+    &__icon {
+        margin-right: 11px;
+        @include icon('play-fade.png');
+    }
+
+    &__txt {
+        @extend %state__txt;
+        color: #d2d2d2;
+        border-color: #999;
+    }
+}
+
+
+.state--alarm {
+    @extend %state;
+
+    &__icon {
+        margin-right: 9px;
+        @include icon('clock.png');
+    }
+
+    &__txt {
+        @extend %state__txt;
+        color: #fdb23b;
+        border-color: #fee9c8;
+    }
+}

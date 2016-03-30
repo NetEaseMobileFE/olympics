@@ -54,8 +54,15 @@
 
 //
 .event {
+    position: relative;
     display: flex;
-    padding: 35px 21px 31px 0;
+    padding: 35px 21px 31px 65px;
+
+    &__clip {
+        position: absolute;
+        left: 0;
+        top: 35px;
+    }
 
 	&__time {
         width: 120px;
@@ -90,10 +97,6 @@
         background-color: #3bd5fb;
         border-radius: 20px;
     }
-
-    &__stat {
-        flex: 1;
-    }
 }
 
 .event-name {
@@ -102,69 +105,20 @@
 	justify-content: space-between;
 	padding:  11px 0 4px;
 
-	&:after {
+	&:global(.is-foldable):after {
 		content: '';
 		@include icon('gt.png');
+        transition: transform .3s;
+        will-change: transform;
 	}
+
+    &:global(.is-foldable.is-unfold):after {
+        transform: rotate(-180deg);
+    }
 }
 
 
 //
-%stat {
-    float: right;
-    display: flex;
-    align-items: center;
-    padding-left: 17px;
-    background-color: #fff;
-
-    &__txt {
-        padding: 1px 2px 0;
-        font-size: 26px;
-        line-height: 28px;
-        border: 1px solid;
-        border-radius: 4px;
-    }
-}
-
-.stat-wrapper {
-    flex: 1;
-    background: resolve('dot.gif') repeat-x right center;
-    background-size: .06rem .01rem;
-}
-
-.stat--live {
-    @extend %stat;
-
-    &__icon {
-        margin-right: 9px;
-        @include icon('play.png');
-    }
-
-    &__txt {
-        @extend %stat__txt;
-        color: #004b88;
-        border-color: #b2c9db;
-    }
-
-    // d2d2d2
-    // #999
-}
-
-.stat--live--fade {
-    @extend %stat;
-
-    &__icon {
-        margin-right: 9px;
-        @include icon('play-fade.png');
-    }
-
-    &__txt {
-        @extend %stat__txt;
-        color: #d2d2d2;
-        border-color: #999;
-    }
-}
-
 .matches {
     position: relative;
     background-color: #f3f8fc;

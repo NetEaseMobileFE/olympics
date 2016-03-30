@@ -5,7 +5,6 @@
     z-index: 10;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     height: 80px;
     padding: 0 40px;
     background-color: #f6f6f6;
@@ -38,16 +37,26 @@
             @include icon('tick.png');
         }
     }
+
+    & + & {
+        margin-left: 82px;
+    }
 }
 
 
 .selector {
     display: flex;
+    justify-content: flex-end;
+    flex: 1;
     align-items: center;
     padding-right: 16px;
 
     &__label {
         font-size: 30px;
+
+        &--long {
+            font-size: 24px;
+        }
     }
 
     &__arrow {

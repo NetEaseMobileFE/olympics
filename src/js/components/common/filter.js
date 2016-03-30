@@ -55,8 +55,9 @@ class Filter extends Component {
 	render() {
 		let { onlyChina, onlyFinal, disciplines, selectedDiscipline } = this.props;
 		selectedDiscipline = selectedDiscipline || {};
+		let discName = selectedDiscipline.name || '';
 		let dp = this.state.showDP ?
-			<DP key={1} disciplines={disciplines} disciplineName={selectedDiscipline.name}
+			<DP key={1} disciplines={disciplines} disciplineName={discName}
 				hide={this.showDP} onChange={this.handleDisciplineChange}/>
 			: null;
 
@@ -67,7 +68,7 @@ class Filter extends Component {
 					<Checkbox label="金牌赛程" isChecked={onlyFinal} onChange={this.handleOnlyFinalChange}/>
 
 					<div styleName="selector" onClick={this.showDP}>
-						<div styleName="selector__label">{selectedDiscipline.name || '项目筛选'}</div>
+						<div styleName={`selector__label${discName.length > 5 ? '--long' : ''}`}>{discName || '项目筛选'}</div>
 						<i styleName="selector__arrow"/>
 					</div>
 				</div>

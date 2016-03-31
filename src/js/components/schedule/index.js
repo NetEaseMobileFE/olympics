@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
+import 'js/plugins/swiper.js';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
+import 'css/widgets/swiper.scss';
 import styles from 'css/schedule.scss';
 
 import Filter from './../common/filter';
@@ -11,8 +13,8 @@ const testData = {
 	"hot": [
 		{
 			"discipline": "场地自行车",
-			"startTime": "14:48",
-			"finishTime": "15: 22",
+			"startTime": "9:48",
+			"finishTime": "9:55",
 			"event": "女子50米步枪三种姿势资格赛",
 			"china": true,
 			"final": true,
@@ -32,7 +34,7 @@ const testData = {
 		{
 			"discipline": "场地自行车",
 			"startTime": "14:48",
-			"finishTime": "15: 22",
+			"finishTime": "15:22",
 			"event": "女子50米步枪三种姿势资格赛",
 			"china": false,
 			"final": false,
@@ -58,7 +60,7 @@ const testData = {
 		{
 			"discipline": "场地自行车",
 			"startTime": "14:48",
-			"finishTime": "15: 22",
+			"finishTime": "15:22",
 			"event": "女子50米步枪三种姿势资格赛",
 			"china": false,
 			"final": false,
@@ -86,6 +88,15 @@ const testData = {
 
 @CSSModules(styles)
 class Schedule extends Component {
+	componentDidMount() {
+		let swiper = new Swiper(this.refs.swiper, {
+			initialSlide: window.dateSwiper.activeIndex,
+			resistanceRatio: .7
+		});
+		swiper.params.control = window.dateSwiper;
+		window.mainSwiper = swiper;
+	}
+
 	render() {
 		let label = "精选赛程";
 		let events = testData.hot;
@@ -99,15 +110,31 @@ class Schedule extends Component {
 				</header>
 
 				<main styleName="page__bd">
-					<Panel label={label} events={events} selectedDate={selectedDate}/>
+					{
+						//<Panel label={label} events={events} selectedDate={selectedDate}/>
+					}
+
+					<div ref="swiper" className="swiper-container">
+						<div className="swiper-wrapper">
+							{
+								this.props.sportsDates.map((date, i) => {
+									let [, month, day] = date.split('-');
+									return (
+										<div className="swiper-slide" key={i} style={{height: 500}}>{month + ' ' + day}</div>
+									)
+								})
+							}
+						</div>
+					</div>
 				</main>
 
 
-
-				{this.props.onlyChina && '中国'} /
-				{this.props.onlyFinal && '决赛'} /
-				{this.props.selectedDiscipline && this.props.selectedDiscipline.name} /
-				{this.props.selectedDate}
+				{/*
+				 {this.props.onlyChina && '中国'} /
+				 {this.props.onlyFinal && '决赛'} /
+				 {this.props.selectedDiscipline && this.props.selectedDiscipline.name} /
+				 {this.props.selectedDate}
+				*/}
 			</div>
 		)
 	}

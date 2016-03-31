@@ -1,6 +1,6 @@
 export let sportsDates = (() => {
 	let i = 3, dates = [];
-	while ( i <= 21 ) dates.push('8-' + ('0' + i++).slice(-2));
+	while ( i <= 31 ) dates.push('2016-3-' + ('0' + i++).slice(-2));
 	return dates;
 })();
 

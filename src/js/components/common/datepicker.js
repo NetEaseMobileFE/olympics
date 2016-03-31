@@ -64,7 +64,6 @@ export default class Datepicker extends Component {
 			freeModeMinimumVelocity: .1, // 防止龟速
 			watchSlidesProgress : true,
 			resistanceRatio: 0,
-			// simulateTouch: false, todo
 			onSetTranslate(s) {
 				let transform = s.translate;
 				let center = -transform + s.width / 2;
@@ -114,9 +113,16 @@ export default class Datepicker extends Component {
 				others.transition(0);
 			},
 			onTransitionEnd(s) {
+				if ( window.mainSwiper && mainSwiper.activeIndex != s.activeIndex ) {
+					mainSwiper.slideTo(s.activeIndex, 0, false);
+				}
+			},
+			onSlideChangeEnd(s) {
 				that.props.dispatch(selectDate(that.props.sportsDates[s.activeIndex]));
 			}
 		});
+		
+		window.dateSwiper = this.swiper;
 	}
 
 	shouldComponentUpdate() {
@@ -133,7 +139,7 @@ export default class Datepicker extends Component {
 				<div className="swiper-wrapper" styleName="datepicker__rail">
 					{
 						this.props.sportsDates.map((date, i) => {
-							let [month, day] = date.split('-');
+							let [, month, day] = date.split('-');
 							return (
 								<div onClick={this.handleClick.bind(this, i)} className="swiper-slide" styleName="tab" key={i}>
 									<p styleName="tab__month">{month}月</p>

@@ -40,9 +40,10 @@ function selectedDate(state, action) {
 			return action.date;
 		default:
 			let date = new Date();
+			let year = date.getFullYear();
 			let month = date.getMonth() + 1;
 			let day = ('0' + date.getDate()).slice(-2);
-			return month + '-' + day;
+			return year + '-' + month + '-' + day;
 	}
 }
 

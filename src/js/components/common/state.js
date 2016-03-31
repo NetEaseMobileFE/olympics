@@ -7,12 +7,11 @@ import styles from 'css/widgets/state.scss';
 export default class extends Component {
 	render() {
 		const { liveSupported, finishTime, selectedDate } = this.props;
-		let matchTime = selectedDate.replace('-', '') + finishTime.replace(':', '');
-		let now = new Date();
+		let matchTime = +new Date(selectedDate + ' ' + finishTime);
+		let now = Date.now();
 		let stateType;
 		let stateLabel;
 
-		now = [now.getMonth() + 1, now.getDay(), now.getHours(), now.getMinutes()].join('');
 		if ( now < matchTime ) {
 			stateType = 'alarm';
 			stateLabel = '提醒';

@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
+import extend from 'lodash.assign';
 import {
 	SELECT_CHINA, SELECT_FINAL, SELECT_DISCIPLINE,
-	SELECT_DATE,
+	SELECT_DATE, UPDATE_SCHEDULE,
 	SHOW_DETAIL,
 	SHOW_FINISHED
 } from './actions';
@@ -34,16 +35,27 @@ function selectedDiscipline(state = null, action) {
 	}
 }
 
-function selectedDate(state, action) {
+let date = new Date();
+let year = date.getFullYear();
+let month = date.getMonth() + 1;
+let day = ('0' + date.getDate()).slice(-2);
+let defaultDate = year + '-' + month + '-' + day;
+
+function selectedDate(state = defaultDate, action) {
 	switch ( action.type ) {
 		case SELECT_DATE:
 			return action.date;
 		default:
-			let date = new Date();
-			let year = date.getFullYear();
-			let month = date.getMonth() + 1;
-			let day = ('0' + date.getDate()).slice(-2);
-			return year + '-' + month + '-' + day;
+			return state
+	}
+}
+
+function schedules(state = {}, action) {
+	switch ( action.type ) {
+		case UPDATE_SCHEDULE:
+			return extend({}, state, action.data);
+		default:
+			return state;
 	}
 }
 
@@ -58,5 +70,6 @@ export default combineReducers({
 	disciplines: doNothing,
 	selectedDiscipline,
 	sportsDates: doNothing,
-	selectedDate
+	selectedDate,
+	schedules
 });

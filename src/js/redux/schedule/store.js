@@ -1,34 +1,22 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware  } from 'redux';
+import thunk from 'redux-thunk';
 import reducers from './reducers';
-import { sportsDates, disciplines } from 'js/config';
 
-export default createStore(reducers, {
-	sportsDates,
-	disciplines
-});
 
-/*
-let storeStructure  = {
-	onlyChina: true,
-	selectedEvents: 'football',
-	onlyFinal: true,
-	selectedDate: '2016-08-08',
-	schedules: [
-		{
-			'0801': {
-				events: [
-					{
-						name: '男子足球决赛',
-						event: 'football',
-						time: '22:00:00',
-						isFinal: true,
-						chinaCompeteIn: true,
-						detail: {}
-					}
-				]
-			}
-		}
-	]
-
-};*/
-
+export default initialState => {
+	const store = createStore(
+		reducers,
+		initialState,
+		applyMiddleware(thunk)
+	);
+	
+	if (module.hot) {
+		// Enable Webpack hot module replacement for reducers
+		module.hot.accept('./reducers', () => {
+			const nextRootReducer = require('./reducers').default;
+			store.replaceReducer(nextRootReducer)
+		})
+	}
+	
+	return store;
+}

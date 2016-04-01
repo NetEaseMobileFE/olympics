@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import 'css/widgets/swiper.scss';
 import styles from 'css/widgets/datepicker.scss';
-import util from 'js/utils/util';
+import { round } from 'js/utils/util';
 import { selectDate } from '../../redux/schedule/actions';
 
 
@@ -76,7 +76,7 @@ export default class Datepicker extends Component {
 					slide = s.slides.eq(i);
 					slideOffset = slide[0].swiperSlideOffset;
 					offsetMultiplier = Math.abs((center - slideOffset - slideSize / 2) / slideSize);
-					offsetMultiplier = Math.min(util.round(offsetMultiplier, 2), 1);
+					offsetMultiplier = Math.min(round(offsetMultiplier, 2), 1);
 					
 					scaleX = 1 + (1 - offsetMultiplier) * (maxScaleX - 1);
 					scaleY = 1 + (1 - offsetMultiplier) * (maxScaleY - 1);

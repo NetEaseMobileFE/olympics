@@ -60,10 +60,10 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 }
 
-section, p, div,
-h1, h2, h3, h4, h5, h6 {
-    max-height:999999px; // mobile chrome FontBoosting bug
-}
+//section, p, div,
+//h1, h2, h3, h4, h5, h6 {
+//    max-height:999999px; // mobile chrome FontBoosting bug
+//}
 
 a {
     text-decoration: none;

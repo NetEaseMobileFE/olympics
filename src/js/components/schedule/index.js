@@ -101,6 +101,7 @@ class Schedule extends Component {
 		let label = "精选赛程";
 		let events = testData.hot;
 		let selectedDate = this.props.selectedDate;
+		let schedules = this.props.schedules;
 
 		return (
 			<div styleName="page">
@@ -110,31 +111,21 @@ class Schedule extends Component {
 				</header>
 
 				<main styleName="page__bd">
-					{
-						//<Panel label={label} events={events} selectedDate={selectedDate}/>
-					}
-
 					<div ref="swiper" className="swiper-container">
 						<div className="swiper-wrapper">
 							{
 								this.props.sportsDates.map((date, i) => {
-									let [, month, day] = date.split('-');
+									let schedule = schedules[date];
 									return (
-										<div className="swiper-slide" key={i} style={{height: 500}}>{month + ' ' + day}</div>
+										<div className="swiper-slide" key={i}>
+											{ schedule && <Panel label={label} events={events} selectedDate={selectedDate}/> }
+										</div>
 									)
 								})
 							}
 						</div>
 					</div>
 				</main>
-
-
-				{/*
-				 {this.props.onlyChina && '中国'} /
-				 {this.props.onlyFinal && '决赛'} /
-				 {this.props.selectedDiscipline && this.props.selectedDiscipline.name} /
-				 {this.props.selectedDate}
-				*/}
 			</div>
 		)
 	}

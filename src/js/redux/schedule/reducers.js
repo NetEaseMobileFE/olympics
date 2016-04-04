@@ -50,7 +50,7 @@ function selectedDate(state = defaultDate, action) {
 	}
 }
 
-function schedules(state = {}, action) {
+function schedule(state = {}, action) {
 	switch ( action.type ) {
 		case UPDATE_SCHEDULE:
 			return extend({}, state, action.data);
@@ -71,5 +71,5 @@ export default combineReducers({
 	selectedDiscipline,
 	sportsDates: doNothing,
 	selectedDate,
-	schedules
+	schedule
 });

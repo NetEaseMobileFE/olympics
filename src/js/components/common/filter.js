@@ -54,7 +54,6 @@ class Filter extends Component {
 	};
 
 	render() {
-		console.log(1); // todo
 		let { onlyChina, onlyFinal, disciplines, selectedDiscipline } = this.props;
 		selectedDiscipline = selectedDiscipline || {};
 		let discName = selectedDiscipline.name || '';

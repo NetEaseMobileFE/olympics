@@ -5,9 +5,11 @@ import CSSModules from 'react-css-modules';
 import 'css/widgets/swiper.scss';
 import styles from 'css/schedule.scss';
 
-import Filter from './../common/filter';
-import Datepicker from './../common/datepicker';
+import Filter from '../common/filter';
+import Datepicker from '../common/datepicker';
+import Loader from '../common/loader'
 import Panel from './panel';
+
 
 const testData = {
 	"hot": [
@@ -101,7 +103,7 @@ class Schedule extends Component {
 		let label = "精选赛程";
 		let events = testData.hot;
 		let selectedDate = this.props.selectedDate;
-		let schedules = this.props.schedules;
+		let schedule = this.props.schedule;
 
 		return (
 			<div styleName="page">
@@ -115,10 +117,28 @@ class Schedule extends Component {
 						<div className="swiper-wrapper">
 							{
 								this.props.sportsDates.map((date, i) => {
-									let schedule = schedules[date];
+									let datas = schedule[date];
+									let data;
+
+									//Object.keys(datas).map()
+
+
+
+									for ( let k in datas ) {
+										data = datas[k];
+
+									}
+
+
 									return (
 										<div className="swiper-slide" key={i}>
-											{ schedule && <Panel label={label} events={events} selectedDate={selectedDate}/> }
+											{
+												schedule ? (
+													<Loader>
+														<Panel label={label} events={events} selectedDate={selectedDate}/>
+													</Loader>
+												) : null
+											}
 										</div>
 									)
 								})

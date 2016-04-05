@@ -1,5 +1,5 @@
 export let round = (val, dec) => {
-	var multiplier = Math.pow(10, dec);
+	let multiplier = Math.pow(10, dec);
 	return Math.round(multiplier * val) / multiplier;
 };
 
@@ -20,7 +20,7 @@ export let ajax = option => {
 			for ( let key in option.data ) {
 				v = option.data[key];
 				if ( v === null ) v = '';
-				data.push(key + "=" + v);
+				data.push(key + '=' + v);
 			}
 			data = data.join('&');
 		} else {
@@ -84,4 +84,32 @@ export let getScript = url => {
 	script.async = true;
 	script.src = url;
 	head.appendChild(script);
+};
+
+
+export let formatDate = (date = Date.now(), format) => {
+	date = new Date(date);
+	if ( !date || date.toUTCString() == 'Invalid Date' ) {
+		return '';
+	}
+	
+	let map = {
+		'y': date.getFullYear(), //年份
+		'M': date.getMonth() + 1, //月份 
+		'd': date.getDate(), //日 
+		'h': date.getHours(), //小时 
+		'm': date.getMinutes() //分 
+		// 's': date.getSeconds(), //秒 
+		// 'q': Math.floor((date.getMonth() + 3) / 3), //季度 
+		// 'S': date.getMilliseconds() //毫秒 
+	};
+	
+	format = format || 'yyyy-MM-dd';
+	// format = format.replace(/([yMdhmsqS])+/g, (all, t) => {
+	format = format.replace(/([yMdhm])+/g, (all, t) => {
+		return ('0' + map[t]).slice(-all.length);
+
+
+	});
+	return format;
 };

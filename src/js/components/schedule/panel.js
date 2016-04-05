@@ -94,7 +94,7 @@ class Event extends Component {
 	render() {
 		let { 
 			discipline, startTime, event, china, final,
-			finishTime, liveSupported, selectedDate,
+			finished, liveSupported, date,
 			rivals, score,
 			matches
 		} = this.props;
@@ -117,7 +117,7 @@ class Event extends Component {
 					<div styleName="event__detail">
 						<div styleName="tags">
 							<div styleName="tags__discipline">{discipline}</div>
-							<State liveSupported={liveSupported} finishTime={finishTime} selectedDate={selectedDate}/>
+							<State liveSupported={liveSupported} startTime={startTime} finished={finished} date={date}/>
 						</div>
 						<div styleName="event-name"
 						     className={ `${hasMatch ? 'is-foldable' : ''} ${this.state.unfold ? 'is-unfold' : ''}`}>{event}</div>
@@ -141,7 +141,7 @@ class Event extends Component {
 @CSSModules(styles)
 export default class extends Component {
 	render() {
-		let { label, events, selectedDate } = this.props;
+		let { label, events, date } = this.props;
 		return (
 			<section styleName="panel">
 				<div styleName="panel__tag">
@@ -150,7 +150,7 @@ export default class extends Component {
 				<div styleName="panel__main">
 					{
 						events.map((event, i) =>
-							<Event key={i} {...event} selectedDate={selectedDate}/>
+							<Event key={i} {...event} date={date}/>
 						)
 					}
 				</div>

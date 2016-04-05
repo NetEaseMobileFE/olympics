@@ -11,83 +11,6 @@ import Loader from '../common/loader'
 import Panel from './panel';
 
 
-const testData = {
-	"hot": [
-		{
-			"discipline": "场地自行车",
-			"startTime": "9:48",
-			"finishTime": "9:55",
-			"event": "女子50米步枪三种姿势资格赛",
-			"china": true,
-			"final": true,
-			"rivals": [
-				{
-					"nation": "中国",
-					"flag": "flag1"
-				},
-				{
-					"nation": "法国",
-					"flag": "flag2"
-				}
-			],
-			"score": [12, 9],
-			"liveSupported": true
-		},
-		{
-			"discipline": "场地自行车",
-			"startTime": "14:48",
-			"finishTime": "15:22",
-			"event": "女子50米步枪三种姿势资格赛",
-			"china": false,
-			"final": false,
-			"liveSupported": false,
-			"matches": [
-				{
-					"group": "第1组",
-					"startTime": "13:00",
-					"finishTime": "13:40",
-					"rivals": [
-						{
-							"nation": "中国",
-							"flag": "flag1"
-						},
-						{
-							"nation": "法国",
-							"flag": "flag2"
-						}
-					]
-				}
-			]
-		},
-		{
-			"discipline": "场地自行车",
-			"startTime": "14:48",
-			"finishTime": "15:22",
-			"event": "女子50米步枪三种姿势资格赛",
-			"china": false,
-			"final": false,
-			"liveSupported": false,
-			"matches": [
-				{
-					"group": "第1组",
-					"startTime": "13:00",
-					"finishTime": "13:40",
-					"rivals": [
-						{
-							"nation": "中国",
-							"flag": "flag1"
-						},
-						{
-							"nation": "法国",
-							"flag": "flag2"
-						}
-					]
-				}
-			]
-		}
-	]
-};
-
 @CSSModules(styles)
 class Schedule extends Component {
 	componentDidMount() {
@@ -96,14 +19,11 @@ class Schedule extends Component {
 			resistanceRatio: .7
 		});
 		swiper.params.control = window.dateSwiper;
-		window.mainSwiper = swiper;
+		window.mainSwiper = this.swiper = swiper;
 	}
 
 	render() {
-		let label = "精选赛程";
-		let events = testData.hot;
-		let selectedDate = this.props.selectedDate;
-		let schedule = this.props.schedule;
+		let { sportsDates, schedule } = this.props;
 
 		return (
 			<div styleName="page">
@@ -116,26 +36,23 @@ class Schedule extends Component {
 					<div ref="swiper" className="swiper-container">
 						<div className="swiper-wrapper">
 							{
-								this.props.sportsDates.map((date, i) => {
+								sportsDates.map((date, i) => {
 									let datas = schedule[date];
-									let data;
-
-									//Object.keys(datas).map()
-
-
-
-									for ( let k in datas ) {
-										data = datas[k];
-
-									}
-
+									let label, events;
 
 									return (
 										<div className="swiper-slide" key={i}>
 											{
-												schedule ? (
+												datas ? (
 													<Loader>
-														<Panel label={label} events={events} selectedDate={selectedDate}/>
+														{
+															Object.keys(datas).map((k, i) => {
+																label = ( k == 'hot' ? '精选' : '全部') + '赛程';
+																events = datas[k];
+																return <Panel key={i} label={label} events={events}
+																			  date={date}/>
+															})
+														}
 													</Loader>
 												) : null
 											}
@@ -151,4 +68,12 @@ class Schedule extends Component {
 	}
 }
 
-export default connect(state => state)(Schedule); // todo
+function mapStateToProps({ sportsDates, schedule }) {
+	return {
+		sportsDates,
+		schedule
+	}
+}
+
+
+export default connect(mapStateToProps)(Schedule);

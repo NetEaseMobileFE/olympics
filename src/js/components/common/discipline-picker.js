@@ -6,13 +6,16 @@ import styles from 'css/modules/common/discipline-picker.scss';
 @CSSModules(styles)
 export default class extends Component {
 	handleClick = value => {
-		let { hide, onChange } = this.props;
+		let { hide, onChange, disciplineName } = this.props;
+		if ( value.name == disciplineName ) { // 取消选中
+			value = null;
+		}
 		hide();
 		onChange(value);
 	};
 
 	render() {
-		let selectedName = this.props.disciplineName;
+		let disciplineName = this.props.disciplineName;
 		return (
 			<div styleName="dp">
 				<div styleName="capsules">
@@ -30,7 +33,7 @@ export default class extends Component {
 								cn = 'c' + len;
 							}
 
-							if ( selectedName == name ) {
+							if ( disciplineName == name ) {
 								cn += ' is-selected';
 							}
 

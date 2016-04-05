@@ -4,7 +4,6 @@
 			{
 				"discipline": "场地自行车",
 				"startTime": "9:48",
-				"finishTime": "9:55",
 				"event": "女子50米步枪三种姿势资格赛",
 				"china": true,
 				"final": true,
@@ -19,15 +18,16 @@
 					}
 				],
 				"score": [12, 9],
+				"finished": true,
 				"liveSupported": true
 			},
 			{
 				"discipline": "场地自行车",
 				"startTime": "14:48",
-				"finishTime": "15:22",
 				"event": "女子50米步枪三种姿势资格赛",
-				"china": false,
+				"china": true,
 				"final": false,
+				"finished": true,
 				"liveSupported": false,
 				"matches": [
 					{
@@ -50,10 +50,10 @@
 			{
 				"discipline": "场地自行车",
 				"startTime": "14:48",
-				"finishTime": "15:22",
 				"event": "女子50米步枪三种姿势资格赛",
 				"china": false,
 				"final": false,
+				"finished": false,
 				"liveSupported": false,
 				"matches": [
 					{

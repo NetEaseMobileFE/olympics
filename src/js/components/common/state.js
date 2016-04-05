@@ -6,8 +6,8 @@ import styles from 'css/widgets/state.scss';
 @CSSModules(styles)
 export default class extends Component {
 	render() {
-		const { liveSupported, finishTime, selectedDate } = this.props;
-		let matchTime = +new Date(selectedDate + ' ' + finishTime);
+		const { liveSupported, startTime, finished, date } = this.props;
+		let matchTime = +new Date(date + ' ' + startTime);
 		let now = Date.now();
 		let stateType;
 		let stateLabel;
@@ -16,7 +16,7 @@ export default class extends Component {
 			stateType = 'alarm';
 			stateLabel = '提醒';
 		} else if ( liveSupported ) {
-			if ( now > matchTime ) {
+			if ( finished ) {
 				stateType = 'live--fade';
 				stateLabel = '直播结束';
 			} else {

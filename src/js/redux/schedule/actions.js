@@ -3,29 +3,52 @@ import { ajax } from '../../utils/util';
 export const SELECT_CHINA = 'SELECT_CHINA';
 export const SELECT_FINAL = 'SELECT_FINAL';
 export const SELECT_DISCIPLINE = 'SELECT_DISCIPLINE';
+export const UPDATE_SPORTS_DATES = 'UPDATE_SPORTS_DATES';
 export const SELECT_DATE = 'SELECT_DATE';
 export const UPDATE_SCHEDULE = 'UPDATE_SCHEDULE';
-export const SHOW_DETAIL = 'SHOW_DETAIL';
-export const SHOW_FINISHED = 'SHOW_FINISHED';
 
 export function selectChina(checked) {
-	return {
-		type: SELECT_CHINA,
-		checked
+	return dispatch => {
+		dispatch({
+			type: SELECT_CHINA,
+			checked
+		});
+		dispatch(updateSportsDates())
 	}
 }
 
 export function selectFinal(checked) {
-	return {
-		type: SELECT_FINAL,
-		checked
+	return dispatch => {
+		dispatch({
+			type: SELECT_FINAL,
+			checked
+		});
+		dispatch(updateSportsDates())
 	}
 }
 
 export function selectDiscipline(discipline) {
-	return {
-		type: SELECT_DISCIPLINE,
-		discipline
+	return dispatch => {
+		dispatch({
+			type: SELECT_DISCIPLINE,
+			discipline
+		});
+		dispatch(updateSportsDates())
+	}
+}
+
+export function updateSportsDates() {
+	return (dispatch, getState) => {
+		let { onlyChina, onlyFinal, selectedDiscipline } = getState();
+		return ajax({
+			url: '/mocks/sports-dates.json',
+			data: {
+				onlyChina, onlyFinal, selectedDiscipline
+			}
+		}).then(json => dispatch({
+			type: UPDATE_SPORTS_DATES,
+			dates: json.dates
+		}));
 	}
 }
 
@@ -56,20 +79,5 @@ export function updateSchedule() {
 				[selectedDate]: json.data
 			}
 		}));
-	}
-}
-
-export function showDetail(date, index) {
-	return {
-		type: SHOW_DETAIL,
-		date,
-		index
-	}
-}
-
-export function showFinished(date) {
-	return {
-		type: SHOW_FINISHED,
-		date
 	}
 }

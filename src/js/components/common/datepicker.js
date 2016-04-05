@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import 'css/widgets/swiper.scss';
 import styles from 'css/widgets/datepicker.scss';
-import { round } from 'js/utils/util';
+import { round, formatDate } from 'js/utils/util';
 import { selectDate } from '../../redux/schedule/actions';
 
 
@@ -125,8 +125,32 @@ export default class Datepicker extends Component {
 		window.dateSwiper = this.swiper;
 	}
 
-	shouldComponentUpdate() {
-		return false;
+	shouldComponentUpdate(nextProps) {
+		return nextProps.sportsDates !== this.props.sportsDates;
+	}
+
+	componentDidUpdate() {
+		let { sportsDates, selectedDate } = this.props;
+		let today = formatDate();
+		let index;
+		if ( sportsDates.indexOf(selectedDate) > -1 ) {
+			index = sportsDates.indexOf(selectedDate);
+		} else if ( sportsDates.indexOf(today) > -1 ) {
+			index = sportsDates.indexOf(today);
+		} else {
+			for ( let i = 0, len = sportsDates.length; i < len; i++ ) {
+				if ( sportsDates[i] > today ) {
+					index = i;
+					break;
+				}
+			}
+		}
+		
+		setTimeout(() => {
+			this.swiper.update(true);
+			window.mainSwiper.update(true);
+			this.swiper.slideTo(index, 0);
+		}, 10);
 	}
 	
 	handleClick = (index) => {
@@ -134,15 +158,20 @@ export default class Datepicker extends Component {
 	};
 	
 	render() {
+		let today = formatDate();
+
 		return (
 			<div ref="swiper" className="swiper-container" styleName="datepicker">
 				<div className="swiper-wrapper" styleName="datepicker__rail">
 					{
 						this.props.sportsDates.map((date, i) => {
 							let [, month, day] = date.split('-');
+							if ( today == date ) {
+								day = '今日';
+							}
 							return (
 								<div onClick={this.handleClick.bind(this, i)} className="swiper-slide" styleName="tab" key={i}>
-									<p styleName="tab__month">{month}月</p>
+									<p styleName="tab__month">{parseInt(month)}月</p>
 									<p styleName="tab__day">{day}</p>
 								</div>
 							)

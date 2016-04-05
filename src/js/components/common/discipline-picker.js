@@ -8,7 +8,7 @@ export default class extends Component {
 	handleClick = value => {
 		let { hide, onChange, disciplineName } = this.props;
 		if ( value.name == disciplineName ) { // 取消选中
-			value = null;
+			value = {};
 		}
 		hide();
 		onChange(value);

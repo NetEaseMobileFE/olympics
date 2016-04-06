@@ -30,6 +30,7 @@ function createConnect(mix) {
 export default class Datepicker extends Component {
 	constructor(props) {
 		super(props);
+		this.currIndex = null; // 可能是 swiper 的BUG，缓慢移动的时候 previousIndex 跟 activeIndex 相等, 自己标记一个
 		this.state = {
 			showDP: false
 		};
@@ -116,9 +117,11 @@ export default class Datepicker extends Component {
 				if ( window.mainSwiper && mainSwiper.activeIndex != s.activeIndex ) {
 					mainSwiper.slideTo(s.activeIndex, 0, false);
 				}
-			},
-			onSlideChangeEnd(s) {
-				that.props.dispatch(selectDate(that.props.sportsDates[s.activeIndex]));
+
+				if ( s.activeIndex != that.currIndex ) {
+					that.props.dispatch(selectDate(that.props.sportsDates[s.activeIndex]));
+					that.currIndex = s.activeIndex;
+				}
 			}
 		});
 		

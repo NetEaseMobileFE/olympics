@@ -31,6 +31,12 @@ body {
 			overflow: hidden;
 		}
 	}
+
+    .scrolling-content {
+        height: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 dl, ol, ul,

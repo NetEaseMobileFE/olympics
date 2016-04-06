@@ -45,7 +45,6 @@
     display: flex;
     padding: 35px 21px 31px 65px;
 	background-color: #fff;
-	z-index: 2;
 
     &__clip {
         position: absolute;
@@ -111,7 +110,10 @@
 .matches {
     position: relative;
     background-color: #f3f8fc;
-	z-index: 1;
+    height: 0;
+    overflow: hidden;
+    transition: height .25s;
+    will-change: height;
 
     &__sharp {
         position: absolute;
@@ -206,23 +208,15 @@
 
 
 :global {
-	.matches-enter {
-		opacity: 0.5;
-		transform: translate3d(0, -100%, 0);
-	}
-	.matches-enter-active {
-		opacity: 1;
-		transform: translate3d(0, 0, 0);
-		transition: all 350ms;
-	}
-
-	.matches-leave {
-		opacity: 1;
-		transform: translate3d(0, 0, 0);
-	}
 	.matches-leave-active {
-		opacity: 0.5;
-		transform: translate3d(0, -100%, 0);
-		transition: all 200ms;
+		height: 0;
+		animation: fold .25s;
 	}
+}
+
+@keyframes :global(fold) {
+    100% {
+        opacity: .2;
+        height: 0;
+    }
 }

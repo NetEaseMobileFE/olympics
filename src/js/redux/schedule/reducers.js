@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import extend from 'lodash.assign';
+import extend from 'lodash.merge';
 import { formatDate } from 'js/utils/util';
 import types from './types';
 
@@ -51,13 +51,20 @@ function selectedDate(state = formatDate(), action) {
 
 function schedule(state = {}, action) {
 	switch ( action.type ) {
+		case types.EMPTY_SCHEDULE:
+			return {};
+		case types.FETCHING_SCHEDULE:
+			return extend({}, state, {
+				[action.date]: {
+					loading: action.state
+				}
+			});
 		case types.UPDATE_SCHEDULE:
 			return extend({}, state, action.data);
 		default:
 			return state;
 	}
 }
-
 
 function doNothing(state = null) {
 	return state;

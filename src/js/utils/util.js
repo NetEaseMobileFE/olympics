@@ -28,7 +28,7 @@ export let ajax = option => {
 		}
 
 		let symbol = [option.url, data].join('__'),
-			dataCache = ajaxCache[symbol];
+			dataCache = false && ajaxCache[symbol];  // todo 暂时禁用
 
 		if ( dataCache ) {
 			resolve(dataCache);

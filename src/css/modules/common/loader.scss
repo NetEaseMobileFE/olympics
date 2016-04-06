@@ -1,3 +1,22 @@
 .loader {
-	font-size: inherit;
+    position: relative;
+    min-height: 100px;
+
+    &__entity {
+        position: relative;
+        z-index: 1;
+        transition: transform .25s;
+        transform: translate3d(0, 0, 0);
+        will-change: transform;
+
+        &:global(.down) {
+            transform: translate3d(0, 1rem, 0);
+        }
+    }
+
+    :global(.loading) {
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
 }

@@ -52,24 +52,32 @@ class Competetion extends Component {
 // 小组赛分组情况
 @CSSModules(styles)
 class Matches extends Component {
+	componentDidMount() {
+		let elem = this.refs.list;
+		elem.style.height = elem.scrollHeight + 'px';
+	}
+	
+	componentWillUnmount() {
+		console.log(1); // todo
+	}
 	render() {
 		return (
-			<ul styleName="matches">
+			<div styleName="matches" ref="list">
 				{
 					this.props.matches.map((match, i) => {
 						return (
-							<li key={i} styleName="match">
+							<div key={i} styleName="match">
 								<div styleName="match__time">{match.startTime}<span styleName="match__time__sep">-</span>{match.finishTime}</div>
 								<div styleName="match__detail">
 									<p styleName="match__detail__group"><span>{match.group}</span></p>
 									<Competetion rivals={match.rivals} score={match.score}/>
 								</div>
-							</li>
+							</div>
 						)
 					})
 				}
 				<i styleName="matches__sharp"/>
-			</ul>
+			</div>
 		)
 	}
 }
@@ -128,7 +136,7 @@ class Event extends Component {
 				</div>
 
 
-				<ReactCSSTransitionGroup transitionName="matches" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+				<ReactCSSTransitionGroup transitionName="matches" transitionEnter={false} transitionLeaveTimeout={250}>
 					{matchesComp}
 				</ReactCSSTransitionGroup>
 			</div>

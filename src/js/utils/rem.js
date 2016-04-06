@@ -11,7 +11,8 @@
 (function(win, doc) {
 	var docEl = doc.documentElement,
 		designWidth = docEl.dataset.designWidth || 750,
-		resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+		resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+		ppr;
 
 	// ios 下标记 dpr
 	if ( /iphone|ipod|ipad/gi.test(navigator.userAgent) ) {
@@ -20,16 +21,20 @@
 
 	// 更新 rem
 	var updateREM = function() {
-		var width = Math.min(docEl.clientWidth, designWidth),
-			ppr = width / designWidth * 100;
+		var width = Math.min(docEl.clientWidth, designWidth);
 
+		ppr = width / designWidth * 100;
 		docEl.style.fontSize = ppr + 'px';
 	};
 	updateREM();
 
 	// 全局方法，px 转 rem
 	win.px2rem = function(px) {
-		return parseInt(px) / 100;
+		return parseFloat(px) / 100;
+	};
+
+	win.rem2px = function(rem) {
+		return parseFloat(rem) * ppr;
 	};
 
 	win.addEventListener(resizeEvt, updateREM, false);

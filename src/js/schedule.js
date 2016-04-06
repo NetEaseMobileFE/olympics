@@ -17,3 +17,11 @@ render((
 		<Schedule />
 	</Provider>
 ), document.getElementById('root'));
+
+
+
+// todo
+// datepicker card 动效优化
+// 小组赛 赛前不知道结束时间
+// 提醒
+// 打开直播

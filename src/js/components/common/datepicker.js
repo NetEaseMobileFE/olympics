@@ -148,7 +148,8 @@ export default class Datepicker extends Component {
 				}
 			}
 		}
-		
+
+		this.currIndex = null;
 		setTimeout(() => {
 			this.swiper.update(true);
 			window.mainSwiper.update(true);

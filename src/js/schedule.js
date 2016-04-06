@@ -22,6 +22,9 @@ render((
 
 // todo
 // datepicker card 动效优化
-// 小组赛 赛前不知道结束时间
 // 提醒
 // 打开直播
+
+
+// BUG
+// 选中国  选决赛  原因: onTransitionEnd 没触发

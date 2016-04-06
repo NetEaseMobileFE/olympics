@@ -56,10 +56,7 @@ class Matches extends Component {
 		let elem = this.refs.list;
 		elem.style.height = elem.scrollHeight + 'px';
 	}
-	
-	componentWillUnmount() {
-		console.log(1); // todo
-	}
+
 	render() {
 		return (
 			<div styleName="matches" ref="list">
@@ -67,7 +64,11 @@ class Matches extends Component {
 					this.props.matches.map((match, i) => {
 						return (
 							<div key={i} styleName="match">
-								<div styleName="match__time">{match.startTime}<span styleName="match__time__sep">-</span>{match.finishTime}</div>
+								{
+									match.finishTime ?
+										<div styleName="match__time">{match.startTime}<span styleName="match__time__sep">-</span>{match.finishTime}</div> :
+										<div styleName="match__time">{match.startTime}</div>
+								}
 								<div styleName="match__detail">
 									<p styleName="match__detail__group"><span>{match.group}</span></p>
 									<Competetion rivals={match.rivals} score={match.score}/>

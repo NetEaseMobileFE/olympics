@@ -28,12 +28,11 @@
 				"china": true,
 				"final": false,
 				"finished": true,
-				"liveSupported": false,
+				"liveSupported": true,
 				"matches": [
 					{
 						"group": "第1组",
 						"startTime": "14:00",
-						"finishTime": "13:40",
 						"rivals": [
 							{
 								"nation": "中国",
@@ -60,6 +59,7 @@
 						"group": "第1组",
 						"startTime": "13:00",
 						"finishTime": "13:40",
+                        "score": [100, 99],
 						"rivals": [
 							{
 								"nation": "中国",

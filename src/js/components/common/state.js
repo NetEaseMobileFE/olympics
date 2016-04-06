@@ -5,6 +5,11 @@ import styles from 'css/widgets/state.scss';
 
 @CSSModules(styles)
 export default class extends Component {
+	handleClick = (stateType, e) => {
+		e.stopPropagation();
+		alert(stateType);
+	};
+
 	render() {
 		const { liveSupported, startTime, finished, date } = this.props;
 		let matchTime = +new Date(date + ' ' + startTime);
@@ -27,7 +32,7 @@ export default class extends Component {
 
 		return stateType ? (
 			<div styleName="state-wrapper">
-				<div styleName={`state--${stateType}`}>
+				<div styleName={`state--${stateType}`} onClick={this.handleClick.bind(this, stateType)}>
 					<i styleName={`state--${stateType}__icon`}/>
 					<span styleName={`state--${stateType}__txt`}>{stateLabel}</span>
 				</div>

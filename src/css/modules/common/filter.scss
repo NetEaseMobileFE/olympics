@@ -60,6 +60,7 @@
     }
 
     &__arrow {
+	    display: block;
         margin-left: 10px;
         @include icon('triangle-down.png');
     }

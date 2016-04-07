@@ -73,23 +73,23 @@ export default class Datepicker extends Component {
 				let slide, slideOffset, offsetMultiplier, scaleX, scaleY, slideTransform;
 				let BOXSHADOW = '0 1px 2px rgba(0, 0, 0, 0.75)';
 				slideSize = slideSize || s.slidesSizesGrid[0];
-				
+
 				//Each slide offset from center
 				for ( var i = 0, length = s.slides.length; i < length; i++ ) {
 					slide = s.slides.eq(i);
 					slideOffset = slide[0].swiperSlideOffset;
 					offsetMultiplier = Math.abs((center - slideOffset - slideSize / 2) / slideSize);
 					offsetMultiplier = Math.min(round(offsetMultiplier, 2), 1);
-					
+
 					scaleX = 1 + (1 - offsetMultiplier) * (maxScaleX - 1);
 					scaleY = 1 + (1 - offsetMultiplier) * (maxScaleY - 1);
-					
+
 					if ( scaleX < 1.004 ) scaleX = 1;
 					if ( scaleY < 1.004 ) scaleY = 1;
-					
+
 					slideTransform = 'scale3d(' + scaleX + ', ' + scaleY + ', 1)';
 					slide.transform(slideTransform);
-					
+
 					// if ( scaleX > 1 && scaleY > 1 ) {
 					// 	slide[0].style.boxShadow = BOXSHADOW;
 					// } else {

@@ -124,8 +124,10 @@ class Event extends Component {
 							<div styleName="tags__discipline">{discipline}</div>
 							<State liveSupported={liveSupported} startTime={startTime} finished={finished} date={date}/>
 						</div>
-						<div styleName="event-name"
-						     className={ `${hasMatch ? 'is-foldable' : ''} ${this.state.unfold ? 'is-unfold' : ''}`}>{event}</div>
+						<div styleName="event-name">
+							{event}
+							{ hasMatch ? <div styleName="event-name__arrow" className={this.state.unfold ? 'is-unfold' : ''}/> : null }
+						</div>
 						{
 							rivals ? <Competetion rivals={rivals} score={score}/> : null
 						}

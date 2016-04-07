@@ -28,7 +28,7 @@
     will-change: transform;
 
     &__month {
-        margin-top: 20px;
+        padding-top: 20px;
         font-size: 24px;
         color: rgba(154,154,154,.3);
     }
@@ -54,7 +54,7 @@
     }
 
     &:global(.swiper-slide-active) &__month {
-        margin-top: 16px;
+	    padding-top: 16px;
         color: rgba(255,255,255,.5);
     }
 

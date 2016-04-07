@@ -1,4 +1,5 @@
-import 'core-js/fn/symbol/iterator';
+import 'core-js/fn/promise';
+import 'core-js/fn/symbol';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -27,3 +28,5 @@ render((
 
 
 // BUG
+// flex 引起的 多是非 block 标签
+// discipline-picker 样式

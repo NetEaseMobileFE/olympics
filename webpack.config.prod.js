@@ -12,9 +12,10 @@ var hash = publishConfig.hash ? '.[chunkhash]' : '';
 module.exports = {
 	devtool: 'source-map-hidden',
 	entry: {
-		index: './src/js/index',
+		schedule: './src/js/schedule',
 		vendor: [
-			'react', 'react-dom', 'core-js/fn/symbol', 'react-css-modules'
+			'react', 'react-dom', 'core-js/fn/symbol', 'react-css-modules',
+			'react-addons-css-transition-group', 'react-redux', 'redux', 'redux-thunk', 'lodash.merge'
 		],
 		webpackBootstrap: [] // Extract the webpackBootstrap from entry chunks
 	},
@@ -81,7 +82,13 @@ module.exports = {
 			}),
 			require('autoprefixer')({
 				browsers: ['> 1%', 'last 2 version', 'Android >= 4.0']
-			})
+			}),
+			require('postcss-pxtorem')({
+				rootValue: 100,
+				propWhiteList: [],
+				minPixelValue: 3
+			}),
+			require('postcss-border-width')
 		];
 	}
 };

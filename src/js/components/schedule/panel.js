@@ -10,7 +10,8 @@ const clips = [
 	{ type: 'red', 'text': '中国' },
 	{ type: 'yellow', 'text': '决赛' }
 ];
-
+const flagPath = 'http://img1.cache.netease.com/pcluster/olympicinfo/post/';
+const flagSize = '45x35';
 
 // 单场比赛对手情况
 @CSSModules(styles)
@@ -22,7 +23,7 @@ class Competetion extends Component {
 			<div styleName="competition">
 				<div styleName="competition__rival">
 					<span styleName="competition__rival__nation">{home.nation}</span>
-					<img styleName="competition__rival__flag" src={`/mocks/pic/${home.flag}.png`}/>
+					<img styleName="competition__rival__flag" src={`${flagPath + home.flag}_${flagSize}.jpg`}/>
 				</div>
 
 				{
@@ -40,7 +41,7 @@ class Competetion extends Component {
 				}
 
 				<div styleName="competition__rival">
-					<img styleName="competition__rival__flag" src={`/mocks/pic/${away.flag}.png`}/>
+					<img styleName="competition__rival__flag" src={`${flagPath + away.flag}_${flagSize}.jpg`}/>
 					<span styleName="competition__rival__nation">{away.nation}</span>
 				</div>
 			</div>
@@ -52,11 +53,6 @@ class Competetion extends Component {
 // 小组赛分组情况
 @CSSModules(styles)
 class Matches extends Component {
-	componentDidMount() {
-		let elem = this.refs.list;
-		elem.style.height = elem.scrollHeight + 'px';
-	}
-
 	render() {
 		return (
 			<div styleName="matches" ref="list">
@@ -114,7 +110,7 @@ class Event extends Component {
 			v && clipProp.push(clips[i]);
 		});
 
-		let matchesComp = hasMatch && this.state.unfold ? <Matches matches={matches}/> : null;
+		let matchesComp = hasMatch && this.state.unfold ? <Matches key={1} matches={matches}/> : null;
 
 		return (
 			<div styleName="event-ctnr">
@@ -137,9 +133,7 @@ class Event extends Component {
 				</div>
 
 
-				<ReactCSSTransitionGroup transitionName="matches" transitionEnter={false} transitionLeaveTimeout={250}>
 					{matchesComp}
-				</ReactCSSTransitionGroup>
 			</div>
 		)
 	}

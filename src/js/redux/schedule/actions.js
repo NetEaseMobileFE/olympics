@@ -1,5 +1,6 @@
 import { ajax, formatDate } from '../../utils/util';
 import types from './types';
+import { api } from '../../config';
 
 
 export function selectChina(checked) {
@@ -38,7 +39,7 @@ export function updateSportsDates() {
 		dispatch(emptySchedule());
 
 		return ajax({
-			url: '/mocks/sports-dates.json',
+			url: api.sportsDates,
 			data: {
 				onlyChina, onlyFinal,
 				disciplineID: selectedDiscipline.id || ''
@@ -74,7 +75,7 @@ export function updateSchedule() {
 		dispatch(fetchingSchedule(selectedDate));
 
 		return ajax({
-			url: '/mocks/schedule.json',
+			url: api.schedule,
 			cache: false,
 			data: {
 				onlyChina, onlyFinal, selectedDate,

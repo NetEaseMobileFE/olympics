@@ -8,6 +8,8 @@ import { round, formatDate } from 'js/utils/util';
 import { selectDate } from '../../redux/schedule/actions';
 
 
+const today = formatDate();
+
 function createConnect(mix) {
 	if ( typeof mix == 'function' ) {
 		return connect(mix);
@@ -88,11 +90,11 @@ export default class Datepicker extends Component {
 					slideTransform = 'scale3d(' + scaleX + ', ' + scaleY + ', 1)';
 					slide.transform(slideTransform);
 					
-					if ( scaleX > 1 && scaleY > 1 ) {
-						slide[0].style.boxShadow = BOXSHADOW;
-					} else {
-						slide[0].style.boxShadow = '';
-					}
+					// if ( scaleX > 1 && scaleY > 1 ) {
+					// 	slide[0].style.boxShadow = BOXSHADOW;
+					// } else {
+					// 	slide[0].style.boxShadow = '';
+					// }
 				}
 			},
 			onSetTransition(s, transition) {
@@ -118,14 +120,18 @@ export default class Datepicker extends Component {
 					mainSwiper.slideTo(s.activeIndex, 0, false);
 				}
 
-				if ( s.activeIndex != that.currIndex ) {
-					that.props.dispatch(selectDate(that.props.sportsDates[s.activeIndex]));
-					that.currIndex = s.activeIndex;
-				}
+				that.changeSlide(s.activeIndex);
 			}
 		});
 		
 		window.dateSwiper = this.swiper;
+	}
+
+	changeSlide(index) {
+		if ( index != this.currIndex ) {
+			this.props.dispatch(selectDate(this.props.sportsDates[index]));
+			this.currIndex = index;
+		}
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -134,7 +140,6 @@ export default class Datepicker extends Component {
 
 	componentDidUpdate() {
 		let { sportsDates, selectedDate } = this.props;
-		let today = formatDate();
 		let index;
 		if ( sportsDates.indexOf(selectedDate) > -1 ) {
 			index = sportsDates.indexOf(selectedDate);
@@ -149,11 +154,15 @@ export default class Datepicker extends Component {
 			}
 		}
 
+		let shouldForceUpdate = this.currIndex == index;
 		this.currIndex = null;
 		setTimeout(() => {
 			this.swiper.update(true);
 			window.mainSwiper.update(true);
 			this.swiper.slideTo(index, 0);
+			if ( shouldForceUpdate ) {
+				this.changeSlide(index);
+			}
 		}, 10);
 	}
 	
@@ -162,8 +171,6 @@ export default class Datepicker extends Component {
 	};
 	
 	render() {
-		let today = formatDate();
-
 		return (
 			<div ref="swiper" className="swiper-container" styleName="datepicker">
 				<div className="swiper-wrapper" styleName="datepicker__rail">

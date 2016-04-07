@@ -19,10 +19,10 @@ var gulpIgnore = require('gulp-ignore');
  */
 var deployConfig = {
 	test: { 					// Publish mode. Default: 'test'
-		htmlFtp: 'galaxy',		// Ftp name uesed to upload html files. Required
-		htmlRoot: 'test/4',		// Root dir where keep html files. Default: ''
-		assetFtp: 'galaxy', 	// Same as htmlFtp. Default: 'img'
-		assetRoot: 'test/4',	// Same as htmlRoot
+		htmlFtp: 't_c',		// Ftp name uesed to upload html files. Required
+		htmlRoot: 'test',		// Root dir where keep html files. Default: ''
+		assetFtp: 't_c', 	// Same as htmlFtp. Default: 'img'
+		assetRoot: 'test',	// Same as htmlRoot
 		revision: false,		// If append revision to asset path. Default: true
 		withHash: false        // If build "vendor" file with hash. Default: true. Equals to "js/vendor.[chunkhash].js"
 	},

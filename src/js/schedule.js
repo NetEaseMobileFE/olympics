@@ -1,4 +1,4 @@
-import 'core-js/fn/symbol';
+import 'core-js/fn/symbol/iterator';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -20,11 +20,10 @@ render((
 
 
 
-// todo
+// todo list
 // datepicker card 动效优化
 // 提醒
 // 打开直播
 
 
 // BUG
-// 选中国  选决赛  原因: onTransitionEnd 没触发

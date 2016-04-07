@@ -44,3 +44,8 @@ export let disciplines = [
 	{ id: 1, name: "摔跤" },
 	{ id: 7, name: "皮划艇激流回旋" }
 ];
+
+export const api = {
+	sportsDates: './mocks/sports-dates.json',
+	schedule: './mocks/schedule.json'
+};

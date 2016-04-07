@@ -96,7 +96,7 @@
 	&:global(.is-foldable):after {
 		content: '';
 		@include icon('gt.png');
-        transition: transform .3s;
+        transition: transform .15s;
         will-change: transform;
 	}
 
@@ -110,10 +110,7 @@
 .matches {
     position: relative;
     background-color: #f3f8fc;
-    height: 0;
     overflow: hidden;
-    transition: height .25s;
-    will-change: height;
 
     &__sharp {
         position: absolute;
@@ -209,6 +206,9 @@
 
 
 :global {
+    .matches-leave {
+        will-change: height;
+    }
 	.matches-leave-active {
 		height: 0;
 		animation: fold .25s;
@@ -217,7 +217,6 @@
 
 @keyframes :global(fold) {
     100% {
-        opacity: .2;
         height: 0;
     }
 }

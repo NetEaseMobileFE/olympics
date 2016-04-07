@@ -6,7 +6,6 @@
         position: relative;
         z-index: 1;
         transition: transform .25s;
-        transform: translate3d(0, 0, 0);
         will-change: transform;
 
         &:global(.down) {

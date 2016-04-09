@@ -35,7 +35,6 @@ class Filter extends Component {
 		this.setState({
 			showDP: !this.state.showDP
 		});
-		document.querySelector('#root').classList.toggle('disable-scroll');
 	};
 
 	handleOnlyChinaChange = () => {

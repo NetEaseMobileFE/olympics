@@ -12,7 +12,7 @@ export default class extends Component {
 
 	render() {
 		const { liveSupported, startTime, finished, date } = this.props;
-		let matchTime = +new Date(date + ' ' + startTime);
+		let matchTime = +new Date(date.replace(/-/g, '/') + ' ' + startTime);
 		let now = Date.now();
 		let stateType;
 		let stateLabel;
@@ -33,9 +33,10 @@ export default class extends Component {
 		return stateType ? (
 			<div styleName="state-wrapper">
 				<div styleName={`state--${stateType}`} onClick={this.handleClick.bind(this, stateType)}>
-					<i styleName={`state--${stateType}__icon`}/>
-					<span styleName={`state--${stateType}__txt`}>{stateLabel}</span>
+					<div styleName={`state--${stateType}__icon`}/>
+					<div styleName={`state--${stateType}__txt`}>{stateLabel}</div>
 				</div>
+				<i styleName="state-wrapper__line"/>
 			</div>
 		) : null;
 	}

@@ -2,6 +2,7 @@
 @import "base/preset";
 
 .page {
+    padding-top: 226px;
     background-color: #f6f6f6;
 
 	&__hd {
@@ -15,6 +16,5 @@
     &__bd {
 	    position: relative;
 	    z-index: 1;
-	    padding-top: 246px;
     }
 }

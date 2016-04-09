@@ -1,4 +1,4 @@
-import 'core-js/fn/symbol';
+import 'core-js/fn/promise';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -27,3 +27,4 @@ render((
 
 
 // BUG
+// flex   改为 block标签

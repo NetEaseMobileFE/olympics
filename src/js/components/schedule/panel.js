@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CSSModules from 'react-css-modules';
 import styles from 'css/modules/schedule/panel.scss';
 
@@ -22,7 +21,7 @@ class Competetion extends Component {
 		return (
 			<div styleName="competition">
 				<div styleName="competition__rival">
-					<span styleName="competition__rival__nation">{home.nation}</span>
+					<div styleName="competition__rival__nation">{home.nation}</div>
 					<img styleName="competition__rival__flag" src={`${flagPath + home.flag}_${flagSize}.jpg`}/>
 				</div>
 
@@ -30,9 +29,9 @@ class Competetion extends Component {
 					score ?
 						(
 							<div styleName="competition__vs">
-								<span styleName="competition__vs__score">{score[0]}</span>
-								<span styleName="competition__vs__sep">:</span>
-								<span styleName="competition__vs__score">{score[1]}</span>
+								<div styleName="competition__vs__score">{score[0]}</div>
+								<div styleName="competition__vs__sep">:</div>
+								<div styleName="competition__vs__score">{score[1]}</div>
 							</div>
 						) :
 						(
@@ -124,16 +123,17 @@ class Event extends Component {
 							<div styleName="tags__discipline">{discipline}</div>
 							<State liveSupported={liveSupported} startTime={startTime} finished={finished} date={date}/>
 						</div>
-						<div styleName="event-name"
-						     className={ `${hasMatch ? 'is-foldable' : ''} ${this.state.unfold ? 'is-unfold' : ''}`}>{event}</div>
+						<div styleName="event-name">
+							{event}
+							{ hasMatch ? <div styleName="event-name__arrow" className={this.state.unfold ? 'is-unfold' : ''}/> : null }
+						</div>
 						{
 							rivals ? <Competetion rivals={rivals} score={score}/> : null
 						}
 					</div>
 				</div>
 
-
-					{matchesComp}
+				{matchesComp}
 			</div>
 		)
 	}

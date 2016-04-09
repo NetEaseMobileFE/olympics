@@ -24,12 +24,7 @@ body {
 	#root {
 		height: 100%;
 		background: #f6f6f6 resolve('bg-def.png') no-repeat center;
-		background-size: 164px 181px;
-		overflow: auto; // 防止 overflow hidden 时, scrollTop 归0
-
-		&.disable-scroll {
-			overflow: hidden;
-		}
+		background-size: size('bg-def.png');
 	}
 
     .scrolling-content {

@@ -4,6 +4,8 @@
 @import "../base/mixins";
 
 %state {
+    position: relative;
+    z-index: 1;
     float: right;
     display: flex;
     align-items: center;
@@ -20,9 +22,17 @@
 }
 
 .state-wrapper {
+    position: relative;
     flex: 1;
-    background: resolve('dot.gif') repeat-x right center;
-    background-size: .06rem .01rem;
+
+    &__line {
+        position: absolute;
+        left: 0;
+        right: 10px;
+        top: 50%;
+        height: 0;
+        border-top: 1px solid #ededed;
+    }
 }
 
 .state--live {

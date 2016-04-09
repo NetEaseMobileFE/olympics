@@ -11,7 +11,7 @@ import Loader from '../common/loader'
 import Panel from './panel';
 
 
-const swiperHeight = window.innerHeight - rem2px(2.46) - 1;
+const swiperHeight = window.innerHeight - rem2px(2.26) - 1;
 
 @CSSModules(styles)
 class Schedule extends Component {
@@ -45,7 +45,7 @@ class Schedule extends Component {
 									let label, events;
 
 									return (
-										<div className="swiper-slide" style={{height: swiperHeight}} key={i}>
+										<div className="swiper-slide" style={{ height: swiperHeight }} key={i}>
 											<Loader loading={oneDay.loading}>
 												{
 													sets ? Object.keys(sets).map((k, i) => {

@@ -14,7 +14,7 @@ module.exports = {
 	entry: {
 		schedule: './src/js/schedule',
 		vendor: [
-			'react', 'react-dom', 'core-js/fn/symbol', 'react-css-modules',
+			'react', 'react-dom', 'core-js/fn/promise', 'react-css-modules',
 			'react-addons-css-transition-group', 'react-redux', 'redux', 'redux-thunk', 'lodash.merge'
 		],
 		webpackBootstrap: [] // Extract the webpackBootstrap from entry chunks
@@ -38,11 +38,6 @@ module.exports = {
 				'NODE_ENV': JSON.stringify('production')
 			}
 		}),
-		new webpack.optimize.UglifyJsPlugin({
-			compressor: {
-				warnings: false
-			}
-		})
 	],
 	module: {
 		loaders: [
@@ -63,6 +58,10 @@ module.exports = {
 				test: /\.png|jpe?g|gif$/,
 				loader: 'url-loader?limit=2000&name=img/[hash].[ext]',
 				include: path.join(__dirname, 'src/img')
+			}, {
+				test: /isIterable\.js/,
+				loader: 'imports?Symbol=>false',
+				include: path.join(__dirname, 'node_modules/react-css-modules')
 			}
 		]
 	},

@@ -6,12 +6,10 @@
     align-self: center;
     height: 100px;
 
-    &:after {
-        content: "";
-        display: inline-block;
+	> i {
+        display: block;
         width: 30px;
         height: 30px;
-        opacity: 0;
         border: 3px solid #333;
         border-radius: 50%;
         will-change: transform, opacity, pulsate;

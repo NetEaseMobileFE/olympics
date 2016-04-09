@@ -45,6 +45,10 @@ module.exports = {
 				test: /\.png|jpe?g|gif$/,
 				loader: 'url-loader?limit=2000&name=img/[hash].[ext]',
 				include: path.join(__dirname, 'src/img')
+			}, {
+				test: /isIterable/,
+				loader: 'imports?Symbol=>false',
+				include: path.join(__dirname, 'node_modules/react-css-modules')
 			}
 		]
 	},

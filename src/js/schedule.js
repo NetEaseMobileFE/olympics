@@ -1,4 +1,4 @@
-import 'core-js/fn/symbol/iterator';
+import 'core-js/fn/symbol';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';

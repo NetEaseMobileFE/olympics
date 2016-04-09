@@ -12,14 +12,12 @@
 }
 
 .capsules {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
     padding: 44px 0 0 7px;
+    overflow: hidden;
 }
 
 .capsule {
-    display: block;
+    float: left;
     margin: 0 22px 40px 22px;
     width: 140px;
     height: 59px;

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
-import styles from 'css/modules/common/filter.scss';
+import styles from '../../../css/modules/common/filter.scss';
 import { selectChina, selectFinal, selectDiscipline } from '../../redux/schedule/actions';
-
+import { createConnect } from '../../utils/util';
 import DP from './discipline-picker';
 
 
@@ -12,8 +11,9 @@ import DP from './discipline-picker';
 class Checkbox extends Component {
 	render() {
 		let { isChecked, label, onChange } = this.props;
+
 		return (
-			<div styleName="checkbox" className={isChecked && 'is-checked'} onClick={onChange}>
+			<div styleName="checkbox" className={ isChecked ? 'is-checked' : '' } onClick={onChange}>
 				<div styleName="checkbox__box"><i/></div>
 				<span styleName="checkbox__label">{label}</span>
 			</div>
@@ -21,9 +21,9 @@ class Checkbox extends Component {
 	}
 }
 
-
+@createConnect(['onlyChina', 'onlyFinal', 'disciplines', 'selectedDiscipline'])
 @CSSModules(styles)
-class Filter extends Component {
+export default class extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -38,26 +38,24 @@ class Filter extends Component {
 	};
 
 	handleOnlyChinaChange = () => {
-		let { dispatch } = this.props;
-		dispatch(selectChina(!this.props.onlyChina));
+		this.props.dispatch(selectChina(!this.props.onlyChina));
 	};
 
 	handleOnlyFinalChange = () => {
-		let { dispatch } = this.props;
-		dispatch(selectFinal(!this.props.onlyFinal));
+		this.props.dispatch(selectFinal(!this.props.onlyFinal));
 	};
 
 	handleDisciplineChange = (value) => {
-		let { dispatch } = this.props;
-		dispatch(selectDiscipline(value));
+		this.props.dispatch(selectDiscipline(value));
 	};
 
 	render() {
 		let { onlyChina, onlyFinal, disciplines, selectedDiscipline } = this.props;
-		selectedDiscipline = selectedDiscipline || {};
-		let discName = selectedDiscipline.name || '';
+		let discName = selectedDiscipline.name;
+		console.log(discName); // todo
+		let discAlias = discName == '项目筛选' ? '全部' :  discName;
 		let dp = this.state.showDP ?
-			<DP key={1} disciplines={disciplines} disciplineName={discName}
+			<DP key={1} disciplines={disciplines} disciplineName={discAlias}
 				hide={this.showDP} onChange={this.handleDisciplineChange}/>
 			: null;
 
@@ -68,7 +66,7 @@ class Filter extends Component {
 					<Checkbox label="金牌赛程" isChecked={onlyFinal} onChange={this.handleOnlyFinalChange}/>
 
 					<div styleName="selector" onClick={this.showDP}>
-						<div styleName={`selector__label${discName.length > 5 ? '--long' : ''}`}>{discName || '项目筛选'}</div>
+						<div styleName={`selector__label${ discName.length > 5 ? '--long' : '' }`}>{discName}</div>
 						<i styleName="selector__arrow"/>
 					</div>
 				</div>
@@ -80,15 +78,3 @@ class Filter extends Component {
 		)
 	}
 }
-
-function mapStateToProps({ onlyChina, onlyFinal, disciplines, selectedDiscipline }) {
-	return {
-		onlyChina, 
-		onlyFinal,
-		disciplines,
-		selectedDiscipline
-	}
-}
-
-
-export default connect(mapStateToProps)(Filter);

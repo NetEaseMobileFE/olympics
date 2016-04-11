@@ -1,20 +1,20 @@
 import React, { Component, PropTypes } from 'react';
-import 'js/plugins/swiper.js';
-import { connect } from 'react-redux';
+import 'swiper';
+import '../../../css/widgets/swiper.scss';
 import CSSModules from 'react-css-modules';
-import 'css/widgets/swiper.scss';
-import styles from 'css/schedule.scss';
-
+import styles from '../../../css/schedule.scss';
+import { createConnect } from '../../utils/util';
 import Filter from '../common/filter';
 import Datepicker from '../common/datepicker';
 import Loader from '../common/loader'
 import Panel from './panel';
 
-
 const swiperHeight = window.innerHeight - rem2px(2.26) - 1;
 
+
+@createConnect(['sportsDates', 'schedule'])
 @CSSModules(styles)
-class Schedule extends Component {
+export default class extends Component {
 	componentDidMount() {
 		this.swiper = new Swiper(this.refs.swiper, {
 			initialSlide: window.dateSwiper.activeIndex,
@@ -41,7 +41,6 @@ class Schedule extends Component {
 								sportsDates.map((date, i) => {
 									let oneDay = schedule[date] || {};
 									let sets = oneDay.sets;
-
 									let label, events;
 
 									return (
@@ -51,6 +50,7 @@ class Schedule extends Component {
 													sets ? Object.keys(sets).map((k, i) => {
 														label = ( k == 'hot' ? '精选' : '全部') + '赛程';
 														events = sets[k];
+
 														return <Panel key={i} label={label} events={events}
 																	  date={date}/>
 													}) : null
@@ -67,13 +67,3 @@ class Schedule extends Component {
 		)
 	}
 }
-
-function mapStateToProps({ sportsDates, schedule }) {
-	return {
-		sportsDates,
-		schedule
-	}
-}
-
-
-export default connect(mapStateToProps)(Schedule);

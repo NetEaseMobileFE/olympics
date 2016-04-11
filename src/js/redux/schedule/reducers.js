@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import extend from 'lodash.merge';
-import { formatDate } from 'js/utils/util';
-import types from './types';
+import { formatDate, extend } from '../../utils/util';
+import * as types from './types';
+import { disciplines } from '../../config';
 
 
 function onlyChina(state = false, action) {
@@ -22,12 +22,15 @@ function onlyFinal(state = false, action) {
 	}
 }
 
-function selectedDiscipline(state = {}, action) {
+function selectedDiscipline(state , action) {
 	switch ( action.type ) {
 		case types.SELECT_DISCIPLINE:
 			return action.discipline;
 		default:
-			return state;
+			return state || {  // 默认要显示成 “项目筛选”
+				name: '项目筛选',
+				id: disciplines[0]
+			};
 	}
 }
 

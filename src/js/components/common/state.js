@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
-import styles from 'css/widgets/state.scss';
+import styles from '../../../css/widgets/state.scss';
 
 
 @CSSModules(styles)
 export default class extends Component {
 	handleClick = (stateType, e) => {
 		e.stopPropagation();
-		alert(stateType);
+		alert(stateType); // todo
 	};
 
 	render() {
@@ -30,11 +30,13 @@ export default class extends Component {
 			}
 		}
 
+		let statecn = `state--${stateType}`;
+
 		return stateType ? (
 			<div styleName="state-wrapper">
-				<div styleName={`state--${stateType}`} onClick={this.handleClick.bind(this, stateType)}>
-					<div styleName={`state--${stateType}__icon`}/>
-					<div styleName={`state--${stateType}__txt`}>{stateLabel}</div>
+				<div styleName={statecn} onClick={this.handleClick.bind(this, stateType)}>
+					<div styleName={`${statecn}__icon`}/>
+					<div styleName={`${statecn}__txt`}>{stateLabel}</div>
 				</div>
 				<i styleName="state-wrapper__line"/>
 			</div>

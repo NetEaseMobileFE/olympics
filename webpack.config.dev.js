@@ -53,10 +53,8 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['', '.js', '.jsx'],
 		alias: {
-			css: path.join(__dirname, 'src/css'),
-			js: path.join(__dirname, 'src/js')
+			swiper: path.join(__dirname, 'src/js/plugins/swiper.js')
 		}
 	},
 	postcss: function() {

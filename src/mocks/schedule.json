@@ -2,29 +2,101 @@
 	"data": {
 		"hot": [
 			{
-				"discipline": "场地自行车",
+				"discipline": "羽毛球",
 				"startTime": "9:48",
-				"event": "女子50米步枪三种姿势资格赛",
+				"event": "男子单打金牌赛",
 				"china": true,
 				"final": true,
 				"rivals": [
 					{
-						"nation": "中国",
-						"flag": "ef3/e0c/29d/79352373777a7b01cc9226f"
+						"nation": "林丹",
+						"flag": "ef3/e0c/29d/79352373777a7b01cc9226f_45x35.jpg"
 					},
 					{
-						"nation": "美国",
-						"flag": "029/1d6/399/62cdc0b2fd5e7e9f049e921"
+						"nation": "李宗伟",
+						"flag": "25b/a77/b57/3c0be7e32824dc3c9abaf6a_45x35.jpg"
 					}
 				],
-				"score": [12, 9],
+				"score": [2, 0],
 				"finished": true,
 				"liveSupported": true
 			},
 			{
-				"discipline": "场地自行车",
-				"startTime": "14:48",
-				"event": "女子50米步枪三种姿势资格赛",
+				"discipline": "排球",
+				"startTime": "16:30",
+				"event": "男子预选赛",
+				"china": false,
+				"final": false,
+				"finished": false,
+				"liveSupported": false,
+				"matches": [
+					{
+						"group": "A组比赛25",
+						"startTime": "16:30",
+						"finishTime": "18:27",
+						"score": [3, 1],
+						"rivals": [
+							{
+								"nation": "澳大利亚",
+								"flag": "ebd/2f0/ced/3368f6c017aa4224a8d62f7_45x35.gif"
+							},
+							{
+								"nation": "波兰",
+								"flag": "c07/453/3eb/ad737b2a114ba43b82762d4_45x35.jpg"
+							}
+						]
+					},
+					{
+						"group": "B组比赛26",
+						"startTime": "18:55",
+						"finishTime": "20:12",
+						"score": [3, 0],
+						"rivals": [
+							{
+								"nation": "俄罗斯",
+								"flag": "0e3/b31/549/53b3df7ff1ac80b7cb532d2_45x35.gif"
+							},
+							{
+								"nation": "塞尔维亚",
+								"flag": "aa4/746/30f/5a63ec2c845eccf934de3a9_45x35.png"
+							}
+						]
+					},
+					{
+						"group": "A组比赛27",
+						"startTime": "21:45",
+						"score": [0, 1],
+						"rivals": [
+							{
+								"nation": "意大利",
+								"flag": "e9e/5a7/505/5f98f77266f15adeed72142_45x35.jpg"
+							},
+							{
+								"nation": "保加利亚",
+								"flag": "505/0c5/850/932648516463d33403a5c08_45x35.jpg"
+							}
+						]
+					},
+					{
+						"group": "B组比赛28",
+						"startTime": "23:45",
+						"rivals": [
+							{
+								"nation": "英国",
+								"flag": "efa/d35/07f/5ea1341e19ca22d344aae73_45x35.jpg"
+							},
+							{
+								"nation": "阿根廷",
+								"flag": "d40/3f3/fd3/2107b3a68478b72756a889b_45x35.jpg"
+							}
+						]
+					}
+				]
+			},
+			{
+				"discipline": "乒乓球",
+				"startTime": "17:00",
+				"event": "男子团体四分之一决赛",
 				"china": true,
 				"final": false,
 				"finished": true,
@@ -32,120 +104,245 @@
 				"matches": [
 					{
 						"group": "第1组",
-						"startTime": "14:00",
+						"startTime": "17:00",
+						"finishTime": "18:12",
+                        "score": [3, 0],
 						"rivals": [
 							{
 								"nation": "中国",
-								"flag": "ef3/e0c/29d/79352373777a7b01cc9226f"
+								"flag": "ef3/e0c/29d/79352373777a7b01cc9226f_45x35.jpg"
 							},
 							{
-								"nation": "美国",
-								"flag": "029/1d6/399/62cdc0b2fd5e7e9f049e921"
+								"nation": "新加坡",
+								"flag": "42d/16c/2ec/0ac047741c8d28829b93624_45x35.png"
+							}
+						]
+					},
+					{
+						"group": "第2组",
+						"startTime": "17:00",
+						"finishTime": "20:16",
+						"score": [2, 3],
+						"rivals": [
+							{
+								"nation": "日本",
+								"flag": "3cc/bd9/17b/d57117c20e65657c1de2d60_45x35.jpg"
+							},
+							{
+								"nation": "中国香港",
+								"flag": "ae7/037/740/54c185e3329f335baa962ac_45x35.png"
+							}
+						]
+					},
+					{
+						"group": "第3组",
+						"startTime": "21:30",
+						"finishTime": "22:56",
+						"score": [0, 3],
+						"rivals": [
+							{
+								"nation": "奥地利",
+								"flag": "136/908/fe5/213de755a958bfd40e8ad84_45x35.jpg"
+							},
+							{
+								"nation": "德国",
+								"flag": "ad2/f8e/d4f/4dc84baa6c6b7f38a53dd99_45x35.png"
 							}
 						]
 					}
 				]
 			},
 			{
-				"discipline": "场地自行车",
-				"startTime": "14:48",
-				"event": "女子50米步枪三种姿势资格赛",
+				"discipline": "足球",
+				"startTime": "22:00",
+				"event": "男子金牌",
 				"china": false,
-				"final": false,
-				"finished": false,
-				"liveSupported": false,
-				"matches": [
+				"final": true,
+				"rivals": [
 					{
-						"group": "第1组",
-						"startTime": "13:00",
-						"finishTime": "13:40",
-                        "score": [100, 99],
-						"rivals": [
-							{
-								"nation": "中国",
-								"flag": "ef3/e0c/29d/79352373777a7b01cc9226f"
-							},
-							{
-								"nation": "美国",
-								"flag": "029/1d6/399/62cdc0b2fd5e7e9f049e921"
-							}
-						]
+						"nation": "巴西",
+						"flag": "c02/4a8/916/564d3774a1df11602d48a71_45x35.png"
+					},
+					{
+						"nation": "墨西哥",
+						"flag": "bae/c77/c06/255b365c820c540368e019c_45x35.jpg"
 					}
-				]
+				],
+				"finished": false,
+				"liveSupported": true
 			}
 		],
+
 		"all": [
 			{
-				"discipline": "场地自行车",
+				"discipline": "羽毛球",
 				"startTime": "9:48",
-				"event": "女子50米步枪三种姿势资格赛",
+				"event": "男子单打金牌赛",
 				"china": true,
 				"final": true,
 				"rivals": [
 					{
-						"nation": "中国",
-						"flag": "ef3/e0c/29d/79352373777a7b01cc9226f"
+						"nation": "林丹",
+						"flag": "ef3/e0c/29d/79352373777a7b01cc9226f_45x35.jpg"
 					},
 					{
-						"nation": "美国",
-						"flag": "029/1d6/399/62cdc0b2fd5e7e9f049e921"
+						"nation": "李宗伟",
+						"flag": "25b/a77/b57/3c0be7e32824dc3c9abaf6a_45x35.jpg"
 					}
 				],
-				"score": [12, 9],
+				"score": [2, 0],
 				"finished": true,
 				"liveSupported": true
 			},
 			{
-				"discipline": "场地自行车",
-				"startTime": "14:48",
-				"event": "女子50米步枪三种姿势资格赛",
-				"china": true,
-				"final": false,
-				"finished": true,
-				"liveSupported": false,
-				"matches": [
-					{
-						"group": "第1组",
-						"startTime": "13:00",
-						"finishTime": "13:40",
-						"rivals": [
-							{
-								"nation": "中国",
-								"flag": "ef3/e0c/29d/79352373777a7b01cc9226f"
-							},
-							{
-								"nation": "美国",
-								"flag": "029/1d6/399/62cdc0b2fd5e7e9f049e921"
-							}
-						]
-					}
-				]
-			},
-			{
-				"discipline": "场地自行车",
-				"startTime": "14:48",
-				"event": "女子50米步枪三种姿势资格赛",
+				"discipline": "排球",
+				"startTime": "16:30",
+				"event": "男子预选赛",
 				"china": false,
 				"final": false,
 				"finished": false,
 				"liveSupported": false,
 				"matches": [
 					{
-						"group": "第1组",
-						"startTime": "13:00",
-						"finishTime": "13:40",
+						"group": "A组比赛25",
+						"startTime": "16:30",
+						"finishTime": "18:27",
+						"score": [3, 1],
 						"rivals": [
 							{
-								"nation": "中国",
-								"flag": "ef3/e0c/29d/79352373777a7b01cc9226f"
+								"nation": "澳大利亚",
+								"flag": "ebd/2f0/ced/3368f6c017aa4224a8d62f7_45x35.gif"
 							},
 							{
-								"nation": "美国",
-								"flag": "029/1d6/399/62cdc0b2fd5e7e9f049e921"
+								"nation": "波兰",
+								"flag": "c07/453/3eb/ad737b2a114ba43b82762d4_45x35.jpg"
+							}
+						]
+					},
+					{
+						"group": "B组比赛26",
+						"startTime": "18:55",
+						"finishTime": "20:12",
+						"score": [3, 0],
+						"rivals": [
+							{
+								"nation": "俄罗斯",
+								"flag": "0e3/b31/549/53b3df7ff1ac80b7cb532d2_45x35.gif"
+							},
+							{
+								"nation": "塞尔维亚",
+								"flag": "aa4/746/30f/5a63ec2c845eccf934de3a9_45x35.png"
+							}
+						]
+					},
+					{
+						"group": "A组比赛27",
+						"startTime": "21:45",
+						"score": [0, 1],
+						"rivals": [
+							{
+								"nation": "意大利",
+								"flag": "e9e/5a7/505/5f98f77266f15adeed72142_45x35.jpg"
+							},
+							{
+								"nation": "保加利亚",
+								"flag": "505/0c5/850/932648516463d33403a5c08_45x35.jpg"
+							}
+						]
+					},
+					{
+						"group": "B组比赛28",
+						"startTime": "23:45",
+						"rivals": [
+							{
+								"nation": "英国",
+								"flag": "efa/d35/07f/5ea1341e19ca22d344aae73_45x35.jpg"
+							},
+							{
+								"nation": "阿根廷",
+								"flag": "d40/3f3/fd3/2107b3a68478b72756a889b_45x35.jpg"
 							}
 						]
 					}
 				]
+			},
+			{
+				"discipline": "乒乓球",
+				"startTime": "17:00",
+				"event": "男子团体四分之一决赛",
+				"china": true,
+				"final": false,
+				"finished": true,
+				"liveSupported": true,
+				"matches": [
+					{
+						"group": "第1组",
+						"startTime": "17:00",
+						"finishTime": "18:12",
+						"score": [3, 0],
+						"rivals": [
+							{
+								"nation": "中国",
+								"flag": "ef3/e0c/29d/79352373777a7b01cc9226f_45x35.jpg"
+							},
+							{
+								"nation": "新加坡",
+								"flag": "42d/16c/2ec/0ac047741c8d28829b93624_45x35.png"
+							}
+						]
+					},
+					{
+						"group": "第2组",
+						"startTime": "17:00",
+						"finishTime": "20:16",
+						"score": [2, 3],
+						"rivals": [
+							{
+								"nation": "日本",
+								"flag": "3cc/bd9/17b/d57117c20e65657c1de2d60_45x35.jpg"
+							},
+							{
+								"nation": "中国香港",
+								"flag": "ae7/037/740/54c185e3329f335baa962ac_45x35.png"
+							}
+						]
+					},
+					{
+						"group": "第3组",
+						"startTime": "21:30",
+						"finishTime": "22:56",
+						"score": [0, 3],
+						"rivals": [
+							{
+								"nation": "奥地利",
+								"flag": "136/908/fe5/213de755a958bfd40e8ad84_45x35.jpg"
+							},
+							{
+								"nation": "德国",
+								"flag": "ad2/f8e/d4f/4dc84baa6c6b7f38a53dd99_45x35.png"
+							}
+						]
+					}
+				]
+			},
+			{
+				"discipline": "足球",
+				"startTime": "22:00",
+				"event": "男子金牌",
+				"china": false,
+				"final": true,
+				"rivals": [
+					{
+						"nation": "巴西",
+						"flag": "c02/4a8/916/564d3774a1df11602d48a71_45x35.png"
+					},
+					{
+						"nation": "墨西哥",
+						"flag": "bae/c77/c06/255b365c820c540368e019c_45x35.jpg"
+					}
+				],
+				"finished": false,
+				"liveSupported": true
 			}
 		]
 	}

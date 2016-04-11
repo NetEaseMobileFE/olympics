@@ -1,10 +1,10 @@
-export let sportsDates = (() => {
-	let i = 1, dates = [];
-	while ( i <= 30 ) dates.push('2016-04-' + ('0' + i++).slice(-2));
-	return dates;
-})();
+let i = 1;
+let dates = [];
+while ( i <= 30 ) dates.push('2016-04-' + ('0' + i++).slice(-2));
+export const sportsDates = dates;
 
-export let disciplines = [
+export const disciplines = [
+	{ id: 100, name: "全部" },
 	{ id: 1, name: "射箭" },
 	{ id: 2, name: "田径" },
 	{ id: 3, name: "羽毛球" },
@@ -49,3 +49,5 @@ export const api = {
 	sportsDates: './mocks/sports-dates.json',
 	schedule: './mocks/schedule.json'
 };
+
+export const flagPath = 'http://img1.cache.netease.com/pcluster/olympicinfo/post/';

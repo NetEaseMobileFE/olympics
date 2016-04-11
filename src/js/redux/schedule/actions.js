@@ -1,8 +1,11 @@
 import { ajax, formatDate } from '../../utils/util';
-import types from './types';
+import * as types from './types';
 import { api } from '../../config';
 
 
+/**
+ * 切换“中国赛程”
+ */
 export function selectChina(checked) {
 	return dispatch => {
 		dispatch({
@@ -13,6 +16,9 @@ export function selectChina(checked) {
 	}
 }
 
+/**
+ * 切换“金牌赛程”
+ */
 export function selectFinal(checked) {
 	return dispatch => {
 		dispatch({
@@ -23,6 +29,9 @@ export function selectFinal(checked) {
 	}
 }
 
+/**
+ * 筛选项目
+ */
 export function selectDiscipline(discipline) {
 	return dispatch => {
 		dispatch({
@@ -33,7 +42,8 @@ export function selectDiscipline(discipline) {
 	}
 }
 
-export function updateSportsDates() {
+// 请求过滤后的比赛日期
+function updateSportsDates() {
 	return (dispatch, getState) => {
 		let { onlyChina, onlyFinal, selectedDiscipline } = getState();
 		dispatch(emptySchedule());
@@ -51,6 +61,9 @@ export function updateSportsDates() {
 	}
 }
 
+/**
+ * 选择比赛日期
+ */
 export function selectDate(date) {
 	return dispatch => {
 		dispatch({
@@ -62,8 +75,9 @@ export function selectDate(date) {
 
 }
 
+// 更新赛程
 let today = formatDate();
-export function updateSchedule() {
+function updateSchedule() {
 	return (dispatch, getState) => {
 		let { onlyChina, onlyFinal, selectedDate, selectedDiscipline, schedule } = getState();
 		let oneDay = schedule[selectedDate];
@@ -98,14 +112,15 @@ export function updateSchedule() {
 	}
 }
 
-export function emptySchedule() {
+// 清空赛程
+function emptySchedule() {
 	return {
 		type: types.EMPTY_SCHEDULE
 	}
 }
 
-export function fetchingSchedule(date, state = true) {
-	// console.log(state); // todo
+// 控制赛程请求的 loading 状态
+function fetchingSchedule(date, state = true) {
 	return {
 		type: types.FETCHING_SCHEDULE,
 		date,

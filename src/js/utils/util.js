@@ -1,3 +1,9 @@
+import { connect } from 'react-redux';
+import merge from 'lodash.merge';
+
+
+export let extend = merge;
+
 export let round = (val, dec) => {
 	let multiplier = Math.pow(10, dec);
 	return Math.round(multiplier * val) / multiplier;
@@ -93,7 +99,7 @@ export let formatDate = (date = Date.now(), format) => {
 		return '';
 	}
 	
-	let map = {
+	const map = {
 		'y': date.getFullYear(), //年份
 		'M': date.getMonth() + 1, //月份 
 		'd': date.getDate(), //日 
@@ -111,5 +117,22 @@ export let formatDate = (date = Date.now(), format) => {
 
 
 	});
+
 	return format;
+};
+
+export let createConnect = mix => {
+	if ( typeof mix == 'function' ) {
+		return connect(mix);
+	} else {
+		return connect(state => {
+			let props = {};
+			for ( let i = 0; i < mix.length; i++ ) {
+				let k = mix[i];
+				props[k] = state[k];
+			}
+
+			return props;
+		});
+	}
 };

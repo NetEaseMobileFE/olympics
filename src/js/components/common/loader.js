@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
-import styles from 'css/modules/common/loader.scss';
-
+import styles from '../../../css/modules/common/loader.scss';
 import Loading from './loading';
 
 
@@ -18,7 +17,7 @@ export default class extends Component {
 		return (
 			<div styleName="loader" className="scrolling-content" ref="loader">
 				{ loading ? <Loading/> : null }
-				<div styleName="loader__entity" className={loading ? 'down' : ''}>
+				<div styleName="loader__entity" className={ loading ? 'down' : '' }>
 					{ children }
 				</div>
 			</div>

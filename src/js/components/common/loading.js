@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import 'css/widgets/loading.scss';
+import '../../../css/widgets/loading.scss';
 
 
 export default class extends Component {

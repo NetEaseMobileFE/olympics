@@ -12,6 +12,7 @@ var imageisux = require('gulp-imageisux');
 var imageisuxPoll = require('gulp-imageisux-poll');
 var webpackStream = require('webpack-stream');
 var replace = require('gulp-replace');
+var fileInline = require('gulp-file-inline');
 var gulpIgnore = require('gulp-ignore');
 
 /**
@@ -94,6 +95,13 @@ gulp.task('html', ['assets'], function() {
 				tpl: '<script src="%s/%f.js"></script>'
 			},
 			vendor: publishConfig.assetPath + assetsNames.vendor[0]
+		}))
+		.pipe(fileInline({
+			js: {
+				filter: function(tag) {
+					return tag.indexOf(' data-inline="true"') > 0;
+				}
+			}
 		}))
 		.pipe(replace('/*webpackBootstrap*/', webpackBootstrapSource))
 		.pipe(htmlmin({ collapseWhitespace: true, removeComments: true, minifyJS: true, minifyCSS: true }))

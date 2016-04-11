@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
-import styles from 'css/modules/schedule/panel.scss';
-
+import styles from '../../../css/modules/schedule/panel.scss';
+import { flagPath } from '../../config';
 import Clip from '../common/clip';
 import State from '../common/state';
 
@@ -9,20 +9,22 @@ const clips = [
 	{ type: 'red', 'text': '中国' },
 	{ type: 'yellow', 'text': '决赛' }
 ];
-const flagPath = 'http://img1.cache.netease.com/pcluster/olympicinfo/post/';
-const flagSize = '45x35';
 
-// 单场比赛对手情况
+
+/**
+ * 单场比赛对手情况
+ */
 @CSSModules(styles)
 class Competetion extends Component {
 	render() {
 		let { rivals, score } = this.props;
 		let [ home, away ] = rivals;
+
 		return (
 			<div styleName="competition">
 				<div styleName="competition__rival">
-					<div styleName="competition__rival__nation">{home.nation}</div>
-					<img styleName="competition__rival__flag" src={`${flagPath + home.flag}_${flagSize}.jpg`}/>
+					<div styleName="competition__rival__player">{home.nation}</div>
+					<img styleName="competition__rival__flag" src={flagPath + home.flag}/>
 				</div>
 
 				{
@@ -40,8 +42,8 @@ class Competetion extends Component {
 				}
 
 				<div styleName="competition__rival">
-					<img styleName="competition__rival__flag" src={`${flagPath + away.flag}_${flagSize}.jpg`}/>
-					<span styleName="competition__rival__nation">{away.nation}</span>
+					<img styleName="competition__rival__flag" src={flagPath + away.flag}/>
+					<span styleName="competition__rival__player">{away.nation}</span>
 				</div>
 			</div>
 		)
@@ -49,12 +51,14 @@ class Competetion extends Component {
 }
 
 
-// 小组赛分组情况
+/**
+ * 小组赛分组情况
+ */
 @CSSModules(styles)
 class Matches extends Component {
 	render() {
 		return (
-			<div styleName="matches" ref="list">
+			<div styleName="matches">
 				{
 					this.props.matches.map((match, i) => {
 						return (
@@ -79,7 +83,9 @@ class Matches extends Component {
 }
 
 
-// 小项赛程
+/**
+ * 小项赛程
+ */
 @CSSModules(styles)
 class Event extends Component {
 	constructor(props) {
@@ -104,19 +110,17 @@ class Event extends Component {
 		} = this.props;
 		let clipProp = [];
 		let hasMatch = matches && matches.length;
+		let unfold = this.state.unfold;
+		let matchesComp = hasMatch && unfold ? <Matches key={1} matches={matches}/> : null;
 
 		[china, final].forEach((v, i) => {
 			v && clipProp.push(clips[i]);
 		});
 
-		let matchesComp = hasMatch && this.state.unfold ? <Matches key={1} matches={matches}/> : null;
-
 		return (
 			<div styleName="event-ctnr">
 				<div styleName="event" onClick={hasMatch ? this.toggleFold : null}>
-					{
-						clipProp.length ? <Clip clips={clipProp} pcn={styles.event__clip}/> : null
-					}
+					{ clipProp.length ? <Clip clips={clipProp} pcn={styles.event__clip}/> : null }
 					<div styleName="event__time">{startTime}</div>
 					<div styleName="event__detail">
 						<div styleName="tags">
@@ -125,11 +129,9 @@ class Event extends Component {
 						</div>
 						<div styleName="event-name">
 							{event}
-							{ hasMatch ? <div styleName="event-name__arrow" className={this.state.unfold ? 'is-unfold' : ''}/> : null }
+							{ hasMatch ? <div styleName="event-name__arrow" className={unfold ? 'is-unfold' : ''}/> : null }
 						</div>
-						{
-							rivals ? <Competetion rivals={rivals} score={score}/> : null
-						}
+						{ rivals ? <Competetion rivals={rivals} score={score}/> : null }
 					</div>
 				</div>
 
@@ -140,11 +142,39 @@ class Event extends Component {
 }
 
 
-// 小项列表
+/**
+ * 小项列表
+ */
 @CSSModules(styles)
 export default class extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			showFinished: false
+		}
+	}
+
+	handleClick = () => {
+		this.setState({
+			showFinished: true
+		});
+	};
+
 	render() {
 		let { label, events, date } = this.props;
+		let finished = [];
+		let playing = [];
+		let arr;
+
+		if ( label == '全部赛程' ) {
+			events.forEach((event) => {
+				arr = event.finished ? finished : playing;
+				arr.push(event);
+			});
+		} else {
+			playing = events;
+		}
+
 		return (
 			<section styleName="panel">
 				<div styleName="panel__tag">
@@ -152,7 +182,14 @@ export default class extends Component {
 				</div>
 				<div styleName="panel__main">
 					{
-						events.map((event, i) =>
+						finished.length > 0 && !this.state.showFinished ?
+							<div styleName="show-more" onClick={this.handleClick}>查看已结束赛程<i/></div> :
+							finished.map((event, i) =>
+								<Event key={i} {...event} date={date}/>
+							)
+					}
+					{
+						playing.map((event, i) =>
 							<Event key={i} {...event} date={date}/>
 						)
 					}

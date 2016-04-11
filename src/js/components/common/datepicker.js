@@ -1,30 +1,13 @@
 import React, { Component } from 'react';
-import 'js/plugins/swiper.js';
-import { connect } from 'react-redux';
+import 'swiper';
 import CSSModules from 'react-css-modules';
-import 'css/widgets/swiper.scss';
-import styles from 'css/widgets/datepicker.scss';
-import { round, formatDate } from 'js/utils/util';
+import '../../../css/widgets/swiper.scss';
+import styles from '../../../css/widgets/datepicker.scss';
+import { round, formatDate, createConnect } from '../../../js/utils/util';
 import { selectDate } from '../../redux/schedule/actions';
 
-
 const today = formatDate();
-
-function createConnect(mix) {
-	if ( typeof mix == 'function' ) {
-		return connect(mix);
-	} else {
-		return connect(state => {
-			let props = {};
-			for ( let i = 0; i < mix.length; i++ ) {
-				let k = mix[i];
-				props[k] = state[k];
-			}
-
-			return props;
-		});
-	}
-}
+const isIOS = /iphone|ipad|ipod/gi.test(navigator.userAgent);
 
 
 @createConnect(['selectedDate', 'sportsDates'])
@@ -39,8 +22,8 @@ export default class Datepicker extends Component {
 	}
 
 	componentDidMount() {
-		let maxScaleX = 130 / 107;
-		let maxScaleY = 168 / 146;
+		const maxScaleX = 130 / 107;
+		const maxScaleY = 168 / 146;
 		let { selectedDate, sportsDates } = this.props;
 		let lastIndex = sportsDates.length - 1;
 		let that = this;
@@ -90,11 +73,13 @@ export default class Datepicker extends Component {
 					slideTransform = 'scale3d(' + scaleX + ', ' + scaleY + ', 1)';
 					slide.transform(slideTransform);
 
-					// if ( scaleX > 1 && scaleY > 1 ) {
-					// 	slide[0].style.boxShadow = BOXSHADOW;
-					// } else {
-					// 	slide[0].style.boxShadow = '';
-					// }
+					if ( isIOS ) { // 安卓有点卡，降级掉阴影
+						if ( scaleX > 1 && scaleY > 1 ) {
+							slide[0].style.boxShadow = BOXSHADOW;
+						} else {
+							slide[0].style.boxShadow = '';
+						}
+					}
 				}
 			},
 			onSetTransition(s, transition) {
@@ -141,6 +126,7 @@ export default class Datepicker extends Component {
 	componentDidUpdate() {
 		let { sportsDates, selectedDate } = this.props;
 		let index;
+
 		if ( sportsDates.indexOf(selectedDate) > -1 ) {
 			index = sportsDates.indexOf(selectedDate);
 		} else if ( sportsDates.indexOf(today) > -1 ) {
@@ -180,6 +166,7 @@ export default class Datepicker extends Component {
 							if ( today == date ) {
 								day = '今日';
 							}
+
 							return (
 								<div onClick={this.handleClick.bind(this, i)} className="swiper-slide" styleName="tab" key={i}>
 									<p styleName="tab__month">{parseInt(month)}月</p>
@@ -189,7 +176,7 @@ export default class Datepicker extends Component {
 						})
 					}
 				</div>
-				<div styleName="datepicker__bg"></div>
+				<div styleName="datepicker__bg" className={ isIOS ? 'with-shadow' : '' }></div>
 			</div>
 		)
 	}

@@ -14,7 +14,7 @@ module.exports = {
 	entry: {
 		schedule: './src/js/schedule',
 		vendor: [
-			'react', 'react-dom', 'core-js/fn/promise', 'react-css-modules',
+			'react', 'react-dom', 'core-js/fn/promise', 'react-css-modules', 'swiper',
 			'react-addons-css-transition-group', 'react-redux', 'redux', 'redux-thunk', 'lodash.merge'
 		],
 		webpackBootstrap: [] // Extract the webpackBootstrap from entry chunks
@@ -38,6 +38,11 @@ module.exports = {
 				'NODE_ENV': JSON.stringify('production')
 			}
 		}),
+		new webpack.optimize.UglifyJsPlugin({
+			compressor: {
+				warnings: false
+			}
+		})
 	],
 	module: {
 		loaders: [
@@ -66,10 +71,8 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['', '.js', '.jsx'],
 		alias: {
-			css: path.join(__dirname, 'src/css'),
-			js: path.join(__dirname, 'src/js')
+			swiper: path.join(__dirname, 'src/js/plugins/swiper.js')
 		}
 	},
 	postcss: function() {

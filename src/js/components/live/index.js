@@ -1,14 +1,14 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import 'swiper';
 import '../../../css/widgets/swiper.scss';
 import CSSModules from 'react-css-modules';
-import styles from '../../../css/schedule.scss';
+import styles from '../../../css/live.scss';
 import { createConnect } from '../../utils/util';
 import Filter from '../common/filter';
 import Datepicker from '../common/datepicker';
 import Loader from '../common/loader'
-import Panel from './panel';
-import { selectChina, selectFinal, selectDiscipline, selectDate } from '../../redux/schedule/actions';
+import List from './list';
+import { selectChina, selectFinal, selectDiscipline, selectDate } from '../../redux/live/actions';
 
 const swiperHeight = window.innerHeight - rem2px(2.26) - 1;
 
@@ -42,20 +42,13 @@ export default class extends Component {
 							{
 								sportsDates.map((date, i) => {
 									let oneDay = schedule[date] || {};
-									let sets = oneDay.sets;
-									let label, events;
-
 									return (
 										<div className="swiper-slide" style={{ height: swiperHeight }} key={i}>
 											<Loader loading={oneDay.loading}>
 												{
-													sets ? Object.keys(sets).map((k, i) => {
-														label = ( k == 'hot' ? '精选' : '全部') + '赛程';
-														events = sets[k];
-
-														return <Panel key={i} label={label} events={events}
-																	  date={date}/>
-													}) : null
+													oneDay.list ? 
+														<List list={oneDay.list} date={date}/>
+														: null
 												}
 											</Loader>
 										</div>

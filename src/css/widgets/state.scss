@@ -4,9 +4,6 @@
 @import "../base/mixins";
 
 %state {
-    position: relative;
-    z-index: 1;
-    float: right;
     display: flex;
     align-items: center;
     padding-left: 17px;
@@ -18,20 +15,6 @@
         line-height: 28px;
         border: 1px solid;
         border-radius: 4px;
-    }
-}
-
-.state-wrapper {
-    position: relative;
-    flex: 1;
-
-    &__line {
-        position: absolute;
-        left: 0;
-        right: 10px;
-        top: 50%;
-        height: 0;
-        border-top: 1px solid #ededed;
     }
 }
 

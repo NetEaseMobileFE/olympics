@@ -2,17 +2,27 @@ import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/widgets/clip.scss';
 
+const clips = [
+	{ type: 'red', 'text': '中国' },
+	{ type: 'yellow', 'text': '决赛' }
+];
+
 
 @CSSModules(styles)
 export default class extends Component {
 	render() {
-		let { clips, pcn = ''} = this.props;
+		let { china, final, pcn = ''} = this.props;
+		let clipProp = [];
 		let clipcn;
+
+		[china, final].forEach((v, i) => {
+			v && clipProp.push(clips[i]);
+		});
 
 		return (
 			<div styleName="clip-group" className={pcn}>
 				{
-					clips.map((clip, i) => {
+					clipProp.map((clip, i) => {
 						clipcn = `clip--${clip.type}`;
 
 						return (

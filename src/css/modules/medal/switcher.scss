@@ -1,0 +1,46 @@
+.switcher {
+    $br: 20px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(1,73,155,.9);
+    border: 1px solid rgba(128,164,205,.9);
+    border-radius: $br;
+    overflow: hidden;
+
+    &__option {
+        display: block;
+        width: 170px;
+        text-align: center;
+        color: rgba(255,255,255,.7);
+
+        &:global(.is-selected) {
+            color: #023d6c;
+            background-color: rgba(255,255,255,.9);
+        }
+
+        &:first-child {
+            border-radius: 0 $br $br 0;
+        }
+        &:last-child {
+            border-radius: $br 0 0 $br;
+        }
+    }
+
+    &__sep {
+        display: block;
+        width: 0;
+        height: 20px;
+        border-left: 1px solid rgba(255,255,255,.5);
+        font-size: 0;
+    }
+
+    &:global(.select-0) &__sep:nth-child(2),
+    &:global(.select-1) &__sep:nth-child(2) {
+        visibility: hidden;
+    }
+
+    &:global(.select-1) &__sep:nth-child(4),
+    &:global(.select-2) &__sep:nth-child(4) {
+        visibility: hidden;
+    }
+}

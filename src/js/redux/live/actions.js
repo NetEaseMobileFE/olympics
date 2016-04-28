@@ -1,6 +1,6 @@
 import { ajax, formatDate } from '../../utils/util';
 import * as types from './types';
-import { api } from '../../components/schedule/config';
+import { api } from '../../components/live/config';
 
 
 /**
@@ -88,7 +88,7 @@ function updateSchedule() {
 		dispatch(fetchingSchedule(selectedDate));
 
 		return ajax({
-			url: api.schedule,
+			url: api.live,
 			cache: false,
 			data: {
 				onlyChina, onlyFinal, selectedDate,
@@ -101,7 +101,7 @@ function updateSchedule() {
 					type: types.UPDATE_SCHEDULE,
 					data: {
 						[selectedDate]: {
-							sets: json.data,
+							list: json.data,
 							updateTime: Date.now()
 						}
 					}

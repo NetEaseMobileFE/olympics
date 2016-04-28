@@ -1,0 +1,54 @@
+{
+  "data": [
+	  {
+		  "ranking": 1,
+		  "discipline": "跳水",
+		  "medals": [46, 29, 29, 104]
+	  },
+	  {
+		  "ranking": 2,
+		  "discipline": "游泳",
+		  "medals": [29, 17, 19, 65]
+	  },
+	  {
+		  "ranking": 3,
+		  "discipline": "羽毛球",
+		  "medals": [24, 26, 32, 82]
+	  },
+	  {
+		  "ranking": 4,
+		  "discipline": "举重",
+		  "medals": [13, 8, 7, 28]
+	  },
+	  {
+		  "ranking": 5,
+		  "discipline": "竞技体操",
+		  "medals": [11, 19, 14, 44]
+	  },
+	  {
+		  "ranking": 6,
+		  "discipline": "乒乓球",
+		  "medals": [11, 11, 12, 34]
+	  },
+	  {
+		  "ranking": 7,
+		  "discipline": "射击",
+		  "medals": [8, 9, 11, 28]
+	  },
+	  {
+		  "ranking": 8,
+		  "discipline": "击剑",
+		  "medals": [8, 4, 5, 17]
+	  },
+	  {
+		  "ranking": 9,
+		  "discipline": "蹦床",
+		  "medals": [7, 16, 12, 35]
+	  },
+	  {
+		  "ranking": 10,
+		  "discipline": "拳击",
+		  "medals": [7, 14, 17, 38]
+	  }
+  ]
+}

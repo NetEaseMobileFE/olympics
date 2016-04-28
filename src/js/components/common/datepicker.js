@@ -4,10 +4,9 @@ import CSSModules from 'react-css-modules';
 import '../../../css/widgets/swiper.scss';
 import styles from '../../../css/widgets/datepicker.scss';
 import { round, formatDate, createConnect } from '../../../js/utils/util';
-import { selectDate } from '../../redux/schedule/actions';
 
 const today = formatDate();
-const isIOS = /iphone|ipad|ipod/gi.test(navigator.userAgent);
+const isAndroid = /android|adr/gi.test(navigator.userAgent);
 
 
 @createConnect(['selectedDate', 'sportsDates'])
@@ -73,7 +72,7 @@ export default class Datepicker extends Component {
 					slideTransform = 'scale3d(' + scaleX + ', ' + scaleY + ', 1)';
 					slide.transform(slideTransform);
 
-					if ( isIOS ) { // 安卓有点卡，降级掉阴影
+					if ( !isAndroid ) { // 安卓有点卡，降级掉阴影
 						if ( scaleX > 1 && scaleY > 1 ) {
 							slide[0].style.boxShadow = BOXSHADOW;
 						} else {
@@ -114,7 +113,8 @@ export default class Datepicker extends Component {
 
 	changeSlide(index) {
 		if ( index != this.currIndex ) {
-			this.props.dispatch(selectDate(this.props.sportsDates[index]));
+			let { dispatch, selectDate, sportsDates } = this.props;
+			dispatch(selectDate(sportsDates[index]));
 			this.currIndex = index;
 		}
 	}
@@ -176,7 +176,7 @@ export default class Datepicker extends Component {
 						})
 					}
 				</div>
-				<div styleName="datepicker__bg" className={ isIOS ? 'with-shadow' : '' }></div>
+				<div styleName="datepicker__bg" className={ isAndroid ? '' : 'with-shadow' }></div>
 			</div>
 		)
 	}

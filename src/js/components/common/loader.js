@@ -12,13 +12,21 @@ export default class extends Component {
 		}
 	}
 
+	scrollTo = offsetY => {
+		let el = this.refs.loader;
+		el.scrollTop = Math.min(el.scrollHeight - el.offsetHeight, offsetY);
+	};
+
 	render() {
 		let { loading, children } = this.props;
+		var newChildren = React.Children.map(children, child => {
+			return React.cloneElement(child, { scrollTo: this.scrollTo })
+		});
 		return (
 			<div styleName="loader" className="scrolling-content" ref="loader">
 				{ loading ? <Loading/> : null }
 				<div styleName="loader__entity" className={ loading ? 'down' : '' }>
-					{ children }
+					{ newChildren }
 				</div>
 			</div>
 		)

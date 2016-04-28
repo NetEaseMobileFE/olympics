@@ -2,9 +2,9 @@ import 'core-js/fn/promise';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import configureStore from './redux/schedule/store';
+import configureStore from './redux/live/store';
 import { sportsDates, disciplines } from './config';
-import Schedule from './components/schedule';
+import Live from './components/live';
 
 
 const store = configureStore({
@@ -14,7 +14,7 @@ const store = configureStore({
 
 render((
 	<Provider store={store}>
-		<Schedule />
+		<Live />
 	</Provider>
 ), document.getElementById('root'));
 

@@ -119,11 +119,18 @@ gulp.task('isux', function() {
 		.pipe(imageisuxPoll(dest));
 });
 
-gulp.task('img', ['isux'], function () {
+gulp.task('img', function () {
 	var conn = createConnection(publishConfig.assetFtp);
 
-	gulp.src(['dist/img/_min/**'], { buffer: false })
+	gulp.src(['dist/img/**'], { buffer: false })
 		.pipe(conn.dest(publishConfig.assetDir + '/img'));
+});
+
+gulp.task('mocks', function () {
+	var conn = createConnection(publishConfig.assetFtp);
+
+	gulp.src(['src/mocks/**'], { buffer: false })
+		.pipe(conn.dest(publishConfig.assetDir + '/mocks'));
 });
 
 // Start

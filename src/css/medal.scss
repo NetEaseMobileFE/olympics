@@ -1,0 +1,23 @@
+@import "base/mixins";
+@import "base/preset";
+
+.page {
+    background-color: #f6f6f6;
+
+	&__hd {
+		display: flex;
+        justify-content: center;
+        padding: 14px 0;
+        background: resolve('topbar.jpg') no-repeat;
+	}
+
+    &__bd {
+	    position: relative;
+	    z-index: 1;
+    }
+}
+
+.focus {
+    height: 380px;
+    background-color: #666;
+}

@@ -13,6 +13,8 @@ module.exports = {
 	devtool: 'source-map-hidden',
 	entry: {
 		schedule: './src/js/schedule',
+		live: './src/js/live',
+		medal: './src/js/medal',
 		vendor: [
 			'react', 'react-dom', 'core-js/fn/promise', 'react-css-modules', 'swiper',
 			'react-addons-css-transition-group', 'react-redux', 'redux', 'redux-thunk', 'lodash.merge'

@@ -103,6 +103,26 @@
         background-color: #3bd5fb;
         border-radius: 20px;
     }
+
+    &__state {
+        position: relative;
+        flex: 1;
+
+        &__line {
+            position: absolute;
+            left: 0;
+            right: 10px;
+            top: 50%;
+            height: 0;
+            border-top: 1px solid #ededed;
+        }
+
+        &__entity {
+            position: relative;
+            z-index: 1;
+            float: right;
+        }
+    }
 }
 
 .event-name {

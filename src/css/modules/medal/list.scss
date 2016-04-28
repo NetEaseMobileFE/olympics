@@ -1,0 +1,116 @@
+.list {
+    margin: 20px 20px 0 20px;
+    padding-top: 4px;
+    background: #fff resolve('bar.jpg') no-repeat top;
+}
+
+.table-medal {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+        vertical-align: middle;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    th {
+        height: 96px;
+        font-weight: normal;
+        color: #9d9d9d;
+        border-bottom: 1px solid #ced6d9;
+    }
+
+    td {
+        height: 78px;
+        font-size: 30px;
+        color: #5b5b5b;
+
+        &.is-lighter {
+            color: #797b7c;
+        }
+    }
+
+    tbody tr {
+        &:nth-child(odd) {
+            background-color: #f3f8fc;
+        }
+
+        &:nth-child(1), &:nth-child(3) {
+            background-color: #e7f5fc;
+        }
+
+        &:nth-child(2) {
+            background-color: #f2fcff;
+        }
+
+        &.is-highlight td {
+            color: #ed1c24;
+        }
+    }
+}
+
+%medal {
+    display: block;
+    margin: auto;
+    width: 55px;
+    height: 55px;
+    background: no-repeat 0;
+    background-size: contain;
+}
+
+.medal--gold {
+    @extend %medal;
+    background-image: resolve('gold.png');
+}
+.medal--silver {
+    @extend %medal;
+    background-image: resolve('silver.png');
+}
+.medal--bronze {
+    @extend %medal;
+    background-image: resolve('bronze.png');
+}
+
+
+.state {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 26px;
+    white-space: nowrap;
+
+    &__flag {
+        box-sizing: border-box;
+        margin-left: 13px;
+        width: 39px;
+        height: 23px;
+        border: 1px solid #d9d9d9;
+    }
+
+    &:global(.is--long) {
+        font-size: 24px;
+    }
+}
+
+.athlete {
+    padding: 13px 0;
+    font-size: 24px;
+    text-align: right;
+
+    .state {
+        font-size: 24px;
+    }
+}
+
+.discipline {
+    font-size: 26px;
+}
+
+.unfold {
+    padding-left: 27px;
+    font-size: 28px;
+    color: #999;
+    background: resolve('ellipsis.png') left center no-repeat;
+    background-size: 18px 3px;
+}

@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/schedule/panel.scss';
-import { flagPath } from '../../config';
+import { flagPath } from '../../components/schedule/config';
 import Clip from '../common/clip';
 import State from '../common/state';
-
-const clips = [
-	{ type: 'red', 'text': '中国' },
-	{ type: 'yellow', 'text': '决赛' }
-];
 
 
 /**
@@ -101,6 +96,10 @@ class Event extends Component {
 		})
 	};
 
+	handleStateClick = type => {
+		alert(type);
+	};
+
 	render() {
 		let { 
 			discipline, startTime, event, china, final,
@@ -108,24 +107,26 @@ class Event extends Component {
 			rivals, score,
 			matches
 		} = this.props;
-		let clipProp = [];
+		
 		let hasMatch = matches && matches.length;
 		let unfold = this.state.unfold;
 		let matchesComp = hasMatch && unfold ? <Matches key={1} matches={matches}/> : null;
 
-		[china, final].forEach((v, i) => {
-			v && clipProp.push(clips[i]);
-		});
-
 		return (
 			<div styleName="event-ctnr">
 				<div styleName="event" onClick={hasMatch ? this.toggleFold : null}>
-					{ clipProp.length ? <Clip clips={clipProp} pcn={styles.event__clip}/> : null }
+					{ ( final || china ) ? <Clip china={china} final={final} pcn={styles.event__clip}/> : null }
 					<div styleName="event__time">{startTime}</div>
 					<div styleName="event__detail">
 						<div styleName="tags">
 							<div styleName="tags__discipline">{discipline}</div>
-							<State liveSupported={liveSupported} startTime={startTime} finished={finished} date={date}/>
+							<div styleName="tags__state">
+								<div styleName="tags__state__entity">
+									<State liveSupported={liveSupported} startTime={startTime} finished={finished} date={date}
+										   handleStateClick={this.handleStateClick}/>
+								</div>
+								<div styleName="tags__state__line"/>
+							</div>
 						</div>
 						<div styleName="event-name">
 							{event}

@@ -34,7 +34,7 @@ export let ajax = option => {
 		}
 
 		let symbol = [option.url, data].join('__'),
-			dataCache = false && ajaxCache[symbol];  // todo 暂时禁用
+			dataCache = ajaxCache[symbol];
 
 		if ( dataCache ) {
 			resolve(dataCache);
@@ -42,7 +42,7 @@ export let ajax = option => {
 			let url = option.url;
 			let request, sendData;
 
-			if ( method == 'GET' ) {
+			if ( method == 'GET' && data ) {
 				url = url + ( url.indexOf('?') != -1 ? '&' : '?' ) + data;
 			}
 			request = new XMLHttpRequest();
@@ -135,4 +135,15 @@ export let createConnect = mix => {
 			return props;
 		});
 	}
+};
+
+export let getSearch = (href = window.location.search) => {
+	const reg = new RegExp( "([^?=&]+)(=([^&]*))?", "g" );
+	let data = {};
+
+	href.replace(reg, ($0, $1, $2, $3) => {
+		data[$1] = $3;
+	});
+	
+	return data;
 };

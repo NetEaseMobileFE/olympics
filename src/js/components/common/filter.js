@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/common/filter.scss';
-import { selectChina, selectFinal, selectDiscipline } from '../../redux/schedule/actions';
 import { createConnect } from '../../utils/util';
 import DP from './discipline-picker';
 
@@ -38,21 +37,23 @@ export default class extends Component {
 	};
 
 	handleOnlyChinaChange = () => {
-		this.props.dispatch(selectChina(!this.props.onlyChina));
+		let { dispatch, selectChina, onlyChina } = this.props;
+		dispatch(selectChina(!onlyChina));
 	};
 
 	handleOnlyFinalChange = () => {
-		this.props.dispatch(selectFinal(!this.props.onlyFinal));
+		let { dispatch, selectFinal, onlyFinal } = this.props;
+		dispatch(selectFinal(!onlyFinal));
 	};
 
 	handleDisciplineChange = (value) => {
-		this.props.dispatch(selectDiscipline(value));
+		let { dispatch, selectDiscipline } = this.props;
+		dispatch(selectDiscipline(value));
 	};
 
 	render() {
 		let { onlyChina, onlyFinal, disciplines, selectedDiscipline } = this.props;
 		let discName = selectedDiscipline.name;
-		console.log(discName); // todo
 		let discAlias = discName == '项目筛选' ? '全部' :  discName;
 		let dp = this.state.showDP ?
 			<DP key={1} disciplines={disciplines} disciplineName={discAlias}

@@ -20,7 +20,7 @@ class Checkbox extends Component {
 	}
 }
 
-@createConnect(['onlyChina', 'onlyFinal', 'disciplines', 'selectedDiscipline'])
+@createConnect(['onlyChina', 'onlyGold', 'disciplines', 'selectedDiscipline'])
 @CSSModules(styles)
 export default class extends Component {
 	constructor(props) {
@@ -41,9 +41,9 @@ export default class extends Component {
 		dispatch(selectChina(!onlyChina));
 	};
 
-	handleOnlyFinalChange = () => {
-		let { dispatch, selectFinal, onlyFinal } = this.props;
-		dispatch(selectFinal(!onlyFinal));
+	handleOnlyGoldChange = () => {
+		let { dispatch, selectGold, onlyGold } = this.props;
+		dispatch(selectGold(!onlyGold));
 	};
 
 	handleDisciplineChange = (value) => {
@@ -52,7 +52,7 @@ export default class extends Component {
 	};
 
 	render() {
-		let { onlyChina, onlyFinal, disciplines, selectedDiscipline } = this.props;
+		let { onlyChina, onlyGold, disciplines, selectedDiscipline } = this.props;
 		let discName = selectedDiscipline.name;
 		let discAlias = discName == '项目筛选' ? '全部' :  discName;
 		let dp = this.state.showDP ?
@@ -64,7 +64,7 @@ export default class extends Component {
 			<section className="page__header">
 				<div styleName="filter">
 					<Checkbox label="中国赛程" isChecked={onlyChina} onChange={this.handleOnlyChinaChange}/>
-					<Checkbox label="金牌赛程" isChecked={onlyFinal} onChange={this.handleOnlyFinalChange}/>
+					<Checkbox label="金牌赛程" isChecked={onlyGold} onChange={this.handleOnlyGoldChange}/>
 
 					<div styleName="selector" onClick={this.showDP}>
 						<div styleName={`selector__label${ discName.length > 5 ? '--long' : '' }`}>{discName}</div>

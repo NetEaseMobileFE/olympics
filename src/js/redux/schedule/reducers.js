@@ -13,9 +13,9 @@ function onlyChina(state = false, action) {
 	}
 }
 
-function onlyFinal(state = false, action) {
+function onlyGold(state = false, action) {
 	switch ( action.type ) {
-		case types.SELECT_FINAL:
+		case types.SELECT_GOLD:
 			return action.checked;
 		default:
 			return state;
@@ -29,7 +29,7 @@ function selectedDiscipline(state , action) {
 		default:
 			return state || {  // 默认要显示成 “项目筛选”
 				name: '项目筛选',
-				id: disciplines[0]
+				id: disciplines[0].id
 			};
 	}
 }
@@ -52,17 +52,34 @@ function selectedDate(state = formatDate(), action) {
 	}
 }
 
-function schedule(state = {}, action) {
+function hotSchedule(state = {}, action) {
 	switch ( action.type ) {
-		case types.EMPTY_SCHEDULE:
+		case types.EMPTY_HOT_SCHEDULE:
 			return {};
-		case types.FETCHING_SCHEDULE:
+		case types.FETCHING_HOT_SCHEDULE:
 			return extend({}, state, {
 				[action.date]: {
 					loading: action.state
 				}
 			});
-		case types.UPDATE_SCHEDULE:
+		case types.UPDATE_HOT_SCHEDULE:
+			return extend({}, state, action.data);
+		default:
+			return state;
+	}
+}
+
+function mainSchedule(state = {}, action) {
+	switch ( action.type ) {
+		case types.EMPTY_MAIN_SCHEDULE:
+			return {};
+		case types.FETCHING_MAIN_SCHEDULE:
+			return extend({}, state, {
+				[action.date]: {
+					loading: action.state
+				}
+			});
+		case types.UPDATE_MAIN_SCHEDULE:
 			return extend({}, state, action.data);
 		default:
 			return state;
@@ -76,10 +93,11 @@ function doNothing(state = null) {
 
 export default combineReducers({
 	onlyChina,
-	onlyFinal,
+	onlyGold,
 	disciplines: doNothing,
 	sportsDates,
 	selectedDiscipline,
 	selectedDate,
-	schedule
+	hotSchedule,
+	mainSchedule
 });

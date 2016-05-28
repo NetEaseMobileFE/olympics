@@ -3,7 +3,7 @@ import 'swiper';
 import CSSModules from 'react-css-modules';
 import '../../../css/widgets/swiper.scss';
 import styles from '../../../css/widgets/datepicker.scss';
-import { round, formatDate, createConnect } from '../../../js/utils/util';
+import { round, formatDate, destructureDate, createConnect } from '../../../js/utils/util';
 
 const today = formatDate();
 const isAndroid = /android|adr/gi.test(navigator.userAgent);
@@ -162,7 +162,7 @@ export default class Datepicker extends Component {
 				<div className="swiper-wrapper" styleName="datepicker__rail">
 					{
 						this.props.sportsDates.map((date, i) => {
-							let [, month, day] = date.split('-');
+							let { month, day } = destructureDate(date);
 							if ( today == date ) {
 								day = '今日';
 							}

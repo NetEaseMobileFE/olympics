@@ -82,18 +82,27 @@ export let ajax = option => {
  * JSONP
  */
 export let getScript = url => {
-	let head = document.getElementsByTagName('head')[0];
-	let script = document.createElement('script');
-	
-	script.type = 'text/javascript';
-	script.charset = 'utf-8';
-	script.async = true;
-	script.src = url;
-	head.appendChild(script);
+	return new Promise((resolve, reject) => {
+		let script = document.createElement('script');
+		let callbackName = url.match(/callback=(\w+)/)[1];
+		
+		window[callbackName] = json => {
+			resolve(json)
+		};
+
+		script.async = true;
+		script.src = url;
+		script.onerror = function(e) {
+			if ( e.type == 'error' ) {
+				reject(new Error('Could not load script ' + url));
+			}
+		};
+		document.head.appendChild(script);
+	})
 };
 
 
-export let formatDate = (date = Date.now(), format) => {
+export let formatDate = (date = Date.now(), format = 'yyyyMMdd') => {
 	date = new Date(date);
 	if ( !date || date.toUTCString() == 'Invalid Date' ) {
 		return '';
@@ -110,16 +119,24 @@ export let formatDate = (date = Date.now(), format) => {
 		// 'S': date.getMilliseconds() //毫秒 
 	};
 	
-	format = format || 'yyyy-MM-dd';
 	// format = format.replace(/([yMdhmsqS])+/g, (all, t) => {
-	format = format.replace(/([yMdhm])+/g, (all, t) => {
-		return ('0' + map[t]).slice(-all.length);
-
-
-	});
+	format = format.replace(/([yMdhm])+/g, (all, t) =>
+		('0' + map[t]).slice(-all.length)
+	);
 
 	return format;
 };
+
+export function destructureDate(date) {
+	if ( typeof date != 'string' ) {
+		date = formatDate(date);
+	}
+
+
+	let [, year, month, day] = date.match(/(\d{4})(\d{2})(\d{2})/);
+
+	return { year, month, day };
+}
 
 export let createConnect = mix => {
 	if ( typeof mix == 'function' ) {

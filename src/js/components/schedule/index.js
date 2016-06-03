@@ -6,9 +6,9 @@ import styles from '../../../css/schedule.scss';
 import { createConnect } from '../../utils/util';
 import Filter from '../common/filter';
 import Datepicker from '../common/datepicker';
-// import Loader from '../common/loader'
-// import Panel from './panel';
-import { selectChina, selectGold, selectDiscipline, selectDate } from '../../redux/schedule/actions';
+import Loader from '../common/loader'
+import Panel from './panel';
+import { selectChina, selectGold, selectDiscipline, selectDate, showTypeAll, showMoreSchedule } from '../../redux/schedule/actions';
 
 const swiperHeight = window.innerHeight - rem2px(2.26) - 1;
 
@@ -25,10 +25,17 @@ export default class extends Component {
 		window.mainSwiper = this.swiper;
 	}
 
+	showFinished = () => {
+		this.props.dispatch(showTypeAll());
+	};
+
+	showMore = () => {
+		this.props.dispatch(showMoreSchedule());
+	};
+
 	render() {
 		let { sportsDates, hotSchedule, mainSchedule } = this.props;
 		let filterActions = { selectChina, selectGold, selectDiscipline };
-		console.log(this.props); // todo
 
 		return (
 			<div styleName="page">
@@ -39,7 +46,28 @@ export default class extends Component {
 
 				<main styleName="page__bd">
 					<div ref="swiper" className="swiper-container">
+						<div className="swiper-wrapper">
+							{
+								sportsDates.map((date, i) => {
+									let oneDayOfHot = hotSchedule[date] || {};
+									let oneDayOfMain = mainSchedule[date] || {};
 
+									return (
+										<div className="swiper-slide" style={{ height: swiperHeight }} key={i}>
+											<Loader loading={oneDayOfMain.loading} showMore={oneDayOfMain.noMore ? null : this.showMore}>
+												{
+													oneDayOfHot && oneDayOfHot.list ? <Panel label="精选赛程" events={oneDayOfHot.list} date={date}/> : null
+												}
+												{
+													oneDayOfMain && oneDayOfMain.list ? <Panel label="全部赛程" events={oneDayOfMain.list} date={date}
+																		  type={oneDayOfMain.type} showFinished={this.showFinished}/> : null
+												}
+											</Loader>
+										</div>
+									)
+								})
+							}
+						</div>
 					</div>
 				</main>
 			</div>

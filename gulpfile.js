@@ -73,7 +73,7 @@ gulp.task('assets', ['clean'], function() {
 		}))
 		.pipe(gulp.dest('dist'))
 		.pipe(gulpIgnore.exclude(['**/*.map', '**/{img,img/**}', '**/webpackBootstrap.*.js']))
-		.pipe(conn.dest(publishConfig.assetDir));
+		// .pipe(conn.dest(publishConfig.assetDir));
 });
 
 // Replace assets' path in html files
@@ -106,7 +106,7 @@ gulp.task('html', ['assets'], function() {
 		.pipe(replace('/*webpackBootstrap*/', webpackBootstrapSource))
 		.pipe(htmlmin({ collapseWhitespace: true, removeComments: true, minifyJS: true, minifyCSS: true }))
 		.pipe(gulp.dest('dist'))
-		.pipe(conn.dest(publishConfig.htmlDir));
+		// .pipe(conn.dest(publishConfig.htmlDir));
 });
 
 // Optimize images

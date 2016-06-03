@@ -7,8 +7,8 @@ import Loading from './loading';
 @CSSModules(styles)
 export default class extends Component {
 	componentWillUpdate(nextProps) {
-		if ( nextProps.loading ) {
-			this.refs.loader.scrollTop = 0;
+		if ( !nextProps.showMore ) {
+			this.unbindScroll();
 		}
 	}
 
@@ -17,6 +17,29 @@ export default class extends Component {
 		el.scrollTop = Math.min(el.scrollHeight - el.offsetHeight, offsetY);
 	};
 
+	scrollHandler = () => {
+		let loader = this.refs.loader;
+		if ( loader.scrollHeight - loader.clientHeight - loader.scrollTop < 100 ) {
+			this.timer && clearTimeout(this.timer);
+			this.loadingAgain = true;
+			this.timer = setTimeout(() => {
+				this.props.showMore();
+			}, 100);
+		}
+	};
+
+	unbindScroll = () => {
+		this.refs.loader.removeEventListener('scroll', this.scrollHandler);
+	};
+
+	componentDidMount() {
+		this.refs.loader.addEventListener('scroll', this.scrollHandler, false);
+	}
+
+	componentWillUnmount() {
+		this.unbindScroll();
+	}
+
 	render() {
 		let { loading, children } = this.props;
 		var newChildren = React.Children.map(children, child => {
@@ -24,9 +47,10 @@ export default class extends Component {
 		});
 		return (
 			<div styleName="loader" className="scrolling-content" ref="loader">
-				{ loading ? <Loading/> : null }
-				<div styleName="loader__entity" className={ loading ? 'down' : '' }>
+				{ loading && !this.loadingAgain ? <Loading/> : null }
+				<div styleName="loader__entity" className={ loading && !this.loadingAgain  ? 'down' : '' }>
 					{ newChildren }
+					{ loading && this.loadingAgain ? <Loading/> : null }
 				</div>
 			</div>
 		)

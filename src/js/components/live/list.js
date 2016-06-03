@@ -14,13 +14,7 @@ const today = formatDate();
 @CSSModules(styles)
 class Item extends Component {
 	handleClick = () => {
-		if ( this.stateType ) {
-			alert(this.stateType);
-		}
-	};
-
-	setStateType = type => {
-		this.stateType = type;
+		// 跳转 todo
 	};
 
 	render() {
@@ -37,8 +31,7 @@ class Item extends Component {
 					<i styleName="item__info__dot"/>{discipline}<i styleName="item__info__sep"/>{participants}
 				</div>
 				<div styleName="item__state">
-					<State liveSupported={liveSupported} startTime={startTime} finished={finished} date={date}
-						   setStateType={this.setStateType}/>
+					<State liveSupported={liveSupported} startTime={startTime} finished={finished} date={date}/>
 				</div>
 			</li>
 		)

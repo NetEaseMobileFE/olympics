@@ -1,8 +1,8 @@
 let dates = [];
 let i = 25;
-while ( i <= 31 ) dates.push('201207' + ('0' + i++).slice(-2));
+while ( i <= 31 ) dates.push('2012-07-' + ('0' + i++).slice(-2));
 i = 1;
-while ( i <= 13 ) dates.push('201208' + ('0' + i++).slice(-2));
+while ( i <= 13 ) dates.push('2012-08-' + ('0' + i++).slice(-2));
 
 export const sportsDates = dates;
 
@@ -60,7 +60,7 @@ export function assembleScheduleUrl(type, params) {
 		let { selectedDate, selectedDiscipline, mainSchedule } = params;
 		let disciplineID = selectedDiscipline.id;
 		let oneDay = mainSchedule[selectedDate];
-		let pageNo = oneDay ? oneDay.pageNo + 1 : 1;
+		let pageNo = oneDay ? oneDay.lastPageNo + 1 : 1;
 		let p = {
 			selectedDate,
 			disciplineID,
@@ -110,11 +110,13 @@ export function assembleDateUrl(params) {
 }
 
 function assembleHotScheduleUrl(selectedDate) {
+	selectedDate = selectedDate.replace(/-/g, '');
 	return apiBaseUrl + `hot/${selectedDate}.json?callback=scA`;
 }
 
 function assembleActiveScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {
 	let url;
+	selectedDate = selectedDate.replace(/-/g, '');
 
 	// c: 中国， g: 金牌， d: 项目
 	switch ( mode ) {
@@ -149,6 +151,7 @@ function assembleActiveScheduleUrl(mode, { selectedDate, disciplineID, pageNo })
 
 function assembleAllScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {
 	let url;
+	selectedDate = selectedDate.replace(/-/g, '');
 
 	// c: 中国， g: 金牌， d: 项目
 	switch ( mode ) {

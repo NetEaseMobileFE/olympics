@@ -143,59 +143,6 @@
 }
 
 
-// 小组赛
-.matches {
-    position: relative;
-    background-color: #f3f8fc;
-    border-top: 1px solid #e0e5e8;
-
-    &__sharp {
-        position: absolute;
-        top: -15px + 1;  // 防止浮点像素不精准
-        right: 18px;
-        @include icon('sharp.png');
-    }
-}
-
-.match {
-    display: flex;
-    align-items: flex-start;
-    padding: 36px 0 28px;
-    color: #888;
-    font-size: 26px;
-
-    &__time {
-        padding-right: 30px;
-        width: 185px;
-	    text-align: right;
-        white-space: nowrap;
-
-	    &__sep {
-		    margin: 0 4px;
-	    }
-    }
-
-	&__detail {
-		flex: 1;
-
-		&__group {
-            margin-bottom: 10px;
-
-            > span {
-                padding: 0 4px;
-	            line-height: 1.2;
-                color: #3bd5fb;
-                background-color: #e4f5fe;
-                border-radius: 4px;
-            }
-		}
-	}
-
-    & + & {
-        border-top: 1px solid #e0e5e8;
-    }
-}
-
 // 比赛对手
 .competition {
     display: flex;
@@ -228,6 +175,7 @@
 
         &__score {
             flex: 1;
+            align-items: center;
         }
 
         &__sep {

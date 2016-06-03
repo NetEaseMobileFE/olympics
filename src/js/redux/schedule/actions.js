@@ -84,6 +84,7 @@ export function selectDate(date) {
 
 // 更新赛程
 let today = formatDate();
+
 function updateHotSchedule() {
 	return (dispatch, getState) => {
 		let state = getState();
@@ -117,8 +118,10 @@ function updateMainSchedule() {
 		let state = getState();
 		let { selectedDate } = state;
 		let oneDay = state.mainSchedule[selectedDate];
-		let type = oneDay ? oneDay.type : 'active';
+		let type = oneDay ? oneDay.type :
+			selectedDate < today ? 'all' : 'active';
 
+		console.log(selectedDate, today); // todo
 		// 往日赛程以及1分钟以内的数据不做重新请求
 		let url = assembleScheduleUrl(type, state);
 		dispatch(fetchingMainSchedule(selectedDate));
@@ -134,7 +137,8 @@ function updateMainSchedule() {
 							type,
 							list: unusedEliminate(json.scheduleList),
 							updateTime: Date.now(),
-							pageNo: json.pageNo
+							lastPageNo: json.pageNo,
+							noMore: json.pageNo == json.pageNum
 						}
 					}
 				});
@@ -142,6 +146,28 @@ function updateMainSchedule() {
 		}).catch(function(error) {
 			console.warn(error);
 		});
+	}
+}
+
+export function showTypeAll() {
+	return (dispatch, getState) => {
+		let { selectedDate } = getState();
+		dispatch({
+			type: types.UPDATE_MAIN_SCHEDULE,
+			data: {
+				[selectedDate]: {
+					type: 'all',
+					lastPageNo: 0
+				}
+			}
+		});
+		dispatch(updateMainSchedule());
+	}
+}
+
+export function showMoreSchedule() {
+	return (dispatch) => {
+		dispatch(updateMainSchedule());
 	}
 }
 
@@ -177,29 +203,58 @@ function fetchingMainSchedule(date, state = true) {
 
 
 function unusedEliminate(list) {
-	return list.map(s => {
-		let competitorMapList = s.competitorMapList;
-		if ( s.status == 7 && competitorMapList && competitorMapList.length ) { // 截取赛果长度，团体只看第一名  todo FINISHED
-			let end = competitorMapList.length == 2 ? 2 : 1;
-			competitorMapList = competitorMapList.slice(end).map(c => {
-				return {
-					competitorName: c.competitorName,
-					result: c.result,
-					wlt: c.wlt
-				}
+	return list.map(schedule => {
+		let { organisations, organisationsName, organisationsImgUrl, competitorMapList } = schedule;
+		let isFinished = schedule.status == 7; //  todo FINISHED
+		let competitors = [];
+
+		if ( organisations.length == 2 ) {
+			organisations.forEach((o, i) => {
+				competitors.push({
+					code: o,
+					name: organisationsName[i],
+					flag: organisationsImgUrl[i].replace('90x60', '61x45')
+				});
 			});
 		}
 
+		if ( isFinished && competitorMapList && competitorMapList.length ) { // 截取赛果长度，团体只看第一名
+			let tmpCpt;
+			if ( organisations.length == 2 ) {
+				if ( competitorMapList[0].organisation != competitors[0].code ) { // 按照默认顺序显示结果
+					competitorMapList.reverse();
+				}
+
+				competitorMapList.forEach((c, i) => {
+					tmpCpt = competitors[i];
+					tmpCpt.name = c.competitorName; // 如果是个人名字的话，优先显示个人
+					tmpCpt.result = c.result;
+					tmpCpt.resultType = c.resultType;
+					tmpCpt.rank = c.rank;
+				});
+			} else {
+				tmpCpt = competitorMapList[0];
+				competitors.push({
+					name: tmpCpt.competitorName,
+					code: tmpCpt.organisation,
+					flag: tmpCpt.organisationImgUrl.replace('90x60', '61x45')
+					// result: tmpCpt.result,
+					// resultType: tmpCpt.resultType,
+					// wlt: tmpCpt.wlt
+				});
+			}
+		}
+
 		return {
-			disciplineName: s.disciplineName,
-			scheduleName: s.scheduleName,
-			status: s.status,
-			medal: s.medal,
-			organisationsName: s.organisationsName,
-			organisationsImgUrl: s.organisationsImgUrl,
-			live: s.live,
-			roomId: s.roomId,
-			competitorMapList
+			disciplineName: schedule.disciplineName,
+			scheduleName: schedule.scheduleName,
+			withChina: organisations.indexOf('CHN') > -1,
+			isFinished,
+			isFinal: schedule.medal == 1,
+			startTime: schedule.startDate.substr(11, 5),
+			live: schedule.live,
+			roomId: schedule.roomId,
+			competitors
 		}
 	});
 }

@@ -162,7 +162,7 @@ export default class Datepicker extends Component {
 				<div className="swiper-wrapper" styleName="datepicker__rail">
 					{
 						this.props.sportsDates.map((date, i) => {
-							let { month, day } = destructureDate(date);
+							let [, month, day] = date.split('-');
 							if ( today == date ) {
 								day = '今日';
 							}

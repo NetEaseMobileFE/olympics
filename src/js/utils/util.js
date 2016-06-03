@@ -102,7 +102,7 @@ export let getScript = url => {
 };
 
 
-export let formatDate = (date = Date.now(), format = 'yyyyMMdd') => {
+export let formatDate = (date = Date.now(), format = 'yyyy-MM-dd') => {
 	date = new Date(date);
 	if ( !date || date.toUTCString() == 'Invalid Date' ) {
 		return '';
@@ -126,17 +126,6 @@ export let formatDate = (date = Date.now(), format = 'yyyyMMdd') => {
 
 	return format;
 };
-
-export function destructureDate(date) {
-	if ( typeof date != 'string' ) {
-		date = formatDate(date);
-	}
-
-
-	let [, year, month, day] = date.match(/(\d{4})(\d{2})(\d{2})/);
-
-	return { year, month, day };
-}
 
 export let createConnect = mix => {
 	if ( typeof mix == 'function' ) {

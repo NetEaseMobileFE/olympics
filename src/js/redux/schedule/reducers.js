@@ -80,7 +80,14 @@ function mainSchedule(state = {}, action) {
 				}
 			});
 		case types.UPDATE_MAIN_SCHEDULE:
-			return extend({}, state, action.data);
+			let data = action.data;
+			let date = Object.keys(data)[0];
+			let schedule = data[date];
+
+			if ( schedule.list && schedule.lastPageNo !== 1 ) { // list 数据合并
+				schedule.list = state[date].list.concat(schedule.list);
+			}
+			return extend({}, state, data);
 		default:
 			return state;
 	}

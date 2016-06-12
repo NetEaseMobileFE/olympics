@@ -1,6 +1,6 @@
 import { getScript, formatDate } from '../../utils/util';
 import * as types from './types';
-import { assembleDateUrl, assembleScheduleUrl } from '../../config';
+import { assembleDateUrl, assembleScheduleUrl, sportsDates } from '../../config';
 
 
 /**
@@ -46,20 +46,27 @@ export function selectDiscipline(discipline) {
 function updateSportsDates() {
 	return (dispatch, getState) => {
 		let url = assembleDateUrl(getState());
+		let promise = url ? getScript(url) : Promise.resolve(sportsDates);
 
-		return getScript(url).then(json => {
+		return promise.then(json => {
+			console.log(json); // todo
 			if ( json.length ) {
 				dispatch(emptyHotSchedule());
 				dispatch(emptyMainSchedule());
 
+				let dates = json.map(d => {
+					return d.replace(/(\d{4})(\d{2})(\d{2})/, (_, $1, $2, $3) => {  // 日期规范化 20160808 => 2016-08-08
+						return $1 + '-' + $2 + '-' + $3;
+					})
+				});
 				dispatch({
 					type: types.UPDATE_SPORTS_DATES,
-					dates: json
+					dates
 				})
 			} else {
 				alert('该筛选组合下没有比赛');
 			}
-		});
+		}).catch(error => console.warn(error));
 	}
 }
 
@@ -107,9 +114,7 @@ function updateHotSchedule() {
 					}
 				});
 			}, Math.random() * 1000)
-		}).catch(function(error) {
-			console.warn(error);
-		});
+		}).catch(error => console.warn(error));
 	}
 }
 
@@ -121,7 +126,6 @@ function updateMainSchedule() {
 		let type = oneDay ? oneDay.type :
 			selectedDate < today ? 'all' : 'active';
 
-		console.log(selectedDate, today); // todo
 		// 往日赛程以及1分钟以内的数据不做重新请求
 		let url = assembleScheduleUrl(type, state);
 		dispatch(fetchingMainSchedule(selectedDate));
@@ -143,9 +147,7 @@ function updateMainSchedule() {
 					}
 				});
 			}, Math.random() * 1000)
-		}).catch(function(error) {
-			console.warn(error);
-		});
+		}).catch(error => console.warn(error));
 	}
 }
 
@@ -218,7 +220,8 @@ function unusedEliminate(list) {
 			});
 		}
 
-		if ( isFinished && competitorMapList && competitorMapList.length ) { // 截取赛果长度，团体只看第一名
+		// 截取赛果长度，团体只看第一名
+		if ( isFinished && competitorMapList && competitorMapList.length ) {
 			let tmpCpt;
 			if ( organisations.length == 2 ) {
 				if ( competitorMapList[0].organisation != competitors[0].code ) { // 按照默认顺序显示结果
@@ -237,7 +240,7 @@ function unusedEliminate(list) {
 				competitors.push({
 					name: tmpCpt.competitorName,
 					code: tmpCpt.organisation,
-					flag: tmpCpt.organisationImgUrl.replace('90x60', '61x45')
+					flag: tmpCpt.organisationImgUrl.replace('90x60', '61x45')  // todo
 					// result: tmpCpt.result,
 					// resultType: tmpCpt.resultType,
 					// wlt: tmpCpt.wlt

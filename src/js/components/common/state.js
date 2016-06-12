@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/widgets/state.scss';
 import * as nahelper from '../../utils/newsapp-helper';
+import shallowCompare from 'react-addons-shallow-compare';
 
 
 @CSSModules(styles)
@@ -11,6 +12,10 @@ export default class extends Component {
 		this.state = {
 			alarm: false
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
 	}
 
 	handleClick = e => {

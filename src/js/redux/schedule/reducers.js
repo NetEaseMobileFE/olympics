@@ -1,8 +1,11 @@
 import { combineReducers } from 'redux';
-import { formatDate, extend } from '../../utils/util';
+import { formatDate } from '../../utils/util';
 import * as types from './types';
 import { disciplines } from '../../config';
+import Immutable from 'seamless-immutable';
 
+
+const emptyObject = Immutable({});
 
 function onlyChina(state = false, action) {
 	switch ( action.type ) {
@@ -25,12 +28,12 @@ function onlyGold(state = false, action) {
 function selectedDiscipline(state , action) {
 	switch ( action.type ) {
 		case types.SELECT_DISCIPLINE:
-			return action.discipline;
+			return state.merge(action.discipline);
 		default:
-			return state || {  // 默认要显示成 “项目筛选”
+			return state || Immutable({  // 默认要显示成 “项目筛选”
 				name: '项目筛选',
 				id: disciplines[0].id
-			};
+			});
 	}
 }
 
@@ -52,33 +55,33 @@ function selectedDate(state = formatDate(), action) {
 	}
 }
 
-function hotSchedule(state = {}, action) {
+function hotSchedule(state = emptyObject, action) {
 	switch ( action.type ) {
 		case types.EMPTY_HOT_SCHEDULE:
-			return {};
+			return emptyObject;
 		case types.FETCHING_HOT_SCHEDULE:
-			return extend({}, state, {
+			return state.merge({
 				[action.date]: {
 					loading: action.state
 				}
-			});
+			}, { deep: true });
 		case types.UPDATE_HOT_SCHEDULE:
-			return extend({}, state, action.data);
+			return state.merge(action.data, { deep: true });
 		default:
 			return state;
 	}
 }
 
-function mainSchedule(state = {}, action) {
+function mainSchedule(state = emptyObject, action) {
 	switch ( action.type ) {
 		case types.EMPTY_MAIN_SCHEDULE:
-			return {};
+			return emptyObject;
 		case types.FETCHING_MAIN_SCHEDULE:
-			return extend({}, state, {
+			return state.merge({
 				[action.date]: {
 					loading: action.state
 				}
-			});
+			}, { deep: true });
 		case types.UPDATE_MAIN_SCHEDULE:
 			let data = action.data;
 			let date = Object.keys(data)[0];
@@ -87,7 +90,8 @@ function mainSchedule(state = {}, action) {
 			if ( schedule.list && schedule.lastPageNo !== 1 ) { // list 数据合并
 				schedule.list = state[date].list.concat(schedule.list);
 			}
-			return extend({}, state, data);
+
+			return state.merge(data, { deep: true });
 		default:
 			return state;
 	}

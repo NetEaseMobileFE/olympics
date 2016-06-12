@@ -3,10 +3,11 @@ import 'swiper';
 import CSSModules from 'react-css-modules';
 import '../../../css/widgets/swiper.scss';
 import styles from '../../../css/widgets/datepicker.scss';
-import { round, formatDate, destructureDate, createConnect } from '../../../js/utils/util';
+import { round, formatDate, createConnect } from '../../../js/utils/util';
+import ua from '../../../js/utils/ua';
 
 const today = formatDate();
-const isAndroid = /android|adr/gi.test(navigator.userAgent);
+const isAndroid = ua.isAndroid;
 
 
 @createConnect(['selectedDate', 'sportsDates'])
@@ -15,28 +16,14 @@ export default class Datepicker extends Component {
 	constructor(props) {
 		super(props);
 		this.currIndex = null; // 可能是 swiper 的BUG，缓慢移动的时候 previousIndex 跟 activeIndex 相等, 自己标记一个
-		this.state = {
-			showDP: false
-		};
 	}
 
 	componentDidMount() {
 		const maxScaleX = 130 / 107;
 		const maxScaleY = 168 / 146;
-		let { selectedDate, sportsDates } = this.props;
-		let lastIndex = sportsDates.length - 1;
 		let that = this;
-		let initIndex;
+		let initIndex = this.findASuitbleIndex();
 		let slideSize;
-		
-		// 计算初始日期，超出范围就取最早/晚那天
-		if ( !selectedDate || selectedDate <= sportsDates[0] ) {
-			initIndex = 0;
-		} else if ( selectedDate >= sportsDates[lastIndex] ){
-			initIndex = lastIndex;
-		} else {
-			initIndex = sportsDates.indexOf(selectedDate);
-		}
 		
 		this.swiper = new Swiper(this.refs.swiper, {
 			slidesPerView: 7,
@@ -114,41 +101,76 @@ export default class Datepicker extends Component {
 	changeSlide(index) {
 		if ( index != this.currIndex ) {
 			let { dispatch, selectDate, sportsDates } = this.props;
-			dispatch(selectDate(sportsDates[index]));
 			this.currIndex = index;
+			this.currDate = sportsDates[index];
+			dispatch(selectDate(this.currDate));
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		return nextProps.sportsDates !== this.props.sportsDates;
-	}
-
-	componentDidUpdate() {
+	/**
+	 * 筛选合适的选中日期，优先级依次：选中/今天 > 选中/今天最近的下一个比赛日 > 超出范围就取最早/晚那天
+	 */
+	findASuitbleIndex() {
 		let { sportsDates, selectedDate } = this.props;
-		let index;
+		let lastIndex = sportsDates.length - 1;
+		let index = null ;
 
 		if ( sportsDates.indexOf(selectedDate) > -1 ) {
 			index = sportsDates.indexOf(selectedDate);
 		} else if ( sportsDates.indexOf(today) > -1 ) {
 			index = sportsDates.indexOf(today);
 		} else {
-			for ( let i = 0, len = sportsDates.length; i < len; i++ ) {
-				if ( sportsDates[i] > today ) {
-					index = i;
-					break;
+			index = this.findClosestIndex(selectedDate);
+
+			if ( index === null ) {
+				index = this.findClosestIndex(today);
+			}
+
+			if ( index === null ) {
+				if ( selectedDate <= sportsDates[0] ) {
+					index = 0;
+				} else if ( selectedDate >= sportsDates[lastIndex] ) {
+					index = lastIndex;
 				}
 			}
 		}
 
-		let shouldForceUpdate = this.currIndex == index;
+		return index;
+	}
+
+	findClosestIndex(date) {
+		let { sportsDates } = this.props;
+		let index = null;
+
+		for ( let i = 0, len = sportsDates.length; i < len; i++ ) {
+			if ( sportsDates[i] > date ) {
+				index = i;
+				break;
+			}
+		}
+
+		return index;
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if ( nextProps.sportsDates !== this.props.sportsDates ) {
+			this.currDate = null;
+		}
+	}
+
+	shouldComponentUpdate(nextProps) {
+		return nextProps.selectedDate !== this.currDate;
+	}
+
+	componentDidUpdate() {
+		let index = this.findASuitbleIndex();
 		this.currIndex = null;
+
 		setTimeout(() => {
 			this.swiper.update(true);
 			window.mainSwiper.update(true);
 			this.swiper.slideTo(index, 0);
-			if ( shouldForceUpdate ) {
-				this.changeSlide(index);
-			}
+			this.changeSlide(index, true);
 		}, 10);
 	}
 	

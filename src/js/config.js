@@ -1,14 +1,14 @@
+import Immutable from 'seamless-immutable';
+
 let dates = [];
 let i = 25;
 while ( i <= 31 ) dates.push('2012-07-' + ('0' + i++).slice(-2));
 i = 1;
 while ( i <= 13 ) dates.push('2012-08-' + ('0' + i++).slice(-2));
 
-export const sportsDates = dates;
+export const sportsDates = Immutable(dates);
 
-export const flagPath = 'http://img1.cache.netease.com/pcluster/olympicinfo/post/';
-
-export const disciplines = [
+export const disciplines = Immutable([
 	{ id: '',   name: "全部" },
 	{ id: 'AR', name: "射箭" },
 	{ id: 'AT', name: "田径" },
@@ -48,29 +48,29 @@ export const disciplines = [
 	{ id: 'WL', name: "举重" },
 	{ id: 'WR', name: "摔跤" },
 	{ id: 'CS', name: "皮划艇激流回旋" }
-];
+]);
 
 const apiBaseUrl = `http://data.2016.163.com/schedule/`;
 
 export function assembleScheduleUrl(type, params) {
 	if ( type == 'hot' ) {
 		return assembleHotScheduleUrl(params.selectedDate);
-	} else {
-		let mode = checkMode(params);
-		let { selectedDate, selectedDiscipline, mainSchedule } = params;
-		let disciplineID = selectedDiscipline.id;
-		let oneDay = mainSchedule[selectedDate];
-		let pageNo = oneDay ? oneDay.lastPageNo + 1 : 1;
-		let p = {
-			selectedDate,
-			disciplineID,
-			pageNo
-		};
-
-		return type == 'active' ?
-			assembleActiveScheduleUrl(mode, p) :
-			assembleAllScheduleUrl(mode, p);
 	}
+	
+	let mode = checkMode(params);
+	let { selectedDate, selectedDiscipline, mainSchedule } = params;
+	let disciplineID = selectedDiscipline.id;
+	let oneDay = mainSchedule[selectedDate];
+	let pageNo = oneDay ? oneDay.lastPageNo + 1 : 1;
+	let p = {
+		selectedDate,
+		disciplineID,
+		pageNo
+	};
+
+	return type == 'active' ?
+		assembleActiveScheduleUrl(mode, p) :
+		assembleAllScheduleUrl(mode, p);
 }
 
 

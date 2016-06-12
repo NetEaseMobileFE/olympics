@@ -4,7 +4,7 @@ const isAndroid = /android|adr/gi.test(UA);
 export default {
 	isAndroid: isAndroid,
 	isIos: /iphone|ipod|ipad/gi.test(UA) && !isAndroid,
-	isNewsApp: /NewsApp\/[\d\.]+/gi.test(UA),
+	isNewsApp: /NewsApp\/[\d\.]+/gi.test(UA)
 	// isWeixin: /MicroMessenger/gi.test(UA),
 	// isQQ: /QQ\/\d/gi.test(UA),
 	// isYixin: /YiXin/gi.test(UA),

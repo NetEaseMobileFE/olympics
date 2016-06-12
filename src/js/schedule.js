@@ -22,6 +22,4 @@ render((
 
 // todo list
 // datepicker card 动效优化
-// 提醒
-// 打开直播
 // ajax cache问题

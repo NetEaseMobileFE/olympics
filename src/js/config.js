@@ -1,10 +1,8 @@
 import Immutable from 'seamless-immutable';
 
 let dates = [];
-let i = 25;
-while ( i <= 31 ) dates.push('2012-07-' + ('0' + i++).slice(-2));
-i = 1;
-while ( i <= 13 ) dates.push('2012-08-' + ('0' + i++).slice(-2));
+let i = 5;
+while ( i <= 21 ) dates.push('2016-08-' + ('0' + i++).slice(-2));
 
 export const sportsDates = Immutable(dates);
 

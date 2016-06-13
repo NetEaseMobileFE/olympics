@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/common/discipline-picker.scss';
+import shallowCompare from 'react-addons-shallow-compare';
 
 
 @CSSModules(styles)
 export default class extends Component {
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
+	}
+
 	handleClick = value => {
 		let { hide, onChange, disciplineName } = this.props;
 		if ( value.name == disciplineName ) { // 取消选中

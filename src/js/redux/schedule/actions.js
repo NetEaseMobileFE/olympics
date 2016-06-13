@@ -124,7 +124,7 @@ function updateMainSchedule() {
 		let { selectedDate } = state;
 		let oneDay = state.mainSchedule[selectedDate];
 		let type = oneDay ? oneDay.type :
-			selectedDate < today ? 'all' : 'active';
+			selectedDate == today ? 'active' : 'all';
 
 		// 往日赛程以及1分钟以内的数据不做重新请求
 		let url = assembleScheduleUrl(type, state);
@@ -210,48 +210,50 @@ function unusedEliminate(list) {
 		let isFinished = schedule.status == 7; //  todo FINISHED
 		let competitors = [];
 
-		if ( organisations.length == 2 ) {
-			organisations.forEach((o, i) => {
-				competitors.push({
-					code: o,
-					name: organisationsName[i],
-					flag: organisationsImgUrl[i].replace('90x60', '61x45')
-				});
-			});
-		}
-
-		// 截取赛果长度，团体只看第一名
-		if ( isFinished && competitorMapList && competitorMapList.length ) {
-			let tmpCpt;
+		if ( organisations && organisations.length ) {
 			if ( organisations.length == 2 ) {
-				if ( competitorMapList[0].organisation != competitors[0].code ) { // 按照默认顺序显示结果
-					competitorMapList.reverse();
-				}
+				organisations.forEach((o, i) => {
+					competitors.push({
+						code: o,
+						name: organisationsName[i],
+						flag: organisationsImgUrl[i].replace('90x60', '61x45')
+					});
+				});
+			}
 
-				competitorMapList.forEach((c, i) => {
-					tmpCpt = competitors[i];
-					tmpCpt.name = c.competitorName; // 如果是个人名字的话，优先显示个人
-					tmpCpt.result = c.result;
-					tmpCpt.resultType = c.resultType;
-					tmpCpt.rank = c.rank;
-				});
-			} else {
-				tmpCpt = competitorMapList[0];
-				competitors.push({
-					name: tmpCpt.competitorName,
-					code: tmpCpt.organisation,
-					flag: tmpCpt.organisationImgUrl.replace('90x60', '61x45')  // todo
-					// result: tmpCpt.result,
-					// resultType: tmpCpt.resultType,
-					// wlt: tmpCpt.wlt
-				});
+			// 截取赛果长度，团体只看第一名
+			if ( isFinished && competitorMapList && competitorMapList.length ) {
+				let tmpCpt;
+				if ( organisations.length == 2 ) {
+					if ( competitorMapList[0].organisation != competitors[0].code ) { // 按照默认顺序显示结果
+						competitorMapList.reverse();
+					}
+
+					competitorMapList.forEach((c, i) => {
+						tmpCpt = competitors[i];
+						tmpCpt.name = c.competitorName; // 如果是个人名字的话，优先显示个人
+						tmpCpt.result = c.result;
+						tmpCpt.resultType = c.resultType;
+						tmpCpt.rank = c.rank;
+					});
+				} else {
+					tmpCpt = competitorMapList[0];
+					competitors.push({
+						name: tmpCpt.competitorName,
+						code: tmpCpt.organisation,
+						flag: tmpCpt.organisationImgUrl.replace('90x60', '61x45')  // todo
+						// result: tmpCpt.result,
+						// resultType: tmpCpt.resultType,
+						// wlt: tmpCpt.wlt
+					});
+				}
 			}
 		}
 
 		return {
 			disciplineName: schedule.disciplineName,
 			scheduleName: schedule.scheduleName,
-			withChina: organisations.indexOf('CHN') > -1,
+			withChina: organisations && organisations.length > 0 && organisations.indexOf('CHN') > -1,
 			isFinished,
 			isFinal: schedule.medal == 1,
 			startTime: schedule.startDate.substr(11, 5),

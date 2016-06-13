@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/common/loader.scss';
 import Loading from './loading';
+import shallowCompare from 'react-addons-shallow-compare';
 
 
 @CSSModules(styles)
 export default class extends Component {
+	shouldComponentUpdate(nextProps) {
+		return shallowCompare(this, nextProps);
+	}
+
 	componentWillUpdate(nextProps) {
 		if ( !nextProps.showMore ) {
 			this.unbindScroll();

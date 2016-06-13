@@ -4,10 +4,15 @@ import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/common/filter.scss';
 import { createConnect } from '../../utils/util';
 import DP from './discipline-picker';
+import shallowCompare from 'react-addons-shallow-compare';
 
 
 @CSSModules(styles)
 class Checkbox extends Component {
+	shouldComponentUpdate(nextProps) {
+		return shallowCompare(this, nextProps);
+	}
+
 	render() {
 		let { isChecked, label, onChange } = this.props;
 
@@ -28,6 +33,10 @@ export default class extends Component {
 		this.state = {
 			showDP: false
 		};
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
 	}
 
 	showDP = () => {

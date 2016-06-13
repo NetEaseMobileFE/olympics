@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/widgets/clip.scss';
+import shallowCompare from 'react-addons-shallow-compare';
 
 const clips = [
 	{ type: 'red', 'text': '中国' },
@@ -10,6 +11,10 @@ const clips = [
 
 @CSSModules(styles)
 export default class extends Component {
+	shouldComponentUpdate(nextProps) {
+		return shallowCompare(this, nextProps);
+	}
+
 	render() {
 		let { china, final, pcn = ''} = this.props;
 		let clipProp = [];

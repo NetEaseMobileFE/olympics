@@ -8,6 +8,7 @@ import ua from '../../../js/utils/ua';
 
 const today = formatDate();
 const isAndroid = ua.isAndroid;
+const BOXSHADOW = '0 1px 2px rgba(0, 0, 0, 0.75)';
 
 
 @createConnect(['selectedDate', 'sportsDates'])
@@ -24,7 +25,7 @@ export default class Datepicker extends Component {
 		let that = this;
 		let initIndex = this.findASuitbleIndex();
 		let slideSize;
-		
+
 		this.swiper = new Swiper(this.refs.swiper, {
 			slidesPerView: 7,
 			initialSlide: initIndex,
@@ -36,11 +37,23 @@ export default class Datepicker extends Component {
 			freeModeMinimumVelocity: .1, // 防止龟速
 			watchSlidesProgress : true,
 			resistanceRatio: 0,
+			// 应该是 swiper 组件的BUG，当 initialSlide 刚好是初始默认居中位置（当前设置就是7个中的第4个，也就是index = 3）时不触发 transition，
+			// 这里在 init 之后手动添加样式，并触发 changeSlide
+			onInit(s) {
+				if ( initIndex == 3 ) {
+					let slide = s.slides.eq(3);
+					slide.transform('scale3d(' + maxScaleX + ', ' + maxScaleY + ', 1)');
+					if ( !isAndroid ) {
+						slide[0].style.boxShadow = BOXSHADOW;
+					}
+
+					that.changeSlide(3);
+				}
+			},
 			onSetTranslate(s) {
 				let transform = s.translate;
 				let center = -transform + s.width / 2;
 				let slide, slideOffset, offsetMultiplier, scaleX, scaleY, slideTransform;
-				let BOXSHADOW = '0 1px 2px rgba(0, 0, 0, 0.75)';
 				slideSize = slideSize || s.slidesSizesGrid[0];
 
 				//Each slide offset from center

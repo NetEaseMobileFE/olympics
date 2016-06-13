@@ -3,6 +3,7 @@ import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/schedule/panel.scss';
 import Clip from '../common/clip';
 import State from '../common/state';
+import shallowCompare from 'react-addons-shallow-compare';
 
 
 /**
@@ -10,6 +11,10 @@ import State from '../common/state';
  */
 @CSSModules(styles)
 class Competetion extends Component {
+	shouldComponentUpdate(nextProps) {
+		return shallowCompare(this, nextProps);
+	}
+
 	render() {
 		let { competitors } = this.props;
 		let [ home, away ] = competitors;
@@ -55,6 +60,10 @@ class Event extends Component {
 		this.state = {
 			unfold: false
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
 	}
 
 	render() {
@@ -109,6 +118,10 @@ class Event extends Component {
  */
 @CSSModules(styles)
 export default class extends Component {
+	shouldComponentUpdate(nextProps) {
+		return shallowCompare(this, nextProps);
+	}
+
 	handleClick = () => {
 		this.props.showFinished();
 	};

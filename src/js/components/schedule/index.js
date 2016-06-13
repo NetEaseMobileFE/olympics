@@ -9,6 +9,7 @@ import Datepicker from '../common/datepicker';
 import Loader from '../common/loader'
 import Panel from './panel';
 import { selectChina, selectGold, selectDiscipline, selectDate, showTypeAll, showMoreSchedule } from '../../redux/schedule/actions';
+import shallowCompare from 'react-addons-shallow-compare';
 
 const swiperHeight = window.innerHeight - rem2px(2.26) - 1;
 
@@ -16,6 +17,10 @@ const swiperHeight = window.innerHeight - rem2px(2.26) - 1;
 @createConnect(['sportsDates', 'hotSchedule', 'mainSchedule'])
 @CSSModules(styles)
 export default class extends Component {
+	shouldComponentUpdate(nextProps) {
+		return shallowCompare(this, nextProps);
+	}
+
 	componentDidMount() {
 		this.swiper = new Swiper(this.refs.swiper, {
 			initialSlide: window.dateSwiper.activeIndex,

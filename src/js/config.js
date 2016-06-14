@@ -1,5 +1,6 @@
 import Immutable from 'seamless-immutable';
 
+
 let dates = [];
 let i = 5;
 while ( i <= 21 ) dates.push('2016-08-' + ('0' + i++).slice(-2));

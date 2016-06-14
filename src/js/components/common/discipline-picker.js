@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/common/discipline-picker.scss';
-import shallowCompare from 'react-addons-shallow-compare';
 
 
 @CSSModules(styles)
 export default class extends Component {
-	shouldComponentUpdate(nextProps, nextState) {
-		return shallowCompare(this, nextProps, nextState);
+	shouldComponentUpdate(nextProps) {
+		return shallowCompare(this, nextProps);
 	}
 
 	handleClick = value => {

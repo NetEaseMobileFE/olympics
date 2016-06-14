@@ -7,7 +7,7 @@ import { sportsDates, disciplines } from './config';
 import Schedule from './components/schedule';
 
 
-const store = configureStore({
+let store = configureStore({
 	sportsDates,
 	disciplines
 });
@@ -22,4 +22,3 @@ render((
 
 // todo list
 // datepicker card 动效优化
-// ajax cache问题

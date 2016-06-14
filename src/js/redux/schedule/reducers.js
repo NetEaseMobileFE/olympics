@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
+import Immutable from 'seamless-immutable';
 import { formatDate } from '../../utils/util';
 import * as types from './types';
 import { disciplines } from '../../config';
-import Immutable from 'seamless-immutable';
 
 
 const emptyObject = Immutable({});

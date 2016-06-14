@@ -3,13 +3,13 @@ import 'swiper';
 import CSSModules from 'react-css-modules';
 import '../../../css/widgets/swiper.scss';
 import styles from '../../../css/widgets/datepicker.scss';
-import { round, formatDate, createConnect } from '../../../js/utils/util';
+import { formatDate, createConnect } from '../../../js/utils/util';
 import ua from '../../../js/utils/ua';
+
 
 const today = formatDate();
 const isAndroid = ua.isAndroid;
 const BOXSHADOW = '0 1px 2px rgba(0, 0, 0, 0.75)';
-
 
 @createConnect(['selectedDate', 'sportsDates'])
 @CSSModules(styles)
@@ -42,7 +42,7 @@ export default class Datepicker extends Component {
 			onInit(s) {
 				if ( initIndex == 3 ) {
 					let slide = s.slides.eq(3);
-					slide.transform('scale3d(' + maxScaleX + ', ' + maxScaleY + ', 1)');
+					slide.transform(`scale3d(${maxScaleX}, ${maxScaleY}, 1)`);
 					if ( !isAndroid ) {
 						slide[0].style.boxShadow = BOXSHADOW;
 					}
@@ -60,8 +60,8 @@ export default class Datepicker extends Component {
 				for ( var i = 0, length = s.slides.length; i < length; i++ ) {
 					slide = s.slides.eq(i);
 					slideOffset = slide[0].swiperSlideOffset;
-					offsetMultiplier = Math.abs((center - slideOffset - slideSize / 2) / slideSize);
-					offsetMultiplier = Math.min(round(offsetMultiplier, 2), 1);
+					offsetMultiplier = parseFloat(Math.abs((center - slideOffset - slideSize / 2) / slideSize)).toFixed(2);
+					offsetMultiplier = Math.min(offsetMultiplier, 1);
 
 					scaleX = 1 + (1 - offsetMultiplier) * (maxScaleX - 1);
 					scaleY = 1 + (1 - offsetMultiplier) * (maxScaleY - 1);
@@ -69,7 +69,7 @@ export default class Datepicker extends Component {
 					if ( scaleX < 1.004 ) scaleX = 1;
 					if ( scaleY < 1.004 ) scaleY = 1;
 
-					slideTransform = 'scale3d(' + scaleX + ', ' + scaleY + ', 1)';
+					slideTransform = `scale3d(${scaleX}, ${scaleY}, 1)`;
 					slide.transform(slideTransform);
 
 					if ( !isAndroid ) { // 安卓有点卡，降级掉阴影

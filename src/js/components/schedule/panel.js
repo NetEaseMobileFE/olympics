@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/schedule/panel.scss';
 import Clip from '../common/clip';
 import State from '../common/state';
-import shallowCompare from 'react-addons-shallow-compare';
+import ua from '../../utils/ua';
 
 
 /**
@@ -82,11 +83,11 @@ class Event extends Component {
 						<div styleName="tags">
 							<div styleName="tags__discipline">{disciplineName}</div>
 							{
-								roomId ? (
+								ua.isNewsApp && roomId ? (
 									<div styleName="tags__state">
 										<div styleName="tags__state__entity">
 											<State roomId={roomId} live={live} startTime={startTime}
-												   isFinished={isFinished} date={date} scheduleName={scheduleName}/>
+												   isFinished={isFinished} date={date} matchName={disciplineName + '-' + scheduleName}/>
 										</div>
 										<div styleName="tags__state__line"/>
 									</div>

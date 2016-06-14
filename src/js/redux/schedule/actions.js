@@ -3,6 +3,8 @@ import * as types from './types';
 import { assembleDateUrl, assembleScheduleUrl, sportsDates } from '../../config';
 
 
+const today = formatDate();
+
 /**
  * 切换“中国赛程”
  */
@@ -45,16 +47,15 @@ export function selectDiscipline(discipline) {
 // 请求过滤后的比赛日期
 function updateSportsDates() {
 	return (dispatch, getState) => {
-		let url = assembleDateUrl(getState());
+		const url = assembleDateUrl(getState());
 		let promise = url ? getScript(url) : Promise.resolve(sportsDates);
 
 		return promise.then(json => {
-			console.log(json); // todo
 			if ( json.length ) {
 				dispatch(emptyHotSchedule());
 				dispatch(emptyMainSchedule());
 
-				let dates = json.map(d => {
+				const dates = json.map(d => {
 					return d.replace(/(\d{4})(\d{2})(\d{2})/, (_, $1, $2, $3) => {  // 日期规范化 20160808 => 2016-08-08
 						return $1 + '-' + $2 + '-' + $3;
 					})
@@ -80,8 +81,8 @@ export function selectDate(date) {
 			date
 		});
 
-		let { selectedDate, mainSchedule } = getState();
-		let oneDay = mainSchedule[selectedDate];
+		const { selectedDate, mainSchedule } = getState();
+		const oneDay = mainSchedule[selectedDate];
 		if ( !oneDay || ( selectedDate >= today && Date.now() - oneDay.updateTime > 300000 ) ) { // 缓存5分钟
 			dispatch(updateHotSchedule());
 			dispatch(updateMainSchedule());
@@ -89,35 +90,32 @@ export function selectDate(date) {
 	}
 }
 
-// 更新赛程
-let today = formatDate();
-
+// 热门赛程
 function updateHotSchedule() {
 	return (dispatch, getState) => {
 		let state = getState();
 		let { selectedDate } = state;
-		if ( state.onlyChina || state.onlyGold || state.selectedDiscipline.id ) { return }
-		let url = assembleScheduleUrl('hot', state);
+		if ( state.onlyChina || state.onlyGold || state.selectedDiscipline.id ) { return } // 筛选条件下不显示热门
+		const url = assembleScheduleUrl('hot', state);
 
 		dispatch(fetchingHotSchedule(selectedDate));
 
 		return getScript(url).then(json => {
-			setTimeout(() => {  // todo
-				dispatch(fetchingHotSchedule(selectedDate, false));
-				dispatch({
-					type: types.UPDATE_HOT_SCHEDULE,
-					data: {
-						[selectedDate]: {
-							list: unusedEliminate(json.scheduleList),
-							updateTime: Date.now()
-						}
+			dispatch(fetchingHotSchedule(selectedDate, false));
+			dispatch({
+				type: types.UPDATE_HOT_SCHEDULE,
+				data: {
+					[selectedDate]: {
+						list: unusedEliminate(json.scheduleList),
+						updateTime: Date.now()
 					}
-				});
-			}, Math.random() * 1000)
+				}
+			});
 		}).catch(error => console.warn(error));
 	}
 }
 
+// 主要赛程，包括 进行中赛程（默认） 和 全部赛程
 function updateMainSchedule() {
 	return (dispatch, getState) => {
 		let state = getState();
@@ -126,31 +124,53 @@ function updateMainSchedule() {
 		let type = oneDay ? oneDay.type :
 			selectedDate == today ? 'active' : 'all';
 
-		// 往日赛程以及1分钟以内的数据不做重新请求
-		let url = assembleScheduleUrl(type, state);
+		const url = assembleScheduleUrl(type, state);
 		dispatch(fetchingMainSchedule(selectedDate));
 
 
 		return getScript(url).then(json => {
-			setTimeout(() => {  // todo
+			// 进行中赛程为空的话，自动切换到全部赛程
+			if ( type == 'active' && ( !json.scheduleList || !json.scheduleList.length ) ) {
+				dispatch(showTypeAll());
+				return;
+			}
+
+			dispatch(fetchingMainSchedule(selectedDate, false));
+			dispatch({
+				type: types.UPDATE_MAIN_SCHEDULE,
+				data: {
+					[selectedDate]: {
+						type,
+						list: unusedEliminate(json.scheduleList),
+						lastPageNo: json.pageNo,
+						noMore: json.pageNo == json.pageNum
+					}
+				}
+			});
+		}).catch(error => {
+			// 标记没有数据
+			if ( type == 'all' ) {
 				dispatch(fetchingMainSchedule(selectedDate, false));
 				dispatch({
 					type: types.UPDATE_MAIN_SCHEDULE,
 					data: {
 						[selectedDate]: {
 							type,
-							list: unusedEliminate(json.scheduleList),
-							updateTime: Date.now(),
-							lastPageNo: json.pageNo,
-							noMore: json.pageNo == json.pageNum
+							list: [],
+							lastPageNo: oneDay ? oneDay.lastPageNo + 1 : 1,
+							noMore: true
 						}
 					}
 				});
-			}, Math.random() * 1000)
-		}).catch(error => console.warn(error));
+			}
+			console.warn(error);
+		});
 	}
 }
 
+/**
+ * 切换主要赛程为 全部赛程
+ */
 export function showTypeAll() {
 	return (dispatch, getState) => {
 		let { selectedDate } = getState();
@@ -167,6 +187,9 @@ export function showTypeAll() {
 	}
 }
 
+/**
+ * 加载更多主要赛程
+ */
 export function showMoreSchedule() {
 	return (dispatch) => {
 		dispatch(updateMainSchedule());
@@ -203,11 +226,11 @@ function fetchingMainSchedule(date, state = true) {
 	}
 }
 
-
+// 剔除不用的属性，统一赛果 competitors
 function unusedEliminate(list) {
 	return list.map(schedule => {
 		let { organisations, organisationsName, organisationsImgUrl, competitorMapList } = schedule;
-		let isFinished = schedule.status == 7; //  todo FINISHED
+		let isFinished = schedule.status == 'FINISHED';
 		let competitors = [];
 
 		if ( organisations && organisations.length ) {

@@ -1,5 +1,6 @@
 import ua from './ua';
 
+
 let nahContainer = document.createElement('div');
 let iframe = document.createElement('iframe');
 
@@ -23,6 +24,7 @@ function alarm(action, data) {
 			window[`__newsapp_alarm_${action}_done`] = function(state) {
 				resolve(state);
 			};
+
 			for ( let key in data ) {
 				if ( data.hasOwnProperty(key) ) {
 					value = data[key];
@@ -47,5 +49,6 @@ function alarm(action, data) {
 		}
 	});
 }
+
 
 export { openLive, alarm };

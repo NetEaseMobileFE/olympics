@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/widgets/state.scss';
 import * as nahelper from '../../utils/newsapp-helper';
-import shallowCompare from 'react-addons-shallow-compare';
 
 
 @CSSModules(styles)
@@ -30,32 +30,28 @@ export default class extends Component {
 						alarm: action == 'add'
 					});
 				}
-			}).catch(error => {
-				console.warn(error);
-			});
+			}).catch(error => console.warn(error));
 		} else {
 			nahelper.openLive(roomId);
 		}
 	};
 
 	componentDidMount() {
-		let { date, startTime, roomId, scheduleName } = this.props;
+		let { date, startTime, roomId, matchName } = this.props;
 		let matchTime = +new Date(date.replace(/-/g, '/') + ' ' + startTime);
 
 		this.alarmConfig = {
 			url: `newsapp://live/${roomId}`,
 			date: matchTime,
-			title: '比赛直播开始了',
-			message: `正在直播${scheduleName}`
+			title: '网易新闻',
+			message: `[直播提醒]${matchName}直播现在开始了`
 		};
 
 		nahelper.alarm('check', this.alarmConfig).then(state => {
 			this.setState({
 				alarm: state
 			});
-		}).catch(error => {
-			console.warn(error);
-		});
+		}).catch(error => console.warn(error));
 	}
 
 	render() {
@@ -75,7 +71,7 @@ export default class extends Component {
 		}
 
 		let statecn = `state--${stateType}`;
-		stateType = 'alarm'; stateLabel = this.state.alarm == 0 ? '提醒' : '已开启'; // todo
+		// stateType = 'alarm'; stateLabel = this.state.alarm == 0 ? '提醒' : '已开启';
 		this.stateType = stateType;
 
 		return (

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/common/filter.scss';
 import { createConnect } from '../../utils/util';
 import DP from './discipline-picker';
-import shallowCompare from 'react-addons-shallow-compare';
 
 
 @CSSModules(styles)

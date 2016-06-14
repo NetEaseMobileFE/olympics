@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/common/loader.scss';
 import Loading from './loading';
-import shallowCompare from 'react-addons-shallow-compare';
 
 
 @CSSModules(styles)
@@ -38,7 +38,7 @@ export default class extends Component {
 	};
 
 	componentDidMount() {
-		this.refs.loader.addEventListener('scroll', this.scrollHandler, false);
+		this.props.showMore && this.refs.loader.addEventListener('scroll', this.scrollHandler, false);
 	}
 
 	componentWillUnmount() {

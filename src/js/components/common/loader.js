@@ -12,7 +12,9 @@ export default class extends Component {
 	}
 
 	componentWillUpdate(nextProps) {
-		if ( !nextProps.showMore ) {
+		if ( nextProps.showMore ) {
+			this.bindScroll();
+		} else {
 			this.unbindScroll();
 		}
 	}
@@ -25,21 +27,20 @@ export default class extends Component {
 	scrollHandler = () => {
 		let loader = this.refs.loader;
 		if ( loader.scrollHeight - loader.clientHeight - loader.scrollTop < 200 ) {
-			this.timer && clearTimeout(this.timer);
 			this.loadingAgain = true;
-			this.timer = setTimeout(() => {
+			if ( !this.props.loading ) {
 				this.props.showMore();
-			}, 100);
+			}
 		}
+	};
+
+	bindScroll = () => {
+		this.refs.loader.addEventListener('scroll', this.scrollHandler, false);
 	};
 
 	unbindScroll = () => {
 		this.refs.loader.removeEventListener('scroll', this.scrollHandler);
 	};
-
-	componentDidMount() {
-		this.props.showMore && this.refs.loader.addEventListener('scroll', this.scrollHandler, false);
-	}
 
 	componentWillUnmount() {
 		this.unbindScroll();

@@ -8,26 +8,40 @@ const today = formatDate();
 /**
  * 切换“中国赛程”
  */
-export function selectChina(checked) {
-	return dispatch => {
+export function selectChina(checked, mute = false) {
+	return (dispatch, getState) => {
+		let prevOnlyChina = getState().onlyChina;
+
 		dispatch({
 			type: types.SELECT_CHINA,
 			checked
 		});
-		dispatch(updateSportsDates())
+
+		if ( !mute ) {
+			dispatch(updateSportsDates(() => {
+				dispatch(selectChina(prevOnlyChina, true))
+			}))
+		}
 	}
 }
 
 /**
  * 切换“金牌赛程”
  */
-export function selectGold(checked) {
-	return dispatch => {
+export function selectGold(checked, mute = false) {
+	return (dispatch, getState) => {
+		let prevOnlyGold = getState().onlyGold;
+
 		dispatch({
 			type: types.SELECT_GOLD,
 			checked
 		});
-		dispatch(updateSportsDates())
+
+		if ( !mute ) {
+			dispatch(updateSportsDates(() => {
+				dispatch(selectGold(prevOnlyGold, true))
+			}))
+		}
 	}
 }
 
@@ -35,20 +49,24 @@ export function selectGold(checked) {
  * 筛选项目
  */
 export function selectDiscipline(discipline, mute = false) {
-	return dispatch => {
+	return (dispatch, getState) => {
+		let prevDiscipline = getState().selectedDiscipline;
+
 		dispatch({
 			type: types.SELECT_DISCIPLINE,
 			discipline
 		});
 
 		if ( !mute ) {
-			dispatch(updateSportsDates())
+			dispatch(updateSportsDates(() => {
+				dispatch(selectDiscipline(prevDiscipline, true))
+			}))
 		}
 	}
 }
 
 // 请求过滤后的比赛日期
-function updateSportsDates() {
+function updateSportsDates(rollBack) {
 	return (dispatch, getState) => {
 		let state = getState();
 		const url = assembleDateUrl(state);
@@ -69,12 +87,14 @@ function updateSportsDates() {
 					dates
 				});
 			} else {
-				dispatch(selectDiscipline(state.selectedDiscipline.prev, true));
-				alert('该筛选组合下没有比赛');
+				rollBack();
+				setTimeout(function() {
+					alert('该筛选组合下没有比赛');
+				}, 50);
 			}
 		}).catch(error => {
 			console.warn(error);
-			dispatch(selectDiscipline(state.selectedDiscipline.prev, true));
+			rollBack();
 			setTimeout(function() {
 				alert('该筛选组合下没有比赛');
 			}, 50);

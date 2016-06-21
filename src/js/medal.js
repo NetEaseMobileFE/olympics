@@ -26,15 +26,12 @@ class Medal extends Component {
 	scrollHandler = () => {
 		let docEl = document.documentElement;
 		if ( docEl.scrollHeight - docEl.clientHeight - window.scrollY < 200 ) {
-			this.timer && clearTimeout(this.timer);
-			this.timer = setTimeout(() => {
-				if ( !this.state.loading ) {
-					this.setState({
-						loading: true
-					});
-					this.loadMore();
-				}
-			}, 100);
+			if ( !this.state.loading ) {
+				this.setState({
+					loading: true
+				});
+				this.loadMore();
+			}
 		}
 	};
 

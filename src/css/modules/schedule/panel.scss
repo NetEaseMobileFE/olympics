@@ -153,7 +153,10 @@
         align-items: center;
 
         &__player {
-
+            max-width: 170px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         &__flag {

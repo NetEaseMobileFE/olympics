@@ -2,22 +2,25 @@
 @import "base/preset";
 
 .page {
+    padding-top: 72px;
     background-color: #f6f6f6;
 
 	&__hd {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        z-index: 99;
 		display: flex;
         justify-content: center;
-        padding: 14px 0;
-        background: resolve('topbar.jpg') no-repeat;
+        align-items: flex-start;
+        height: 72px;
+        padding-top: 14px;
+        background: resolve('topbar.jpg') no-repeat center top;
 	}
 
     &__bd {
 	    position: relative;
 	    z-index: 1;
     }
-}
-
-.focus {
-    height: 380px;
-    background-color: #666;
 }

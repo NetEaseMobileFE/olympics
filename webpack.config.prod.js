@@ -16,8 +16,8 @@ module.exports = {
 		// live: './src/js/live',
 		// medal: './src/js/medal',
 		vendor: [
-			'react', 'react-dom', 'core-js/fn/promise', 'react-css-modules', 'swiper',
-			'react-addons-css-transition-group', 'react-redux', 'redux', 'redux-thunk', 'lodash.merge'
+			'react', 'react-dom', 'react-addons-shallow-compare', 'core-js/fn/promise', 'react-css-modules', 'swiper',
+			'react-addons-css-transition-group', 'react-redux', 'redux', 'redux-thunk'
 		],
 		webpackBootstrap: [] // Extract the webpackBootstrap from entry chunks
 	},
@@ -66,7 +66,7 @@ module.exports = {
 				loader: 'url-loader?limit=2000&name=img/[hash].[ext]',
 				include: path.join(__dirname, 'src/img')
 			}, {
-				test: /isIterable\.js/,
+				test: /isIterable/,
 				loader: 'imports?Symbol=>false',
 				include: path.join(__dirname, 'node_modules/react-css-modules')
 			}

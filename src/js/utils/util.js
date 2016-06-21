@@ -124,7 +124,7 @@ export let getScript = url => {
  */
 // export let formatDate = (date = Date.now(), format = 'yyyy-MM-dd') => {
 export let formatDate = (date, format = 'yyyy-MM-dd') => {
-	if ( !date ) { date = `2016/08/09` } // todo 模拟今天
+	if ( !date ) { date = `2016/08/08` } // todo 模拟今天
 	date = new Date(date);
 	if ( !date || date.toUTCString() == 'Invalid Date' ) {
 		return '';

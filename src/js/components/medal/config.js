@@ -1,7 +1,9 @@
-export const api = {
-	medal: './mocks/ranking-medal.json',
-	china: './mocks/ranking-china.json',
-	personal: './mocks/ranking-personal.json'
-};
+const apiBaseUrl = `http://data.2016.163.com/`;
 
-export const flagPath = 'http://img1.cache.netease.com/pcluster/olympicinfo/post/';
+export const api = {
+	medal: apiBaseUrl + 'medal/index.json?callback=mea',
+	china: apiBaseUrl + 'medal/organisation/CHN/pm.json?callback=mef',
+	personal: pageNo => {
+		return `${apiBaseUrl}medal/personal/p_${pageNo}.json?callback=meh`
+	}
+};

@@ -24,7 +24,7 @@ export default class extends Component {
 
 	scrollHandler = () => {
 		let loader = this.refs.loader;
-		if ( loader.scrollHeight - loader.clientHeight - loader.scrollTop < 100 ) {
+		if ( loader.scrollHeight - loader.clientHeight - loader.scrollTop < 200 ) {
 			this.timer && clearTimeout(this.timer);
 			this.loadingAgain = true;
 			this.timer = setTimeout(() => {

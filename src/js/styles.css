@@ -1,0 +1,122 @@
+.__debugger__ .wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 30px 30px 30px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 200px;
+  background: rgba(36, 36, 36, 0.8);
+  color: #cdcdcd;
+  font-family: "Microsoft Yahei";
+  font-size: 16px;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.__debugger__ .wrap .hide,
+.__debugger__ .wrap .fold {
+  display: none;
+}
+.__debugger__ .wrap .show,
+.__debugger__ .wrap .unfold {
+  display: block;
+}
+.__debugger__ .wrap .foldCtrl {
+  -webkit-transition: .3s;
+  transition: .3s;
+  display: inline-block;
+}
+.__debugger__ .wrap .inline {
+  display: inline-block;
+}
+.__debugger__ .wrap .ctrl-fold {
+  -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+.__debugger__ .wrap .ctrl-unfold {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+.__debugger__ .wrap .close {
+  position: fixed;
+  right: 30px;
+  top: 10px;
+  color: #fff;
+}
+.__debugger__ .wrap .message {
+  padding: 3px 0;
+}
+.__debugger__ .wrap .string .str {
+  color: #F23C38;
+}
+.__debugger__ .wrap .number,
+.__debugger__ .wrap .boolean {
+  color: #977dfc;
+}
+.__debugger__ .wrap .object .obj {
+  font-style: italic;
+  padding-right: 15px;
+}
+.__debugger__ .wrap .inner {
+  padding-left: 20px;
+}
+.__debugger__ .wrap .key {
+  float: left;
+  padding: 3px 0;
+}
+.__debugger__ .wrap .clearfix {
+  overflow: hidden;
+}
+.__debugger__ .wrap .clearfix:after {
+  clear: both;
+  content: "";
+  width: 0;
+  height: 0;
+}
+.__debugger__ .wrap .obj-title {
+  cursor: pointer;
+}
+.__debugger__ .wrap .input {
+  position: fixed;
+  top: 170px;
+}
+.__debugger__ .wrap .input input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  outline: none;
+}
+.__debugger__ .wrap .input input:before {
+  content: "";
+  width: 10px;
+  height: auto;
+  display: block;
+}
+.__debugger__ .wrap .input button {
+  background: #d1d1d1;
+  color: #000;
+  border: none;
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
+  outline: none;
+}
+.__debugger__ .expand {
+  position: fixed;
+  right: 30px;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  background: rgba(36, 36, 36, 0.8);
+  color: #fff;
+  text-align: center;
+  -webkit-border-radius: 7px;
+          border-radius: 7px;
+}
+
+/*# sourceMappingURL=styles.css.map*/

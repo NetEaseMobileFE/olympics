@@ -6,18 +6,18 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
 	devtool: 'cheap-module-eval-source-map',
 	entry: {
-		schedule: [
-			'webpack-hot-middleware/client',
-			'./src/js/schedule'
-		],
+		// schedule: [
+		// 	'webpack-hot-middleware/client',
+		// 	'./src/js/schedule'
+		// ],
 		// live: [
 		// 	'webpack-hot-middleware/client',
 		// 	'./src/js/live'
 		// ],
-		// medal: [
-		// 	'webpack-hot-middleware/client',
-		// 	'./src/js/medal'
-		// ]
+		medal: [
+			'webpack-hot-middleware/client',
+			'./src/js/medal'
+		]
 	},
 	output: {
 		path: path.join(__dirname, 'dist'),

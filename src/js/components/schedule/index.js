@@ -56,7 +56,7 @@ export default class extends Component {
 								sportsDates.map((date, i) => {
 									let oneDayOfHot = hotSchedule[date] || {};
 									let oneDayOfMain = mainSchedule[date] || {};
-									let visible = oneDayOfHot.list || oneDayOfMain.list;
+									let visible = typeof oneDayOfHot.loading !== 'undefined';
 									let shouldShowMore = oneDayOfMain.list && !oneDayOfMain.noMore;
 
 									return (

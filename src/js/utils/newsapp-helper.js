@@ -9,13 +9,13 @@ iframe.style.display = 'none';
 nahContainer.appendChild(iframe);
 document.body.appendChild(nahContainer);
 
-function openLive(roomID) {
-	if ( ua.isNewsApp ) {
-		iframe.src = `newsapp://live/${roomID}`;
-	} else {
-		location.href = `http://m.163.com/newsapp/applinks.html?liveRoomid=${roomID}`;
-	}
-}
+// function openLive(roomId) {
+// 	if ( ua.isNewsApp ) {
+// 		iframe.src = `newsapp://live/${roomId}`;
+// 	} else {
+// 		location.href = `http://m.163.com/newsapp/applinks.html?liveRoomid=${roomId}`;
+// 	}
+// }
 
 function alarm(action, data) {
 	return new Promise((resolve, reject) => {
@@ -51,4 +51,7 @@ function alarm(action, data) {
 }
 
 
-export { openLive, alarm };
+export {
+	// openLive,
+	alarm
+};

@@ -34,20 +34,24 @@ export function selectGold(checked) {
 /**
  * 筛选项目
  */
-export function selectDiscipline(discipline) {
+export function selectDiscipline(discipline, mute = false) {
 	return dispatch => {
 		dispatch({
 			type: types.SELECT_DISCIPLINE,
 			discipline
 		});
-		dispatch(updateSportsDates())
+
+		if ( !mute ) {
+			dispatch(updateSportsDates())
+		}
 	}
 }
 
 // 请求过滤后的比赛日期
 function updateSportsDates() {
 	return (dispatch, getState) => {
-		const url = assembleDateUrl(getState());
+		let state = getState();
+		const url = assembleDateUrl(state);
 		let promise = url ? getScript(url) : Promise.resolve(sportsDates);
 
 		return promise.then(json => {
@@ -63,11 +67,18 @@ function updateSportsDates() {
 				dispatch({
 					type: types.UPDATE_SPORTS_DATES,
 					dates
-				})
+				});
 			} else {
+				dispatch(selectDiscipline(state.selectedDiscipline.prev, true));
 				alert('该筛选组合下没有比赛');
 			}
-		}).catch(error => console.warn(error));
+		}).catch(error => {
+			console.warn(error);
+			dispatch(selectDiscipline(state.selectedDiscipline.prev, true));
+			setTimeout(function() {
+				alert('该筛选组合下没有比赛');
+			}, 50);
+		});
 	}
 }
 

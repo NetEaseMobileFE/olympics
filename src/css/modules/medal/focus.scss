@@ -1,0 +1,8 @@
+.focus {
+    height: 380px;
+    background-color: #666;
+
+    :global(.swiper-wrapper) {
+        height: 100%;
+    }
+}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/medal/list.scss';
-import { flagPath } from './config';
 
 
 @CSSModules(styles)
@@ -21,23 +20,23 @@ export default class extends Component {
 
 	render() {
 		let { type, list } = this.props;
-		let rankingOfChina;
+		let rankOfChina;
 		let th;
 		if ( type == 'medal' ) {
 			th = '国家/地区';
-			for ( let i = 0, len = list.length; i < len; i++ ) {
-				if ( list[i].state == '中国' ) {
-					rankingOfChina = i;
-					break;
+			list.some((row, i)=> {
+				if ( row.organisationName == '中国' ) {
+					rankOfChina = i;
+					return true;
 				}
-			}
+			});
 		} else if ( type == 'china' ) {
 			th = '项目';
 		} else {
 			th = '运动员';
 		}
 
-		let shouldUnfold = rankingOfChina && !this.state.isUnfolded && rankingOfChina > 10; // 是否需要显示“点击展开”
+		let shouldUnfold = rankOfChina && !this.state.isUnfolded && rankOfChina > 10; // 是否需要显示“点击展开”
 		
 		return (
 			<section styleName="list">
@@ -55,14 +54,15 @@ export default class extends Component {
 					<tbody>
 					{
 						list.map((row, i) => {
-							if ( shouldUnfold ) { // 添加展开更多占位符，并隐藏中间名次的 row
+							// 添加展开更多占位符，并隐藏中间名次的 row
+							if ( shouldUnfold ) {
 								if ( i == 6 ) {
 									return (
 										<tr key={i}>
 											<td colSpan="6" onClick={this.handleClick}><span styleName="unfold">点击展开</span></td>
 										</tr>
 									)
-								} else if ( i > 6 && i < rankingOfChina ) {
+								} else if ( i > 6 && i < rankOfChina ) {
 									return null;
 								}
 							}
@@ -72,27 +72,27 @@ export default class extends Component {
 
 							if ( type == 'medal' ) {
 								td = (
-									<div styleName="state" className={ row.state.length >= 6 ? 'is-long' : '' }>
-										{row.state}<img src={flagPath + row.flag} styleName="state__flag"/>
+									<div styleName="state" className={ row.organisationName.length >= 6 ? 'is-long' : '' }>
+										{row.organisationName}<img src={row.flag} styleName="state__flag"/>
 									</div>
 								);
-								if ( row.state == '中国' ) {
+								if ( row.organisationName == '中国' ) {
 									cn = 'is-highlight';
 								}
 							} else if ( type == 'china' ) {
-								td = <div styleName="discipline">{row.discipline}</div>;
+								td = <div styleName="discipline">{row.disciplineName}</div>;
 							} else {
 								td = (
 									<div styleName="athlete">
-										<p>{row.name}</p>
-										<div styleName="state">{row.state}<img src={flagPath + row.flag} styleName="state__flag"/></div>
+										<p styleName="athlete__name">{row.athleteName}</p>
+										<div styleName="state">{row.organisationName}<img src={row.flag} styleName="state__flag"/></div>
 									</div>
 								);
 							}
 
 							return (
 								<tr key={i} styleName={cn}>
-									<td>{row.ranking}</td>
+									<td>{i + 1}</td>
 									<td colspan={ shouldUnfold && i == 6 ? '6' : false }>{td}</td>
 									<td styleName="is-lighter">{row.medals[0]}</td>
 									<td styleName="is-lighter">{row.medals[1]}</td>

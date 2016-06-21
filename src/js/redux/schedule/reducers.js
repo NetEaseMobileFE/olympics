@@ -28,7 +28,12 @@ function onlyGold(state = false, action) {
 function selectedDiscipline(state , action) {
 	switch ( action.type ) {
 		case types.SELECT_DISCIPLINE:
-			return state.merge(action.discipline);
+			let { name, id } = action.discipline;
+			return {
+				name,
+				id,
+				prev: state
+			};
 		default:
 			return state || Immutable({  // 默认要显示成 “项目筛选”
 				name: '项目筛选',

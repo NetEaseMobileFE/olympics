@@ -7,6 +7,7 @@ var app = express();
 var compiler = webpack(config);
 
 //app.use('/static', express.static(__dirname + '/dist'));
+app.use('/src', express.static(__dirname + '/src'));
 
 app.use(require('webpack-dev-middleware')(compiler, {
 	noInfo: true,

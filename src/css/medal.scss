@@ -1,6 +1,10 @@
 @import "base/mixins";
 @import "base/preset";
 
+:global(#root) {
+    background-image: none;
+}
+
 .page {
     padding-top: 72px;
     background-color: #f6f6f6;

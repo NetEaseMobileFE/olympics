@@ -49,7 +49,8 @@ export const disciplines = Immutable([
 	{ id: 'CS', name: "皮划艇激流回旋" }
 ]);
 
-const apiBaseUrl = `http://data.2016.163.com/schedule/`;
+// const apiBaseUrl = `http://data.2016.163.com/schedule/`; todo
+const apiBaseUrl = `http://220.181.98.148/schedule/`;
 
 export function assembleScheduleUrl(type, params) {
 	if ( type == 'hot' ) {
@@ -110,7 +111,7 @@ export function assembleDateUrl(params) {
 
 function assembleHotScheduleUrl(selectedDate) {
 	selectedDate = selectedDate.replace(/-/g, '');
-	return apiBaseUrl + `hot/${selectedDate}.json?callback=scA`;
+	return apiBaseUrl + `weight.do?date=${selectedDate}&wb=80&we=99&callback=scA`;
 }
 
 function assembleActiveScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {

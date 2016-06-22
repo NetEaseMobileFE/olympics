@@ -37,19 +37,6 @@ export default class Datepicker extends Component {
 			freeModeMinimumVelocity: .1, // 防止龟速
 			watchSlidesProgress : true,
 			resistanceRatio: 0,
-			// 应该是 swiper 组件的BUG，当 initialSlide 刚好是初始默认居中位置（当前设置就是7个中的第4个，也就是index = 3）时不触发 transition，
-			// 这里在 init 之后手动添加样式，并触发 changeSlide
-			// onInit(s) {
-			// 	if ( initIndex == 3 ) {
-			// 		let slide = s.slides.eq(3);
-			// 		slide.transform(`scale3d(${maxScaleX}, ${maxScaleY}, 1)`);
-			// 		if ( !isAndroid ) {
-			// 			slide[0].style.boxShadow = BOXSHADOW;
-			// 		}
-			//
-			// 		that.changeSlide(3);
-			// 	}
-			// },
 			onSetTranslate(s) {
 				let transform = s.translate;
 				let center = -transform + s.width / 2;
@@ -99,7 +86,7 @@ export default class Datepicker extends Component {
 				transSlides.transition(transition);
 				others.transition(0);
 			},
-			onTransitionEnd(s) {
+			onTransitionStart(s) {
 				if ( window.mainSwiper && mainSwiper.activeIndex != s.activeIndex ) {
 					mainSwiper.slideTo(s.activeIndex, 0, false);
 				}

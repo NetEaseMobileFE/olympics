@@ -79,7 +79,7 @@ class Medal extends Component {
 					st = st.medal;
 					return {
 						organisationName: st.organisationName,
-						flag: st.organisationImgUrl.replace('90x60', '61x45'),
+						flag: st.organisationImgUrl.replace('90x60', '61x45'),  // todo
 						medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
 					}
 				});
@@ -99,7 +99,7 @@ class Medal extends Component {
 					return {
 						athleteName: st.athleteName,
 						organisationName: st.organisationName || '',
-						flag: flag && flag.replace('90x60', '61x45'),
+						flag: flag && flag.replace('90x60', '61x45'),  // todo
 						medals: [st.gold, st.silver, st.bronze, st.total]
 					}
 				});

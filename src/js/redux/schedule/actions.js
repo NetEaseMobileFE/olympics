@@ -137,8 +137,7 @@ function updateHotSchedule() {
 				type: types.UPDATE_HOT_SCHEDULE,
 				data: {
 					[selectedDate]: {
-						list: unusedEliminate(json.scheduleList),
-						updateTime: Date.now()
+						list: json.scheduleList && json.scheduleList.length ? unusedEliminate(json.scheduleList) : null
 					}
 				}
 			});

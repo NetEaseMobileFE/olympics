@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/medal/focus.scss';
 import 'swiper';

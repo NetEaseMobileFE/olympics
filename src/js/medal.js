@@ -1,6 +1,7 @@
 import 'core-js/fn/promise';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import shallowCompare from 'react-addons-shallow-compare';
 import { getScript, getSearch } from './utils/util';
 import CSSModules from 'react-css-modules';
 import styles from '../css/medal.scss';
@@ -21,6 +22,10 @@ class Medal extends Component {
 			list: null,
 			loading: true
 		}
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
 	}
 
 	scrollHandler = () => {

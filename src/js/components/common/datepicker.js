@@ -8,7 +8,7 @@ import ua from '../../../js/utils/ua';
 
 const today = formatDate();
 const isAndroid = ua.isAndroid;
-const BOXSHADOW = '0 1px 2px rgba(0, 0, 0, 0.75)';
+const boxShadow = '0 1px 2px rgba(0, 0, 0, 0.75)';
 
 @createConnect(['selectedDate', 'sportsDates'])
 @CSSModules(styles)
@@ -61,7 +61,7 @@ export default class Datepicker extends Component {
 
 					if ( !isAndroid ) { // 安卓有点卡，降级掉阴影
 						if ( scaleX > 1 && scaleY > 1 ) {
-							slide[0].style.boxShadow = BOXSHADOW;
+							slide[0].style.boxShadow = boxShadow;
 						} else {
 							slide[0].style.boxShadow = '';
 						}
@@ -108,7 +108,7 @@ export default class Datepicker extends Component {
 	}
 
 	/**
-	 * 筛选合适的选中日期，优先级依次：选中/今天 > 选中/今天最近的下一个比赛日 > 超出范围就取最早/晚那天
+	 * 筛选合适的选中日期，优先级依次：选中/今天 > 选中/今天的下一个比赛日 > 超出范围就取最早/晚那天
 	 */
 	findASuitbleIndex() {
 		let { sportsDates, selectedDate } = this.props;

@@ -13,12 +13,7 @@ module.exports = {
 	devtool: 'source-map-hidden',
 	entry: {
 		schedule: './src/js/schedule',
-		medal: './src/js/medal',
-		vendor: [
-			'react', 'react-dom', 'react-addons-shallow-compare', 'core-js/fn/promise', 'react-css-modules', 'swiper',
-			'react-addons-css-transition-group', 'react-redux', 'redux', 'redux-thunk'
-		],
-		webpackBootstrap: [] // Extract the webpackBootstrap from entry chunks
+		medal: './src/js/medal'
 	},
 	output: {
 		path: path.join(__dirname, 'dist'),
@@ -27,11 +22,6 @@ module.exports = {
 		publicPath: publicPath
 	},
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({
-			names: ['vendor', 'webpackBootstrap'],
-			filename: 'js/[name]' + hash + '.js',
-			minChunks: Infinity
-		}),
 		new ExtractTextPlugin(revision + 'css/[name].css'),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.DefinePlugin({

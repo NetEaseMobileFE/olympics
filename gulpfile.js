@@ -29,8 +29,7 @@ var deployConfig = {
 	},
 	pro: {
 		htmlFtp: 'c_m',
-		htmlRoot: 'test/4',
-		assetRoot: 'apps/test/4'
+		assetRoot: 'apps'
 	}
 };
 
@@ -72,7 +71,7 @@ gulp.task('assets', ['clean'], function() {
 			fs.writeFile('./analyse.log', JSON.stringify(webpackStats, null, 2));
 		}))
 		.pipe(gulp.dest('dist'))
-		.pipe(gulpIgnore.exclude(['**/*.map', '**/{img,img/**}', '**/webpackBootstrap.*.js']))
+		.pipe(gulpIgnore.exclude(['**/*.map', '**/{img,img/**}']))
 		.pipe(conn.dest(publishConfig.assetDir));
 });
 
@@ -80,9 +79,6 @@ gulp.task('assets', ['clean'], function() {
 gulp.task('html', ['assets'], function() {
 	var apr = publishConfig.assetPathRevised;
 	var conn = createConnection(publishConfig.htmlFtp);
-	var assetsNames = webpackStats.assetsByChunkName;
-	var webpackBootstrapSource = fs.readFileSync(path.join('dist', assetsNames.webpackBootstrap[0]), 'utf-8');
-
 
 	return gulp.src('src/*.html')
 		.pipe(htmlreplace({
@@ -93,8 +89,7 @@ gulp.task('html', ['assets'], function() {
 			js: {
 				src: apr + 'js',
 				tpl: '<script src="%s/%f.js"></script>'
-			},
-			vendor: publishConfig.assetPath + assetsNames.vendor[0]
+			}
 		}))
 		.pipe(fileInline({
 			js: {
@@ -103,7 +98,6 @@ gulp.task('html', ['assets'], function() {
 				}
 			}
 		}))
-		.pipe(replace('/*webpackBootstrap*/', webpackBootstrapSource))
 		.pipe(htmlmin({ collapseWhitespace: true, removeComments: true, minifyJS: true, minifyCSS: true }))
 		.pipe(gulp.dest('dist'))
 		.pipe(conn.dest(publishConfig.htmlDir));

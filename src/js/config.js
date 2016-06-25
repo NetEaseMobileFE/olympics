@@ -5,9 +5,9 @@ let dates = [];
 let i = 5;
 while ( i <= 21 ) dates.push('2016-08-' + ('0' + i++).slice(-2));
 
-export const sportsDates = Immutable(dates);
+const sportsDates = Immutable(dates);
 
-export const disciplines = Immutable([
+const disciplines = Immutable([
 	{ id: '',   name: "全部" },
 	{ id: 'AR', name: "射箭" },
 	{ id: 'AT', name: "田径" },
@@ -52,7 +52,7 @@ export const disciplines = Immutable([
 // const apiBaseUrl = `http://data.2016.163.com/schedule/`; todo
 const apiBaseUrl = `http://220.181.98.148/schedule/`;
 
-export function assembleScheduleUrl(type, params) {
+function assembleScheduleUrl(type, params) {
 	if ( type == 'hot' ) {
 		return assembleHotScheduleUrl(params.selectedDate);
 	}
@@ -74,7 +74,7 @@ export function assembleScheduleUrl(type, params) {
 }
 
 
-export function assembleDateUrl(params) {
+function assembleDateUrl(params) {
 	let disciplineID = params.selectedDiscipline.id;
 	let mode = checkMode(params);
 	let url;
@@ -187,4 +187,12 @@ function assembleAllScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {
 
 function checkMode(params) {
 	return `${params.onlyChina ? 'c' : ''}${params.onlyGold ? 'g' : ''}${params.selectedDiscipline.id ? 'd' : ''}`;
+}
+
+
+export {
+	sportsDates,
+	disciplines,
+	assembleScheduleUrl,
+	assembleDateUrl
 }

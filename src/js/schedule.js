@@ -17,8 +17,3 @@ render((
 		<Schedule />
 	</Provider>
 ), document.getElementById('root'));
-
-
-
-// todo list
-// datepicker card 动效优化

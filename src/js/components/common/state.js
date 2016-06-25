@@ -36,7 +36,7 @@ export default class extends Component {
 
 	componentDidMount() {
 		let { date, startTime, roomId, matchName } = this.props;
-		let matchTime = +new Date(date.replace(/-/g, '/') + ' ' + startTime);
+		let matchTime = date + ' ' + startTime + ':00';
 
 		this.alarmConfig = {
 			url: `newsapp://live/${roomId}`,
@@ -53,10 +53,9 @@ export default class extends Component {
 	}
 
 	render() {
-		const { live, isFinished, roomId } = this.props;
+		const { live, isFinished } = this.props;
 		let stateType;
 		let stateLabel;
-		let href = 'javascript:';
 
 		if ( isFinished ) {
 			stateType = 'live--fade';
@@ -64,29 +63,25 @@ export default class extends Component {
 		} else if ( live == 1 ) {
 			stateType = 'live';
 			stateLabel = '正在直播';
-		} else {
+		} else if ( ua.isNewsApp ) {
 			stateType = 'alarm';
 			stateLabel = this.state.alarm == 0 ? '提醒' : '已开启';
 		}
 
-		let statecn = `state--${stateType}`;
+		let statecn = `label--${stateType}`;
 		// stateType = 'alarm'; stateLabel = this.state.alarm == 0 ? '提醒' : '已开启';
 		this.stateType = stateType;
 
-		let isAlarm = stateType == 'alarm'
-		if ( !isAlarm ) {
-			if ( ua.isNewsApp ) {
-				href = `newsapp://live/${roomId}`;
-			} else {
-				href = `http://m.163.com/newsapp/applinks.html?liveRoomid=${roomId}`;
-			}
-		}
-
-		return (
-			<a styleName={statecn} href={href} onClick={ isAlarm ? this.handleClick : null }>
-				<div styleName={`${statecn}__icon`}/>
-				<div styleName={`${statecn}__txt`}>{stateLabel}</div>
-			</a>
-		);
+		return stateType ? (
+			<div styleName="state">
+				<div styleName="state__entity">
+					<div styleName={statecn} onClick={ stateType == 'alarm' ? this.handleClick : null }>
+						<div styleName={`${statecn}__icon`}/>
+						<div styleName={`${statecn}__txt`}>{stateLabel}</div>
+					</div>
+				</div>
+				<div styleName="state__line"/>
+			</div>
+		) : null;
 	}
 }

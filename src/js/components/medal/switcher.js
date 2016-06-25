@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/medal/switcher.scss';
 
@@ -25,6 +26,10 @@ const sequence = [MEDAL, CHINA, PERSONAL];
 
 @CSSModules(styles)
 export default class extends Component {
+	shouldComponentUpdate(nextProps) {
+		return shallowCompare(this, nextProps);
+	}
+
 	handleClick = t => {
 		let { type, onTypeChange } = this.props;
 		if ( type != t ) {

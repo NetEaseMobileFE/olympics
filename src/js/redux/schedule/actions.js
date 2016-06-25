@@ -8,7 +8,7 @@ const today = formatDate();
 /**
  * 切换“中国赛程”
  */
-export function selectChina(checked, mute = false) {
+function selectChina(checked, mute = false) {
 	return (dispatch, getState) => {
 		let prevOnlyChina = getState().onlyChina;
 
@@ -28,7 +28,7 @@ export function selectChina(checked, mute = false) {
 /**
  * 切换“金牌赛程”
  */
-export function selectGold(checked, mute = false) {
+function selectGold(checked, mute = false) {
 	return (dispatch, getState) => {
 		let prevOnlyGold = getState().onlyGold;
 
@@ -48,7 +48,7 @@ export function selectGold(checked, mute = false) {
 /**
  * 筛选项目
  */
-export function selectDiscipline(discipline, mute = false) {
+function selectDiscipline(discipline, mute = false) {
 	return (dispatch, getState) => {
 		let prevDiscipline = getState().selectedDiscipline;
 
@@ -105,7 +105,7 @@ function updateSportsDates(rollBack) {
 /**
  * 选择比赛日期
  */
-export function selectDate(date) {
+function selectDate(date) {
 	return (dispatch, getState) => {
 		dispatch({
 			type: types.SELECT_DATE,
@@ -201,7 +201,7 @@ function updateMainSchedule() {
 /**
  * 切换主要赛程为 全部赛程
  */
-export function showTypeAll() {
+function showTypeAll() {
 	return (dispatch, getState) => {
 		let { selectedDate } = getState();
 		dispatch({
@@ -220,7 +220,7 @@ export function showTypeAll() {
 /**
  * 加载更多主要赛程
  */
-export function showMoreSchedule() {
+function showMoreSchedule() {
 	return (dispatch) => {
 		dispatch(updateMainSchedule());
 	}
@@ -304,6 +304,7 @@ function unusedEliminate(list) {
 		}
 
 		return {
+			rsc: schedule.rsc,
 			disciplineName: schedule.disciplineName,
 			scheduleName: schedule.scheduleName,
 			withChina: organisations && organisations.length > 0 && organisations.indexOf('CHN') > -1,
@@ -315,4 +316,14 @@ function unusedEliminate(list) {
 			competitors
 		}
 	});
+}
+
+
+export {
+	selectChina,
+	selectGold,
+	selectDiscipline,
+	selectDate,
+	showTypeAll,
+	showMoreSchedule
 }

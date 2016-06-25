@@ -63,10 +63,10 @@ export default class extends Component {
 										<div className="swiper-slide" style={{ height: swiperHeight }} key={i}>
 											{
 												visible ? <Loader loading={oneDayOfMain.loading} showMore={ shouldShowMore ? this.showMore : null }>
-													{
+													{   // 精选赛程
 														oneDayOfHot.list ? <Panel label="精选赛程" events={oneDayOfHot.list} date={date}/> : null
 													}
-													{
+													{   // 全部赛程
 														oneDayOfMain.list ?
 															oneDayOfMain.list.length ?
 																<Panel label="全部赛程" events={oneDayOfMain.list} date={date}

@@ -7,6 +7,8 @@ import State from '../common/state';
 import ua from '../../utils/ua';
 
 
+const liveUrl = 'xxx.html?hhh'; // todo
+
 /**
  * 单场比赛对手情况
  */
@@ -69,13 +71,25 @@ class Event extends Component {
 
 	render() {
 		let {
-			disciplineName, scheduleName, date, startTime,
+			rsc, disciplineName, scheduleName, date, startTime,
 			withChina, isFinished, isFinal, live, roomId,
 			competitors
 		} = this.props;
-		
+		let href = 'javascript:';
+
+		if ( ua.isNewsApp ) {
+			if ( roomId ) {
+				href = `newsapp://live/${roomId}`;
+			}
+		} else {
+			href = `${liveUrl}&rsc=${rsc}`;
+			if ( roomId ) {
+				href = `${href}&roomId=${roomId}`;
+			}
+		}
+
 		return (
-			<div styleName="event-ctnr">
+			<a styleName="event-ctnr" href={href}>
 				<div styleName="event">
 					{ ( withChina || isFinal ) ? <Clip china={withChina} final={isFinal} pcn={styles.event__clip}/> : null }
 					<div styleName="event__time">{startTime}</div>
@@ -83,15 +97,9 @@ class Event extends Component {
 						<div styleName="tags">
 							<div styleName="tags__discipline">{disciplineName}</div>
 							{
-								ua.isNewsApp && roomId ? (
-									<div styleName="tags__state">
-										<div styleName="tags__state__entity">
-											<State roomId={roomId} live={live} startTime={startTime}
+								roomId ? <State roomId={roomId} live={live} startTime={startTime}
 												   isFinished={isFinished} date={date} matchName={disciplineName + '-' + scheduleName}/>
-										</div>
-										<div styleName="tags__state__line"/>
-									</div>
-								) : null
+									: null
 							}
 						</div>
 						<div styleName="event-name">
@@ -108,7 +116,7 @@ class Event extends Component {
 						}
 					</div>
 				</div>
-			</div>
+			</a>
 		)
 	}
 }

@@ -53,8 +53,13 @@
 
 
 // 小项
-.event-ctnr + .event-ctnr {
-	border-top: 1px solid #f2f2f2;
+.event-ctnr {
+    display: block;
+    color: inherit;
+
+    & + & {
+        border-top: 1px solid #f2f2f2;
+    }
 }
 
 .event {
@@ -103,26 +108,6 @@
         background-color: #3bd5fb;
         border-radius: 20px;
     }
-
-    &__state {
-        position: relative;
-        flex: 1;
-
-        &__line {
-            position: absolute;
-            left: 0;
-            right: 10px;
-            top: 50%;
-            height: 0;
-            border-top: 1px solid #ededed;
-        }
-
-        &__entity {
-            position: relative;
-            z-index: 1;
-            float: right;
-        }
-    }
 }
 
 .event-name {
@@ -161,6 +146,7 @@
 
         &__flag {
             box-sizing: content-box;
+            margin-top: -2px;
             width: 39px;
             height: 23px;
             border: 1px solid #d9d9d9;

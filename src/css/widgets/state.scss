@@ -3,7 +3,27 @@
 
 @import "../base/mixins";
 
-%state {
+.state {
+    position: relative;
+    flex: 1;
+
+    &__line {
+        position: absolute;
+        left: 0;
+        right: 10px;
+        top: 50%;
+        height: 0;
+        border-top: 1px solid #ededed;
+    }
+
+    &__entity {
+        position: relative;
+        z-index: 1;
+        float: right;
+    }
+}
+
+%label {
     display: flex;
     align-items: center;
     padding-left: 17px;
@@ -18,8 +38,8 @@
     }
 }
 
-.state--live {
-    @extend %state;
+.label--live {
+    @extend %label;
 
     &__icon {
         margin-right: 9px;
@@ -27,14 +47,14 @@
     }
 
     &__txt {
-        @extend %state__txt;
+        @extend %label__txt;
         color: #004b88;
         border-color: #b2c9db;
     }
 }
 
-.state--live--fade {
-    @extend %state;
+.label--live--fade {
+    @extend %label;
 
     &__icon {
         margin-right: 11px;
@@ -42,15 +62,15 @@
     }
 
     &__txt {
-        @extend %state__txt;
+        @extend %label__txt;
         color: #999;
         border-color: #d2d2d2;
     }
 }
 
 
-.state--alarm {
-    @extend %state;
+.label--alarm {
+    @extend %label;
 
     &__icon {
         margin-right: 9px;
@@ -58,7 +78,7 @@
     }
 
     &__txt {
-        @extend %state__txt;
+        @extend %label__txt;
         color: #fdb23b;
         border-color: #fee9c8;
     }

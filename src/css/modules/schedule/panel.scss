@@ -5,7 +5,11 @@
 }
 
 .panel {
-    margin: 19px 20px 0 20px;
+    margin: 20px 20px 0;
+
+    &:last-child {
+        padding-bottom: 20px;
+    }
 
 	&__tag {
 		overflow: hidden;
@@ -76,9 +80,8 @@
 
 	&__time {
         width: 120px;
-        padding-right: 30px;
 		font-size: 28px;
-        text-align: right;
+        text-align: center;
 		color: #5b5b5b;
 	}
 
@@ -99,7 +102,7 @@
     align-items: center;
 
     &__discipline {
-        padding: 8px 20px 7px;
+        padding: 8px 24px 7px;
         line-height: 24px;
         margin-right: 15px;
         text-align: center;
@@ -111,20 +114,26 @@
 }
 
 .event-name {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	//display: flex;
+	//align-items: center;
+	//justify-content: space-between;
+    max-width: 480px;
 	padding:  11px 0 4px;
-
-	&__arrow {
-        @extend %icon--gt;
-		transition: transform .15s;
-		will-change: transform;
-
-		&:global(.is-unfold) {
-			transform: rotate(-180deg);
-		}
-	}
+    color: #222;
+    font-size: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    //
+	//&__arrow {
+     //   @extend %icon--gt;
+	//	transition: transform .15s;
+	//	will-change: transform;
+    //
+	//	&:global(.is-unfold) {
+	//		transform: rotate(-180deg);
+	//	}
+	//}
 }
 
 
@@ -132,6 +141,7 @@
 .competition {
     display: flex;
     font-size: 26px;
+    color: rgba(91,91,91,.9);
 
     &__rival {
         display: flex;
@@ -142,13 +152,16 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
+            &:global(.long) {
+                max-width: 420px;
+            }
         }
 
         &__flag {
             box-sizing: content-box;
-            margin-top: -2px;
             width: 39px;
-            height: 23px;
+            max-height: 30px;
             border: 1px solid #d9d9d9;
         }
 

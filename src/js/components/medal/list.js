@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/medal/list.scss';
+import Loading from '../common/loading';
 
 
 @CSSModules(styles)
@@ -22,9 +23,11 @@ export default class extends Component {
 			isUnfolded: true
 		});
 	};
-
+	
 	render() {
-		let { type, list } = this.props;
+		let { type, list, noMore } = this.props;
+		if ( !list ) return <Loading />;
+		
 		let rankOfChina;
 		let th;
 		if ( type == 'medal' ) {
@@ -44,12 +47,12 @@ export default class extends Component {
 		let shouldUnfold = rankOfChina && !this.state.isUnfolded && rankOfChina > 10; // 是否需要显示“点击展开”
 		
 		return (
-			<section styleName="list">
+			list.length ? <section styleName="list" className={type}>
 				<table styleName="table-medal">
 					<thead>
 					<tr>
 						<th>排名</th>
-						<th style={{width: '1%'}}>{th}</th>
+						<th style={{width: '1%'}} className="state">{th}</th>
 						<th><i styleName="medal--gold"/></th>
 						<th><i styleName="medal--silver"/></th>
 						<th><i styleName="medal--bronze"/></th>
@@ -71,10 +74,10 @@ export default class extends Component {
 									return null;
 								}
 							}
-
+							
 							let cn = '';
 							let td;
-
+							
 							if ( type == 'medal' ) {
 								td = (
 									<div styleName="state" className={ row.organisationName.length >= 6 ? 'is-long' : '' }>
@@ -94,14 +97,15 @@ export default class extends Component {
 									</div>
 								);
 							}
-
+							
 							return (
-								<tr key={i} styleName={cn}>
+								<tr key={i} styleName={cn}
+									onClick={ type == 'medal' && row.organisationName == '中国' ? this.props.switchToChina.bind(null, 'china') : null }>
 									<td>{i + 1}</td>
 									<td colspan={ shouldUnfold && i == 6 ? '6' : false }>{td}</td>
-									<td styleName="is-lighter">{row.medals[0]}</td>
-									<td styleName="is-lighter">{row.medals[1]}</td>
-									<td styleName="is-lighter">{row.medals[2]}</td>
+									<td className="is-lighter">{row.medals[0]}</td>
+									<td className="is-lighter">{row.medals[1]}</td>
+									<td className="is-lighter">{row.medals[2]}</td>
 									<td>{row.medals[3]}</td>
 								</tr>
 							)
@@ -109,7 +113,10 @@ export default class extends Component {
 					}
 					</tbody>
 				</table>
-			</section>
+				{
+					noMore !== true ? <Loading /> : null
+				}
+			</section> : <div styleName="empty">暂时还没有奖牌产生</div>
 		)
 	}
 }

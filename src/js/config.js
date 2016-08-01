@@ -2,7 +2,7 @@ import Immutable from 'seamless-immutable';
 
 
 let dates = [];
-let i = 5;
+let i = 4;
 while ( i <= 21 ) dates.push('2016-08-' + ('0' + i++).slice(-2));
 
 const sportsDates = Immutable(dates);
@@ -11,46 +11,46 @@ const disciplines = Immutable([
 	{ id: '',   name: "全部" },
 	{ id: 'AR', name: "射箭" },
 	{ id: 'AT', name: "田径" },
-	{ id: 'BD', name: "羽毛球" },
 	{ id: 'BK', name: "篮球" },
-	{ id: 'BV', name: "沙滩排球" },
 	{ id: 'BX', name: "拳击" },
-	{ id: 'CF', name: "皮划艇静水" },
-	{ id: 'CB', name: "自行车小轮车" },
-	{ id: 'CM', name: "山地自行车" },
-	{ id: 'CR', name: "公路自行车" },
-	{ id: 'CT', name: "场地自行车" },
 	{ id: 'DV', name: "跳水" },
 	{ id: 'EQ', name: "马术" },
 	{ id: 'FE', name: "击剑" },
 	{ id: 'FB', name: "足球" },
-	{ id: 'GO', name: "高尔夫" },
-	{ id: 'GA', name: "竞技体操" },
 	{ id: 'GT', name: "蹦床" },
-	{ id: 'GR', name: "艺术体操" },
 	{ id: 'HB', name: "手球" },
-	{ id: 'HO', name: "曲棍球" },
 	{ id: 'JU', name: "柔道" },
-	{ id: 'MP', name: "现代五项" },
 	{ id: 'RO', name: "赛艇" },
-	{ id: 'RU', name: "七人制橄榄球" },
 	{ id: 'SA', name: "帆船" },
 	{ id: 'SH', name: "射击" },
 	{ id: 'SW', name: "游泳" },
-	{ id: 'SY', name: "花样游泳" },
-	{ id: 'TT', name: "乒乓球" },
-	{ id: 'TK', name: "跆拳道" },
 	{ id: 'TE', name: "网球" },
-	{ id: 'TR', name: "三项全能" },
 	{ id: 'VB', name: "排球" },
 	{ id: 'WP', name: "水球" },
 	{ id: 'WL', name: "举重" },
 	{ id: 'WR', name: "摔跤" },
+	{ id: 'BD', name: "羽毛球" },
+	{ id: 'GO', name: "高尔夫" },
+	{ id: 'HO', name: "曲棍球" },
+	{ id: 'TT', name: "乒乓球" },
+	{ id: 'TK', name: "跆拳道" },
+	{ id: 'BV', name: "沙滩排球" },
+	{ id: 'GA', name: "竞技体操" },
+	{ id: 'GR', name: "艺术体操" },
+	{ id: 'MP', name: "现代五项" },
+	{ id: 'SY', name: "花样游泳" },
+	{ id: 'TR', name: "三项全能" },
+	{ id: 'CF', name: "皮划艇静水" },
+	{ id: 'CM', name: "山地自行车" },
+	{ id: 'CR', name: "公路自行车" },
+	{ id: 'CT', name: "场地自行车" },
+	{ id: 'CB', name: "自行车小轮车" },
+	{ id: 'RU', name: "七人制橄榄球" },
 	{ id: 'CS', name: "皮划艇激流回旋" }
 ]);
 
-// const apiBaseUrl = `http://data.2016.163.com/schedule/`; todo
-const apiBaseUrl = `http://220.181.98.148/schedule/`;
+const apiBaseUrl = `http://data.2016.163.com/schedule/`;
+// const apiBaseUrl = `http://220.181.98.148/schedule/`;
 
 function assembleScheduleUrl(type, params) {
 	if ( type == 'hot' ) {
@@ -111,7 +111,7 @@ function assembleDateUrl(params) {
 
 function assembleHotScheduleUrl(selectedDate) {
 	selectedDate = selectedDate.replace(/-/g, '');
-	return apiBaseUrl + `weight.do?date=${selectedDate}&wb=80&we=99&callback=scA`;
+	return apiBaseUrl + `weight/8099/${selectedDate}.json?callback=scA`;
 }
 
 function assembleActiveScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {

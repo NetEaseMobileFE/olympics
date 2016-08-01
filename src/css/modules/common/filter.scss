@@ -5,7 +5,7 @@
     z-index: 10;
     display: flex;
     align-items: center;
-    height: 80px;
+    height: 81px;
     padding: 0 40px;
     background-color: #f6f6f6;
 }
@@ -20,6 +20,7 @@
         height: 34px;
         border: 2px solid #dedede;
         border-radius: 5px;
+        background-color: #fff;
     }
 
     &__label {
@@ -52,6 +53,7 @@
     padding-right: 16px;
 
     &__label {
+        margin-right: 10px;
         font-size: 30px;
 
         &--long {
@@ -61,7 +63,15 @@
 
     &__arrow {
 	    display: block;
-        margin-left: 10px;
-        @include icon('triangle-down.png');
+        width: 13px;
+        height: 13px;
+        background: resolve('triangle-down.png') no-repeat center center;
+        background-size: contain;
+        transition: transform .3s;
+        will-change: transform;
+    }
+
+    &:global(.is-shown) &__arrow {
+        transform: rotateZ(-180deg);
     }
 }

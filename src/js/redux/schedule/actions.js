@@ -4,6 +4,7 @@ import { assembleDateUrl, assembleScheduleUrl, sportsDates } from '../../config'
 
 
 const today = formatDate();
+const NO_MATCH = '没有相关赛事';
 
 /**
  * 切换“中国赛程”
@@ -88,16 +89,12 @@ function updateSportsDates(rollBack) {
 				});
 			} else {
 				rollBack();
-				setTimeout(function() {
-					alert('该筛选组合下没有比赛');
-				}, 50);
+				dispatch(toggleToast({ msg: NO_MATCH }));
 			}
 		}).catch(error => {
 			console.warn(error);
 			rollBack();
-			setTimeout(function() {
-				alert('该筛选组合下没有比赛');
-			}, 50);
+			dispatch(toggleToast({ msg: NO_MATCH }));
 		});
 	}
 }
@@ -157,14 +154,13 @@ function updateMainSchedule() {
 		const url = assembleScheduleUrl(type, state);
 		dispatch(fetchingMainSchedule(selectedDate));
 
-
 		return getScript(url).then(json => {
 			// 进行中赛程为空的话，自动切换到全部赛程
 			if ( type == 'active' && ( !json.scheduleList || !json.scheduleList.length ) ) {
 				dispatch(showTypeAll());
 				return;
 			}
-
+			
 			dispatch(fetchingMainSchedule(selectedDate, false));
 			dispatch({
 				type: types.UPDATE_MAIN_SCHEDULE,
@@ -192,6 +188,8 @@ function updateMainSchedule() {
 						}
 					}
 				});
+			} else {
+				dispatch(showTypeAll());
 			}
 			console.warn(error);
 		});
@@ -269,9 +267,14 @@ function unusedEliminate(list) {
 					competitors.push({
 						code: o,
 						name: organisationsName[i],
-						flag: organisationsImgUrl[i].replace('90x60', '61x45')
+						flag: organisationsImgUrl[i]
 					});
 				});
+				
+				// 中国优先显示
+				if ( competitors[1].code == 'CHN' && competitors[0].code !== 'CHN' ) {
+					competitors.reverse();
+				}
 			}
 
 			// 截取赛果长度，团体只看第一名
@@ -281,20 +284,20 @@ function unusedEliminate(list) {
 					if ( competitorMapList[0].organisation != competitors[0].code ) { // 按照默认顺序显示结果
 						competitorMapList.reverse();
 					}
-
-					competitorMapList.forEach((c, i) => {
-						tmpCpt = competitors[i];
-						tmpCpt.name = c.competitorName; // 如果是个人名字的话，优先显示个人
-						tmpCpt.result = c.result;
-						tmpCpt.resultType = c.resultType;
-						tmpCpt.rank = c.rank;
+					
+					competitors.forEach((c, i) => {
+						tmpCpt = competitorMapList[i];
+						c.name = tmpCpt.competitorName; // 如果是个人名字的话，优先显示个人
+						c.result = tmpCpt.result;
+						c.resultType = tmpCpt.resultType;
+						c.rank = tmpCpt.rank;
 					});
 				} else {
 					tmpCpt = competitorMapList[0];
 					competitors.push({
 						name: tmpCpt.competitorName,
 						code: tmpCpt.organisation,
-						flag: tmpCpt.organisationImgUrl.replace('90x60', '61x45')  // todo
+						flag: tmpCpt.organisationImgUrl
 						// result: tmpCpt.result,
 						// resultType: tmpCpt.resultType,
 						// wlt: tmpCpt.wlt
@@ -318,6 +321,18 @@ function unusedEliminate(list) {
 	});
 }
 
+/**
+ * 切换 toggleToast 显示
+ */
+function toggleToast(config) {
+	return dispatch => {
+		dispatch({
+			type: types.TOGGLE_TOAST,
+			config
+		});
+	}
+}
+
 
 export {
 	selectChina,
@@ -325,5 +340,6 @@ export {
 	selectDiscipline,
 	selectDate,
 	showTypeAll,
-	showMoreSchedule
+	showMoreSchedule,
+	toggleToast
 }

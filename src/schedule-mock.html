@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <script>!function(e,n){var t,i=n.documentElement,a=i.dataset.designWidth||750,o="orientationchange"in window?"orientationchange":"resize";/iphone|ipod|ipad/gi.test(navigator.userAgent)&&i.classList.add("iosx"+e.devicePixelRatio);var r=function(){var e=Math.min(i.clientWidth,a);t=e/a*100,i.style.fontSize=t+"px"};r(),e.px2rem=function(e){return parseFloat(e)/100},e.rem2px=function(e){return parseFloat(e)*t},e.addEventListener(o,r,!1)}(window,document)</script>
+    <link rel="stylesheet" href="http://img3.cache.netease.com/utf8/3g/util/mobile-base.css">
+    <style>
+    body {
+        width: 7.5rem;
+        margin: 0 auto;
+        color: #5b5b5b;
+        background-color: #eef1f5;
+        font-family: '-apple-system', 'hiragino sans gb', 'Microsoft YaHei';
+    }
+
+    figure, p {
+        margin: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        margin: 0;
+        font-weight: normal;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .page {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .page > header {
+        display: none;
+    }
+
+    .page > .topbar--touch, .page > .topbar--app {
+        display: block;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .topbar--touch {
+        height: .98rem;
+        background-image: url('http://img3.cache.netease.com/f2e/wap/touch_special_olympic/olympic_index_2016/dist/images/ol_top_course.png');
+    }
+
+    .topbar--app {
+        height: .62rem;
+        background-image: url('http://img4.cache.netease.com/apps/olympics2016/img/titled-bar.png');
+
+    }
+
+    .main {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        overflow: hidden;
+        background: url('http://img4.cache.netease.com/apps/olympics2016/img/mock.png') no-repeat center;
+        background-size: 4.3rem auto;
+    }
+
+
+    .share_mask .share_shutdown span {
+        display: block !important;
+    }
+    </style>
+    <title>赛程赛果</title>
+</head>
+<body>
+    <div class="page">
+        <header id="topbar--app"></header>
+        <header id="topbar--touch">
+            <top-bar></top-bar>
+        </header>
+        <main class="main"></main>
+    </div>
+
+    <script>
+        var id, elem;
+        if ( !/NewsApp\/[\d.]+/gi.test(navigator.userAgent) ) {
+            id = 'topbar--touch';
+            elem = document.getElementById(id);
+            elem.className = id;
+
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'http://img1.cache.netease.com/apps/olympics2016/js/topbar.js';
+            script.onload = function() {
+                topbar.render(id,'course');
+            };
+            document.head.appendChild(script);
+        } else {
+            id = 'topbar--app';
+            elem = document.getElementById(id);
+            elem.className = id;
+        }
+    </script>
+
+    <script type="text/javascript" src="http://img2.cache.netease.com/utf8/3g/util/share.1.3.1.js"></script>
+    <script type="text/javascript" src="http://analytics.163.com/ntes.js"></script>
+    <script type="text/javascript" src="http://img4.cache.netease.com/utf8/3g/util/analysis.min.js"></script>
+    <script>
+        var searchObj = getSearch();
+        var isNewsApp = /NewsApp\/[\d.]+/gi.test(navigator.userAgent);
+        var defSpss;
+
+        if ( isNewsApp || searchObj.spss == 'newsapp' ) {
+            _ntes_nacc = 'mapp';
+            defSpss = 'newsapp';
+        } else {
+            _ntes_nacc = 'wap';
+            defSpss = 'touch';
+        }
+        neteaseTracker();
+        neteaseAnalysis({
+            modelid: 'o2016schedule',
+            spst: 5,
+            spss: searchObj.spss || defSpss
+        });
+
+
+        // Share
+        var title = '2016里约奥运会_' + ( isNewsApp ? '网易新闻客户端' : '手机网易网' );
+        var link = location.origin + location.pathname + '?spss=' + defSpss;
+        var desc = '网易奥运将全天候直播奥运赛事为您持续带来奥运新闻动态';
+        var img = 'http://img4.cache.netease.com/apps/olympics2016/img/share.png';
+
+        if ( !isNewsApp ) {
+            window.shareInfo = {
+                title: title,
+                summary: desc,
+                link: link,
+                imgsrc: img
+            };
+        }
+
+        setTimeout(function() {
+            NAShare.update({
+                title: title,
+                desc: desc,
+                url: link,
+                wbText: desc,
+                wbImg: 'http://imgsize.ph.126.net/?imgurl=' + img + '_64x64x0.jpg',
+                img: imgnpm
+            });
+        }, 500);
+
+        function getSearch(search) {
+            var data = {};
+            search = search || window.location.search;
+            search.replace(/([^?=&]+)(=([^&]*))?/g, function($0, $1, $2, $3) {
+                data[$1] = $3;
+            });
+
+            return data;
+        }
+    </script>
+</body>
+</html>

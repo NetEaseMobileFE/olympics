@@ -7,7 +7,7 @@ import State from '../common/state';
 import ua from '../../utils/ua';
 
 
-const liveUrl = 'xxx.html?hhh'; // todo
+const liveUrl = 'http://3g.163.com/ntes/special/0034073A/olympic2016_live.html';
 
 /**
  * 单场比赛对手情况
@@ -68,6 +68,11 @@ class Event extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		return shallowCompare(this, nextProps, nextState);
 	}
+	
+	handleClick = (e) => { // todo
+		e.preventDefault();
+		this.props.showToast('赛事暂未开始，敬请期待！');
+	};
 
 	render() {
 		let {
@@ -82,22 +87,20 @@ class Event extends Component {
 				href = `newsapp://live/${roomId}`;
 			}
 		} else {
-			href = `${liveUrl}&rsc=${rsc}`;
-			if ( roomId ) {
-				href = `${href}&roomId=${roomId}`;
-			}
+			href = `${liveUrl}?rsc=${rsc}`;
+			href = null; // todo
 		}
 
 		return (
-			<a styleName="event-ctnr" href={href}>
+			<a styleName="event-ctnr" href={href} target="_blank" onClick={ href ? null : this.handleClick }>
 				<div styleName="event">
-					{ ( withChina || isFinal ) ? <Clip china={withChina} final={isFinal} pcn={styles.event__clip}/> : null }
+					{ withChina || isFinal ? <Clip china={withChina} final={isFinal} pcn={styles.event__clip}/> : null }
 					<div styleName="event__time">{startTime}</div>
 					<div styleName="event__detail">
 						<div styleName="tags">
 							<div styleName="tags__discipline">{disciplineName}</div>
-							{
-								roomId ? <State roomId={roomId} live={live} startTime={startTime}
+							{ // ua.isNewsApp todo
+								ua.isNewsApp && roomId ? <State roomId={roomId} live={live} startTime={startTime}
 												   isFinished={isFinished} date={date} matchName={disciplineName + '-' + scheduleName}/>
 									: null
 							}
@@ -110,7 +113,7 @@ class Event extends Component {
 								<Competetion competitors={competitors}/> :
 								isFinished && competitors[0] ?
 									<div styleName="competition__rival">
-										<span styleName="competition__rival__player">第一名：{competitors[0].name}</span>
+										<span styleName="competition__rival__player" className="long">第一名：{competitors[0].name}</span>
 										<img styleName="competition__rival__flag" src={competitors[0].flag}/>
 									</div> : null
 						}
@@ -136,7 +139,7 @@ export default class extends Component {
 	};
 
 	render() {
-		let { label, events, date } = this.props;
+		let { label, events, date, showToast } = this.props;
 
 		return (
 			<section styleName="panel">
@@ -151,7 +154,7 @@ export default class extends Component {
 					}
 					{
 						events && events.map((event, i) =>
-							<Event key={i} {...event} date={date}/>
+							<Event key={i} {...event} date={date} showToast={showToast}/>
 						)
 					}
 				</div>

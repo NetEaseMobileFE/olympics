@@ -12,6 +12,8 @@ let store = configureStore({
 	disciplines
 });
 
+window.store = store;
+
 render((
 	<Provider store={store}>
 		<Schedule />

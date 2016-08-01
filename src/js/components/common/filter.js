@@ -4,6 +4,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/common/filter.scss';
 import { createConnect } from '../../utils/util';
+import { selectChina, selectGold, selectDiscipline } from '../../redux/schedule/actions';
 import DP from './discipline-picker';
 
 
@@ -46,17 +47,17 @@ export default class extends Component {
 	};
 
 	handleOnlyChinaChange = () => {
-		let { dispatch, selectChina, onlyChina } = this.props;
+		let { dispatch, onlyChina } = this.props;
 		dispatch(selectChina(!onlyChina));
 	};
 
 	handleOnlyGoldChange = () => {
-		let { dispatch, selectGold, onlyGold } = this.props;
+		let { dispatch, onlyGold } = this.props;
 		dispatch(selectGold(!onlyGold));
 	};
 
 	handleDisciplineChange = (value) => {
-		let { dispatch, selectDiscipline } = this.props;
+		let { dispatch } = this.props;
 		dispatch(selectDiscipline(value));
 	};
 
@@ -70,18 +71,18 @@ export default class extends Component {
 			: null;
 
 		return (
-			<section className="page__header">
+			<section>
 				<div styleName="filter">
 					<Checkbox label="中国赛程" isChecked={onlyChina} onChange={this.handleOnlyChinaChange}/>
 					<Checkbox label="金牌赛程" isChecked={onlyGold} onChange={this.handleOnlyGoldChange}/>
 
-					<div styleName="selector" onClick={this.showDP}>
+					<div styleName="selector" className={ this.state.showDP ? 'is-shown' : '' } onClick={this.showDP}>
 						<div styleName={`selector__label${ discName.length > 5 ? '--long' : '' }`}>{discName}</div>
 						<i styleName="selector__arrow"/>
 					</div>
 				</div>
 
-				<ReactCSSTransitionGroup transitionName="dp" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+				<ReactCSSTransitionGroup transitionName="dp" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
 					{dp}
 				</ReactCSSTransitionGroup>
 			</section>

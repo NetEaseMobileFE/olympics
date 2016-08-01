@@ -4,6 +4,7 @@ import CSSModules from 'react-css-modules';
 import '../../../css/widgets/swiper.scss';
 import styles from '../../../css/widgets/datepicker.scss';
 import { formatDate, createConnect } from '../../../js/utils/util';
+import { selectDate } from '../../redux/schedule/actions';
 import ua from '../../../js/utils/ua';
 
 const today = formatDate();
@@ -32,11 +33,11 @@ export default class Datepicker extends Component {
 			roundLengths: true,
 			freeMode : true,
 			freeModeSticky: true,
-			freeModeMomentumRatio:.2,
+			freeModeMomentumRatio: .25,
 			freeModeMomentumBounce: false,
 			freeModeMinimumVelocity: .1, // 防止龟速
 			watchSlidesProgress : true,
-			resistanceRatio: 0,
+			resistanceRatio: .5,
 			onSetTranslate(s) {
 				let transform = s.translate;
 				let center = -transform + s.width / 2;
@@ -86,7 +87,7 @@ export default class Datepicker extends Component {
 				transSlides.transition(transition);
 				others.transition(0);
 			},
-			onTransitionStart(s) {
+			onTransitionEnd(s) {
 				if ( window.mainSwiper && mainSwiper.activeIndex != s.activeIndex ) {
 					mainSwiper.slideTo(s.activeIndex, 0, false);
 				}
@@ -100,7 +101,7 @@ export default class Datepicker extends Component {
 
 	changeSlide(index) {
 		if ( index != this.currIndex ) {
-			let { dispatch, selectDate, sportsDates } = this.props;
+			let { dispatch, sportsDates } = this.props;
 			this.currIndex = index;
 			this.currDate = sportsDates[index];
 			dispatch(selectDate(this.currDate));
@@ -180,7 +181,7 @@ export default class Datepicker extends Component {
 	
 	render() {
 		return (
-			<div ref="swiper" className="swiper-container" styleName="datepicker">
+			<section ref="swiper" className="swiper-container" styleName="datepicker">
 				<div className="swiper-wrapper" styleName="datepicker__rail">
 					{
 						this.props.sportsDates.map((date, i) => {
@@ -199,7 +200,7 @@ export default class Datepicker extends Component {
 					}
 				</div>
 				<div styleName="datepicker__bg" className={ isAndroid ? '' : 'with-shadow' }></div>
-			</div>
+			</section>
 		)
 	}
 }

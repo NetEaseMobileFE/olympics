@@ -62,7 +62,7 @@
     "imports-loader": "^0.6.5",
     "node-sass": "^3.4.2",
     "postcss-assets": "^4.0.1",
-    "postcss-border-width": "0.0.2",
+    "postcss-border-width": "0.0.3",
     "postcss-loader": "^0.8.0",
     "postcss-original-path": "0.0.2",
     "postcss-pxtorem": "^3.3.1",

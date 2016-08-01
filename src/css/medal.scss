@@ -1,31 +1,66 @@
 @import "base/mixins";
 @import "base/preset";
 
-:global(#root) {
-    background-image: none;
-}
 
 .page {
-    padding-top: 72px;
-    background-color: #f6f6f6;
+    position: relative;
+    padding-top: 88px;
+    background-color: #eef1f5;
 
 	&__hd {
         position: fixed;
         left: 0;
         top: 0;
         right: 0;
-        z-index: 99;
+        z-index: 1;
 		display: flex;
         justify-content: center;
         align-items: flex-start;
-        height: 72px;
+        height: 88px;
         padding-top: 14px;
-        background: resolve('topbar.jpg') no-repeat center top;
-        background-size: 750px 88px;
+        background-color: #f6f6f6;
 	}
 
     &__bd {
-	    position: relative;
-	    z-index: 1;
+        font-size: inherit;
+    }
+}
+
+.main-swiper {
+    :global(.swiper-slide) {
+        min-height: 900px;
+    }
+}
+
+.bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 50px;
+    height: height('titled-bar.png');
+    background: resolve('titled-bar.png') no-repeat;
+    background-size: cover;
+}
+
+
+:global {
+    .bottom-bar-enter {
+        opacity: 0;
+        transform: translate3d(0, 120px, 0);
+    }
+    .bottom-bar-enter-active {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        transition: all 350ms;
+    }
+
+    .bottom-bar-leave {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+    .bottom-bar-leave-active {
+        opacity: 0;
+        transform: translate3d(0, 120px, 0);
+        transition: all 300ms;
     }
 }

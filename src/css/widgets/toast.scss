@@ -1,0 +1,67 @@
+.mask {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    background-color: rgba(0,0,0,.6);
+}
+
+.toast {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-left: -270px;
+    width: 540px;
+    text-align: center;
+    border-radius: 18px;
+    background-color: rgba(255,255,255,.9);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    overflow: hidden;
+
+    .text {
+        padding: 70px 30px 65px;
+        color: #000;
+        font-size: 28px;
+    }
+
+    .btns {
+        display: flex;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 23px 0;
+        font-size: 32px;
+        color: #007aff;
+        border-top: 1px solid #dadade;
+
+        &:first-child {
+            font-weight: bold;
+        }
+
+        & + .btn {
+            border-left: 1px solid #dadade;
+        }
+    }
+}
+
+
+:global {
+    .toast-enter {
+        opacity: 0;
+    }
+    .toast-enter-active {
+        opacity: 1;
+        transition: opacity 350ms;
+    }
+
+    .toast-leave {
+        opacity: 1;
+    }
+    .toast-leave-active {
+        opacity: 0;
+        transition: opacity 280ms;
+    }
+}

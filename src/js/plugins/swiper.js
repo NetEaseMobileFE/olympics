@@ -488,7 +488,7 @@
           Round helper
           ===========================*/
         function round(a) {
-            return Math.floor(a);
+            return Math.floor(a*100)/100;
         }
         /*=========================
           Set grab cursor
@@ -903,6 +903,7 @@
                     }
                 }
             }
+
             // Normalize slideIndex
             if (newActiveIndex < 0 || typeof newActiveIndex === 'undefined') newActiveIndex = 0;
             // for (i = 0; i < s.slidesGrid.length; i++) {

@@ -5,7 +5,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 88px;
+    height: 90px;  // 由于阴影的问题 看起来会少两像素， 这里加高点
 }
 
 %clip {

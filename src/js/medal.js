@@ -1,16 +1,24 @@
 import 'core-js/fn/promise';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import shallowCompare from 'react-addons-shallow-compare';
+import 'swiper';
+import '../css/widgets/swiper.scss';
 import { getScript, getSearch } from './utils/util';
 import CSSModules from 'react-css-modules';
 import styles from '../css/medal.scss';
 import Switcher from './components/medal/switcher';
 import Focus from './components/medal/focus';
 import List from './components/medal/list';
-import Loading from './components/common/loading';
 import { api } from './components/medal/config';
 
+
+const MEDAL = 'medal';
+const CHINA = 'china';
+const PERSONAL = 'personal';
+const types = [MEDAL, CHINA, PERSONAL];
+const minHeight = window.innerHeight - rem2px(4.68); // 用于保证列表滑动区域
 
 @CSSModules(styles)
 class Medal extends Component {
@@ -18,150 +26,186 @@ class Medal extends Component {
 		let expectedTab = getSearch().tab;
 		super(props);
 		this.state = {
-			type: expectedTab || 'medal',
-			list: null,
-			loading: true
-		}
+			currType: expectedTab || MEDAL
+		};
+		this.loading = {};
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		return shallowCompare(this, nextProps, nextState);
 	}
 
-	scrollHandler = () => {
-		let docEl = document.documentElement;
-		if ( docEl.scrollHeight - docEl.clientHeight - window.scrollY < 200 ) {
-			if ( !this.state.loading ) {
-				this.setState({
-					loading: true
-				});
+	bindScroll() {
+		window.addEventListener('scroll', () => {
+			let docEl = document.documentElement;
+			if ( docEl.scrollHeight - docEl.clientHeight - window.scrollY < 200 ) {
 				this.loadMore();
 			}
-		}
+		}, false);
 	};
 
-	bindScroll = () => {
-		window.addEventListener('scroll', this.scrollHandler, false);
-	};
-
-	unbindScroll = () => {
-		window.removeEventListener('scroll', this.scrollHandler);
-	};
+	// unbindScroll() {
+	// 	this.refs.loader.removeEventListener('scroll', this.scrollHandler);
+	// };
 
 	componentDidMount() {
 		this.fetchList();
+		this.swiper = new Swiper(this.refs.swiper, {
+			autoHeight: true,
+			resistanceRatio: .7,
+			onSlideChangeStart: (s) => {
+				let type = types[s.activeIndex];
+				if ( type !== this.state.currType ) {
+					this.setState({
+						currType: type
+					});
+					this.fetchList(type, true);
+				}
+			}
+			
+		});
+		this.bindScroll();
 	}
 
-	handleChange = type => {
-		if ( type != 'personal' ) {
-			this.unbindScroll();
-		} else {
-			this.pageNo = 0;
-		}
-
+	handleChange = currType => {
 		this.setState({
-			list: null,
-			loading: true,
-			type
+			currType
 		});
-		this.fetchList(type);
+		this.swiper.slideTo(types.indexOf(currType));
+		this.fetchList(currType, true);
 	};
 
-	fetchList(type = this.state.type) {
+	fetchList(type = this.state.currType, first) {
+		if ( this.loading[type] || ( first && this.state[type] ) ) return;
 		let url;
-		if ( type == 'personal' ) {
-			let pageNo = this.pageNo ? this.pageNo + 1 : 1;
+		if ( type == PERSONAL ) {
+			let pageNo = this.personalPageNo ? this.personalPageNo + 1 : 1;
 			url = api.personal(pageNo);
 		} else {
 			url = api[type];
 		}
-
+		
+		this.loading[type] = true;
 		getScript(url).then(json => {
-			let shouldBind = false;
-			let list;
-			if ( type == 'medal' ) {
-				list = json.msList.map(st => {
+			let data, noMore;
+			
+			if ( type == MEDAL ) {
+				data = json.msList.map(st => {
 					st = st.medal;
 					return {
 						organisationName: st.organisationName,
-						flag: st.organisationImgUrl.replace('90x60', '61x45'),  // todo
+						flag: st.organisationImgUrl,
 						medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
 					}
 				});
-				this.medalList = list;
-				shouldBind = list.length > 20;
-				list = list.slice(0, Math.min(list.length, 20));
-			} else if ( type == 'china' ) {
-				list = json.mst.msList.map(st => {
+				this.medalList = data;
+				data = data.slice(0, Math.min(data.length, 20));
+				noMore = this.medalList.length <= 20;
+			} else if ( type == CHINA ) {
+				data = json.mst.msList.map(st => {
 					return {
 						disciplineName: st.disciplineName,
 						medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
 					}
 				});
+				this.chinaList = data;
+				data = data.slice(0, Math.min(data.length, 20));
+				noMore = this.chinaList.length <= 20;
 			} else {
-				list = json.mpsList.map(st => {
-					let flag = st.athleteMedalList[0].organisationImgUrl;
+				let personal = this.state[PERSONAL];
+				this.personalPageNo = json.pageNo;
+				data = json.mpsList.map(st => {
 					return {
 						athleteName: st.athleteName,
 						organisationName: st.organisationName || '',
-						flag: flag && flag.replace('90x60', '61x45'),  // todo
+						flag: st.athleteMedalList[0].organisationImgUrl,
 						medals: [st.gold, st.silver, st.bronze, st.total]
 					}
 				});
-
-				if ( this.state.list ) {
-					list = this.state.list.concat(list);
+				
+				if ( personal ) {
+					data = personal.data.concat(data);
 				}
-
-				if ( json.pageNo == json.pageNum ) { // 最后一页了
-					this.unbindScroll();
-				} else {
-					shouldBind = json.pageNo == 1 && json.pageNum != 1;
-				}
-
-				this.pageNo = json.pageNo;
+				noMore = json.pageNo == json.pageNum;
 			}
-
+			
 			this.setState({
-				loading: false,
-				list
+				[type]: {
+					data,
+					noMore
+				}
 			});
-
-			if ( shouldBind ) {
-				this.bindScroll();
+			
+			setTimeout(() => {
+				this.swiper.update();
+				this.loading[type] = false;
+			}, 50);
+		}).catch(() => {
+			if ( !this.state[type] ) {
+				this.setState({
+					[type]: {
+						data: [],
+						noMore: true
+					}
+				});
 			}
-		}).catch(error => console.log(error));
+		});
 	}
 
 	loadMore() {
-		let { type, list } = this.state;
-		if ( type == 'medal' ) {
-			let len = Math.min(list.length + 20, this.medalList.length);
-			if ( len == this.medalList.length ) {
-				this.unbindScroll();
-			}
+		let { currType } = this.state;
+		if ( this.state[currType].noMore || this.loading[currType] ) return;
+		
+		if ( currType == PERSONAL ) {
+			this.fetchList(currType);
+		}  else {
+			let list = currType == CHINA ? this.chinaList : this.medalList;
+			let len = Math.min(this.state[currType].data.length + 20, list.length);
+			
+			this.loading[currType] = true;
 			this.setState({
-				loading: false,
-				list: this.medalList.slice(0, len)
+				[currType]: {
+					data: list.slice(0, len),
+					noMore: len == list.length
+				}
 			});
-		} else if ( type == 'personal' ) {
-			this.fetchList(type);
+			setTimeout(() => {
+				this.swiper.update();
+				this.loading[currType] = false;
+			}, 50);
 		}
 	}
 
 	render() {
-		let { list, type, loading } = this.state;
+		let { currType } = this.state;
+		let bottomBar = currType == CHINA ? <footer styleName="bottom-bar"></footer> : null;
 		
 		return (
 			<div styleName="page">
 				<div styleName="page__hd">
-					<Switcher type={type} onTypeChange={this.handleChange}/>
+					<Switcher type={currType} onTypeChange={this.handleChange}/>
 				</div>
 				<div styleName="page__bd">
 					<Focus />
-					{ list ? <List list={list} type={type}/> : null }
-					{ loading ? <Loading/> : null }
+					<div ref="swiper" className="swiper-container" styleName="main-swiper">
+						<div className="swiper-wrapper">
+							{
+								types.map((type, i) => {
+									let state = this.state[type] || {};
+									return (
+										<div className="swiper-slide" key={i} style={{ minHeight }}>
+											<List list={state.data}
+												  switchToChina={ type == MEDAL ? this.handleChange : null }
+												  noMore={state.noMore} type={type}/>
+										</div>)
+								})
+							}
+						</div>
+					</div>
 				</div>
+				<ReactCSSTransitionGroup transitionName="bottom-bar" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+					{bottomBar}
+				</ReactCSSTransitionGroup>
 			</div>
 		)
 	}

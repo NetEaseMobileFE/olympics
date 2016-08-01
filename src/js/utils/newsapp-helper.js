@@ -1,4 +1,5 @@
 import ua from './ua';
+import { TOGGLE_TOAST } from '../redux/schedule/types';
 
 
 const alarmDef = {
@@ -27,14 +28,22 @@ document.body.appendChild(nahContainer);
 
 let alarmPending = false;
 let alarmQueue = [];
-let alarmState = {};
 
 function _alarm(action, data, resolve) {
 	let id, value, elem, domStr = '';
 
 	window[`__newsapp_alarm_${action}_done`] = function(state) {
-		alarmState[data.url] = [action, state];
 		resolve(state);
+		
+		if ( ua.isIos && action == 'add' && state == false ) {
+			window.__newsapp_alarm_enable_done = function(enabled) {
+				if ( !enabled ) {
+					requestActivateAlarm();
+				}
+			};
+			iframe.src = 'alarm://enable';
+		}
+		
 		if ( alarmQueue.length ) {
 			_alarm.apply(null, alarmQueue.shift());
 		} else {
@@ -47,7 +56,7 @@ function _alarm(action, data, resolve) {
 		id = `__newsapp_alarm_${key}`;
 		elem = document.querySelector(`#${id}`);
 
-		if ( document.querySelector(`#${id}`) ) {
+		if ( elem ) {
 			elem.innerHTML = value;
 		} else {
 			domStr += `<div style="display:none" id="${id}">${value}</div>`;
@@ -63,21 +72,33 @@ function _alarm(action, data, resolve) {
 
 function alarm(action, data) {
 	return new Promise((resolve, reject) => {
-		if ( ua.isNewsApp ) {
-			let state = alarmState[data.url];
-			if ( typeof state != 'undefined' && state[0] == action ) {
-				resolve(state[1]);
-				return;
-			}
-
-			alarmQueue.push([action, data, resolve]);
-
-			if ( !alarmPending ) {
-				alarmPending = true;
-				_alarm.apply(null, alarmQueue.shift());
+		if ( ua.isNewsApp ) { // 安卓下添加删除取消后的回调未执行，这里过滤只队列化 check
+			if ( action == 'check' ) {
+				alarmQueue.push([action, data, resolve]);
+				
+				if ( !alarmPending ) {
+					alarmPending = true;
+					_alarm.apply(null, alarmQueue.shift());
+				}
+			} else {
+				_alarm.apply(null, [action, data, resolve]);
+				alarmPending = false;
 			}
 		} else {
 			reject(new Error('Can\'t set alarm out of newsapp'));
+		}
+	});
+}
+
+function requestActivateAlarm() {
+	window.store.dispatch({
+		type: TOGGLE_TOAST,
+		config: {
+			msg: '开启通知以便准时接受直播开始提醒',
+			btns: ['取消', '前往开启'],
+			onOk() {
+				iframe.src = 'pushview://applicationsettings';
+			}
 		}
 	});
 }

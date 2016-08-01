@@ -2,19 +2,25 @@
 @import "base/preset";
 
 .page {
-    padding-top: 226px;
-    background-color: #f6f6f6;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #eef1f5;
 
 	&__hd {
-		position: fixed;
-		top: 0;
-		z-index: 2;
-		margin: 0 auto;
-		width: 750px;
+		position: relative;
+        z-index: 10;
+        padding-bottom: 146px;
 	}
 
     &__bd {
-	    position: relative;
-	    z-index: 1;
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        overflow: hidden;
+
+        :global(.swiper-wrapper), :global(.swiper-slide) {
+            height: 100%;
+        }
     }
 }

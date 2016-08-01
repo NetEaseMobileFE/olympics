@@ -1,12 +1,18 @@
 .list {
     margin: 20px 20px 0 20px;
-    padding-top: 4px;
-    background: #fff resolve('bar.jpg') no-repeat top;
-    background-size: 710px 4px;
+    padding: 4px 0 20px 0;
+    background: resolve('bar.jpg') no-repeat top;
+    background-size: contain;
+
+    &:global(.china) {
+        position: relative;
+        padding-bottom: 142px;
+    }
 }
 
 .table-medal {
     width: 100%;
+    background-color: #fff;
     border-collapse: collapse;
 
     th, td {
@@ -19,7 +25,11 @@
         height: 96px;
         font-weight: normal;
         color: #9d9d9d;
-        border-bottom: 1px solid #ced6d9;
+        border-bottom: 1PX solid #ced6d9;
+
+        &:gloabl.state {
+            text-align: right;
+        }
     }
 
     td {
@@ -27,8 +37,8 @@
         font-size: 30px;
         color: #5b5b5b;
 
-        &.is-lighter {
-            color: #797b7c;
+        &:global(.is-lighter) {
+            color: rgba(91,91,91,.64);
         }
     }
 
@@ -38,7 +48,7 @@
         }
 
         &:nth-child(1), &:nth-child(3) {
-            background-color: #e7f5fc;
+            background-color: #e6f5fc;
         }
 
         &:nth-child(2) {
@@ -83,9 +93,9 @@
 
     &__flag {
         box-sizing: border-box;
-        margin: -2px 0 0 13px;
+        margin-left: 13px;
         width: 39px;
-        height: 23px;
+        max-height: 30px;
         border: 1px solid #d9d9d9;
     }
 
@@ -124,4 +134,12 @@
     color: #999;
     background: resolve('ellipsis.png') left center no-repeat;
     background-size: 18px 3px;
+}
+
+
+.empty {
+    padding-top: 180px;
+    font-size: 36px;
+    color: rgb(140, 140, 140);
+    text-align: center;
 }

@@ -122,9 +122,8 @@ export let getScript = url => {
  * @param date 日期，默认取当前时间
  * @param format 格式模板，默认 yyyy-MM-dd
  */
-// export let formatDate = (date = Date.now(), format = 'yyyy-MM-dd') => {
-export let formatDate = (date, format = 'yyyy-MM-dd') => {
-	if ( !date ) { date = `2016/08/08` } // todo 模拟今天
+export let formatDate = (date = Date.now(), format = 'yyyy-MM-dd') => {
+// export let formatDate = (date, format = 'yyyy-MM-dd') => {
 	date = new Date(date);
 	if ( !date || date.toUTCString() == 'Invalid Date' ) {
 		return '';

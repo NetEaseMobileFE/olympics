@@ -12,9 +12,9 @@ export default class extends Component {
 	}
 
 	componentWillUpdate(nextProps) {
-		if ( nextProps.showMore ) {
+		if ( !this.props.showMore && nextProps.showMore ) {
 			this.bindScroll();
-		} else {
+		} else if ( this.props.showMore && !nextProps.showMore ) {
 			this.unbindScroll();
 		}
 	}
@@ -27,7 +27,6 @@ export default class extends Component {
 	scrollHandler = () => {
 		let loader = this.refs.loader;
 		if ( loader.scrollHeight - loader.clientHeight - loader.scrollTop < 200 ) {
-			this.loadingAgain = true;
 			if ( !this.props.loading ) {
 				this.props.showMore();
 			}
@@ -47,16 +46,18 @@ export default class extends Component {
 	}
 
 	render() {
-		let { loading, children } = this.props;
-		var newChildren = React.Children.map(children, child => {
+		let { loading, showMore, children, empty } = this.props;
+		let newChildren = React.Children.map(children, child => {
 			return React.cloneElement(child, { scrollTo: this.scrollTo })
 		});
+		let topLoadingVisible = empty && loading !== false;
+		
 		return (
 			<div styleName="loader" className="scrolling-content" ref="loader">
-				{ loading && !this.loadingAgain ? <Loading/> : null }
-				<div styleName="loader__entity" className={ loading && !this.loadingAgain  ? 'down' : '' }>
+				{ topLoadingVisible ? <Loading/> : null }
+				<div styleName="loader__entity" className={ topLoadingVisible ? 'down' : '' }>
 					{ newChildren }
-					{ loading && this.loadingAgain ? <Loading/> : null }
+					{ !topLoadingVisible && showMore ? <Loading/> : null }
 				</div>
 			</div>
 		)

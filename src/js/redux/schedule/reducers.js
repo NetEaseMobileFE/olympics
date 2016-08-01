@@ -102,6 +102,15 @@ function mainSchedule(state = emptyObject, action) {
 	}
 }
 
+function toast(state = false, action) {
+	switch ( action.type ) {
+		case types.TOGGLE_TOAST:
+			return action.config;
+		default:
+			return state;
+	}
+}
+
 function doNothing(state = null) {
 	return state;
 }
@@ -115,5 +124,6 @@ export default combineReducers({
 	selectedDiscipline,
 	selectedDate,
 	hotSchedule,
-	mainSchedule
+	mainSchedule,
+	toast
 });

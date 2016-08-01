@@ -42,18 +42,21 @@ export default class extends Component {
 		let index = sequence.indexOf(type);
 
 		return (
-			<section styleName="switcher" className={`select-${index}`}>
-				{
-					options.map((opt, i) => {
-						if ( opt.type == SEP ) {
-							return <span styleName="switcher__sep" key={i}></span>
-						} else {
-							return <span onClick={this.handleClick.bind(this, opt.type)}
-										 styleName="switcher__option" className={ opt.type == type ? 'is-selected' : '' }
-										 key={i}>{opt.label}</span>
-						}
-					})
-				}
+			<section styleName="switcher-wrapper">
+				<div styleName="switcher" className={`select-${index}`}>
+					{
+						options.map((opt, i) => {
+							if ( opt.type == SEP ) {
+								return <span styleName="switcher__sep" key={i}></span>
+							} else {
+								return <span onClick={this.handleClick.bind(this, opt.type)}
+											 styleName="switcher__option" className={ opt.type == type ? 'is-selected' : '' }
+											 key={i}>{opt.label}</span>
+							}
+						})
+					}
+				</div>
+				<div styleName="switcher-wrapper__bg"></div>
 			</section>
 		)
 	}

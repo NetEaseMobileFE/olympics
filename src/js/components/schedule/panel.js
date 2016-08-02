@@ -149,7 +149,7 @@ export default class extends Component {
 				<div styleName="panel__main">
 					{
 						this.props.type == 'active' ?
-							<div styleName="show-more" onClick={this.handleClick}>查看已结束赛程<i/></div> :
+							<div styleName="show-more" onClick={this.handleClick}>查看全部赛程<i/></div> :
 							null
 					}
 					{

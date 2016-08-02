@@ -3,7 +3,7 @@ import Immutable from 'seamless-immutable';
 
 let dates = [];
 let i = 4;
-while ( i <= 21 ) dates.push('2016-08-' + ('0' + i++).slice(-2));
+while ( i <= 22 ) dates.push('2016-08-' + ('0' + i++).slice(-2));
 
 const sportsDates = Immutable(dates);
 
@@ -25,7 +25,7 @@ const disciplines = Immutable([
 	{ id: 'SH', name: "射击" },
 	{ id: 'SW', name: "游泳" },
 	{ id: 'TE', name: "网球" },
-	{ id: 'VB', name: "排球" },
+	{ id: 'VO', name: "排球" },
 	{ id: 'WP', name: "水球" },
 	{ id: 'WL', name: "举重" },
 	{ id: 'WR', name: "摔跤" },

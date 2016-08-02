@@ -56,11 +56,11 @@ export default class extends Component {
 				message: `[直播提醒]${matchName}直播现在开始了`
 			};
 			
-			nahelper.alarm('check', this.alarmConfig).then(state => {
-				this.setState({
-					alarm: state
-				});
-			}).catch(error => console.warn(error));
+			// nahelper.alarm('check', this.alarmConfig).then(state => {
+			// 	this.setState({
+			// 		alarm: state
+			// 	});
+			// }).catch(error => console.warn(error));
 		}
 	}
 

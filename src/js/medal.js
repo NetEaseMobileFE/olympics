@@ -178,7 +178,10 @@ class Medal extends Component {
 
 	render() {
 		let { currType } = this.state;
-		let bottomBar = currType == CHINA ? <footer styleName="bottom-bar"></footer> : null;
+		let bottomBar = currType == CHINA ?
+			<a href="http://g.163.com/a?__newsapp_target=_blank&CID=44220&Values=689184690&Redirect=http://clickc.admaster.com.cn/c/a72763,b1227619,c369,i0,m101,h
+" styleName="bottom-bar"></a> :
+			null;
 		
 		return (
 			<div styleName="page">

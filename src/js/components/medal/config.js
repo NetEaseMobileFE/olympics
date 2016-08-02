@@ -9,13 +9,15 @@ export const api = {
 	}
 };
 
+const link = 'http://g.163.com/a?__newsapp_target=_blank&CID=44213&Values=924384932&Redirect=http://go.163.com/2016/0715/yili/';
+
 export const ads = [{ //todo
-	src: 'http://imgm.ph.126.net/vQerYt5-YOCvZiCqjq2WPQ==/6598102208136414073.jpg',
-	href: 'http://c.3g.163.com/nc/qa/gamecenter/v2_1/topic-group.html?topicid=933'
+	src: 'http://t.c.m.163.com/test/olympics/img/ad1s.gif',
+	href: link
 }, {
-	src: 'http://imgm.ph.126.net/KHNOJoEo38IfcBCiPYbCNA==/6598095611067258097.jpg',
-	href: 'http://m.163.com/gamecenter/link/107'
+	src: 'http://t.c.m.163.com/test/olympics/img/ad1.gif',
+	href: link
 }, {
-	src: 'http://imgm.ph.126.net/e3IvuDlC_gj5_GJwcAnspg==/6598083516439183794.jpg',
-	href: 'http://qnm.163.com/m/download/neteasenews/'
+	src: 'http://t.c.m.163.com/test/olympics/img/ad2.jpg',
+	href: 'http://g.163.com/a?__newsapp_target=_blank&CID=44221&Values=2122419098&Redirect=http://clickc.admaster.com.cn/c/a72763,b1227618,c369,i0,m101,h'
 }];

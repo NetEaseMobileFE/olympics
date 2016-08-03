@@ -69,40 +69,37 @@ class Event extends Component {
 		return shallowCompare(this, nextProps, nextState);
 	}
 	
-	handleClick = (e) => { // todo
-		e.preventDefault();
-		this.props.showToast('赛事暂未开始，敬请期待！');
-	};
-
 	render() {
 		let {
 			rsc, disciplineName, scheduleName, date, startTime,
 			withChina, isFinished, isFinal, live, roomId,
 			competitors
 		} = this.props;
-		let href = 'javascript:';
+		let href;
 
-		if ( ua.isNewsApp ) {
-			if ( roomId ) {
-				href = `newsapp://live/${roomId}`;
-			}
+		if ( ua.isNewsApp && roomId ) {
+			href = `newsapp://live/${roomId}`;
 		} else {
 			href = `${liveUrl}?rsc=${rsc}`;
-			href = null; // todo
+			if ( roomId ) {
+				href += '&roomid=' + roomId;
+			}
+			if ( ua.isNewsApp ) {
+				href += '&__newsapp_target=_blank';
+			}
 		}
 
 		return (
-			<a styleName="event-ctnr" href={href} target="_blank" onClick={ href ? null : this.handleClick }>
+			<a styleName="event-ctnr" href={href} target="_blank">
 				<div styleName="event">
 					{ withChina || isFinal ? <Clip china={withChina} final={isFinal} pcn={styles.event__clip}/> : null }
 					<div styleName="event__time">{startTime}</div>
 					<div styleName="event__detail">
 						<div styleName="tags">
 							<div styleName="tags__discipline">{disciplineName}</div>
-							{ // ua.isNewsApp todo
-								ua.isNewsApp && roomId ? <State roomId={roomId} live={live} startTime={startTime}
-												   isFinished={isFinished} date={date} matchName={disciplineName + '-' + scheduleName}/>
-									: null
+							{
+								<State roomId={roomId} live={live} startTime={startTime}
+										   isFinished={isFinished} date={date} matchName={disciplineName + '-' + scheduleName}/>
 							}
 						</div>
 						<div styleName="event-name">

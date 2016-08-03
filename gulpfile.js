@@ -130,8 +130,8 @@ gulp.task('mocks', function () {
 // Start
 gulp.task('default', ['html'], function() {
 	gutil.log('Done!');
-	gutil.log('HTML published at ' + gutil.colors.bgCyan.white(publishConfig.htmlPath));
-	gutil.log('Assets deployed at ' + gutil.colors.bgCyan.white(publishConfig.assetPathRevised));
+	gutil.log('HTML published at ' + gutil.colors.inverse(publishConfig.htmlPath));
+	gutil.log('Assets deployed at ' + gutil.colors.inverse(publishConfig.assetPathRevised));
 });
 
 

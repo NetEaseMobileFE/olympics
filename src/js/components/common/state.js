@@ -65,7 +65,7 @@ export default class extends Component {
 	}
 
 	render() {
-		const { live, isFinished } = this.props;
+		const { live, isFinished, roomId } = this.props;
 		let stateType;
 		let stateLabel;
 
@@ -74,8 +74,14 @@ export default class extends Component {
 			stateLabel = '直播结束';
 		} else if ( live == 1 ) {
 			stateType = 'live';
-			stateLabel = '正在直播';
-		} else if ( ua.isNewsApp ) {
+			if ( ua.isNewsApp ) {
+				stateLabel = '正在直播';
+			} else if ( roomId ) {
+				stateLabel = '图文直播中';
+			} else {
+				stateLabel = '数据直播中';
+			}
+		} else if ( ua.isNewsApp && roomId ) { // 提醒进直播室
 			stateType = 'alarm';
 			stateLabel = this.state.alarm == 0 ? '提醒' : '已开启';
 		}

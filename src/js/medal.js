@@ -1,7 +1,6 @@
 import 'core-js/fn/promise';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import shallowCompare from 'react-addons-shallow-compare';
 import 'swiper';
 import '../css/widgets/swiper.scss';
@@ -178,10 +177,6 @@ class Medal extends Component {
 
 	render() {
 		let { currType } = this.state;
-		let bottomBar = currType == CHINA ?
-			<a href="http://g.163.com/a?__newsapp_target=_blank&CID=44220&Values=689184690&Redirect=http://clickc.admaster.com.cn/c/a72763,b1227619,c369,i0,m101,h
-" styleName="bottom-bar"></a> :
-			null;
 		
 		return (
 			<div styleName="page">
@@ -200,15 +195,18 @@ class Medal extends Component {
 											<List list={state.data}
 												  switchToChina={ type == MEDAL ? this.handleChange : null }
 												  noMore={state.noMore} type={type}/>
+											{
+												type == CHINA ? <div styleName="bottom-bar" className={ state.data && state.data.length ? '' : 'is--sticky' }>
+													<a href="http://g.163.com/a?__newsapp_target=_blank&CID=44220&Values=689184690&Redirect=http://clickc.admaster.com.cn/c/a72763,b1227619,c369,i0,m101,h
+" target="_blank"/>
+												</div> : null
+											}
 										</div>)
 								})
 							}
 						</div>
 					</div>
 				</div>
-				<ReactCSSTransitionGroup transitionName="bottom-bar" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-					{bottomBar}
-				</ReactCSSTransitionGroup>
 			</div>
 		)
 	}

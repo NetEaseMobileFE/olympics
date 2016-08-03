@@ -28,7 +28,7 @@ module.exports = {
 		new webpack.DefinePlugin({
 			DEBUG: true
 		}),
-		new ExtractTextPlugin('css/[name].css')
+		// new ExtractTextPlugin('css/[name].css')
 	],
 	module: {
 		loaders: [
@@ -39,11 +39,11 @@ module.exports = {
 				exclude: path.join(__dirname, 'src/js/plugins')
 			}, {
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract('style', 'css'),
+				loader: 'style!css',
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.scss$/,
-				loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[local]___[hash:base64:2]!postcss!sass'),
+				loader: 'style!css?modules&importLoaders=1&localIdentName=[local]___[hash:base64:2]!postcss!sass',
 				include: path.join(__dirname, 'src/css')
 			}, {
 				test: /\.png|jpe?g|gif$/,

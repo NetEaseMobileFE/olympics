@@ -40,6 +40,7 @@ const disciplines = Immutable([
 	{ id: 'MP', name: "现代五项" },
 	{ id: 'SY', name: "花样游泳" },
 	{ id: 'TR', name: "三项全能" },
+	{ id: 'OW', name: "马拉松游泳" },
 	{ id: 'CF', name: "皮划艇静水" },
 	{ id: 'CM', name: "山地自行车" },
 	{ id: 'CR', name: "公路自行车" },

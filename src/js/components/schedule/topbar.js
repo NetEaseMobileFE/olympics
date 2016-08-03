@@ -10,10 +10,10 @@ export default class extends Component {
 		if ( !ua.isNewsApp ) {
 			let script = document.createElement('script');
 			script.async = true;
-			script.src = 'http://img1.cache.netease.com/apps/olympics2016/js/topbar.js';
+			script.src = 'http://img3.cache.netease.com/f2e/wap/touch_special_olympic/olympic_index_2016/dist/scripts/libs/topbar.js';
 			// script.src = '/src/js/plugins/topbar.js';
 			script.onload = function() {
-				topbar.render('topbar-wrapper','course');
+				topbar.render('topbar-wrapper','course', 'http://3g.163.com/touch/2016');
 			};
 			document.head.appendChild(script);
 		}

@@ -77,23 +77,23 @@ class Event extends Component {
 		} = this.props;
 		let href;
 
-		if ( ua.isNewsApp && roomId ) {
+		if ( ua.isNewsApp && live == 1 && roomId ) {
 			href = `newsapp://live/${roomId}`;
 		} else {
 			href = `${liveUrl}?rsc=${rsc}`;
-			if ( roomId ) {
+			if ( live == 1 && roomId ) {
 				href += '&roomid=' + roomId;
 			}
 			if ( ua.isNewsApp ) {
 				href += '&__newsapp_target=_blank';
 			}
 		}
-
+		
 		return (
 			<a styleName="event-ctnr" href={href} target="_blank">
 				<div styleName="event">
 					{ withChina || isFinal ? <Clip china={withChina} final={isFinal} pcn={styles.event__clip}/> : null }
-					<div styleName="event__time">{startTime}</div>
+					<div styleName="event__time">{startTime.slice(11, 16)}</div>
 					<div styleName="event__detail">
 						<div styleName="tags">
 							<div styleName="tags__discipline">{disciplineName}</div>

@@ -10,7 +10,7 @@ export default class extends Component {
 		if ( !ua.isNewsApp ) {
 			let script = document.createElement('script');
 			script.async = true;
-			script.src = 'http://img3.cache.netease.com/f2e/wap/touch_special_olympic/olympic_index_2016/dist/scripts/libs/topbar.js';
+			script.src = 'http://img3.cache.netease.com/f2e/wap/touch_special_olympic/olympic_index_2016/dist/scripts/libs/topbar_v1.js';
 			// script.src = '/src/js/plugins/topbar.js';
 			script.onload = function() {
 				topbar.render('topbar-wrapper','course', 'http://3g.163.com/touch/2016');

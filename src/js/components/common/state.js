@@ -5,6 +5,7 @@ import styles from '../../../css/widgets/state.scss';
 import ua from '../../utils/ua';
 import * as nahelper from '../../utils/newsapp-helper';
 
+const now = +new Date();
 
 @CSSModules(styles)
 export default class extends Component {
@@ -65,23 +66,24 @@ export default class extends Component {
 	}
 
 	render() {
-		const { live, isFinished, roomId } = this.props;
+		const { live, isFinished, roomId, startTime } = this.props;
 		let stateType;
 		let stateLabel;
+		const startTimeNumber = +new Date(startTime.replace(/-/g,'/'));
 
 		if ( isFinished ) {
 			stateType = 'live--fade';
 			stateLabel = '直播结束';
-		} else if ( live == 1 ) {
+		} else if ( now > startTimeNumber ) { // 直播中
 			stateType = 'live';
 			if ( ua.isNewsApp ) {
 				stateLabel = '正在直播';
-			} else if ( roomId ) {
+			} else if ( live == 1 ) {
 				stateLabel = '图文直播中';
 			} else {
 				stateLabel = '数据直播中';
 			}
-		} else if ( ua.isNewsApp && roomId ) { // 提醒进直播室
+		} else if ( ua.isNewsApp && live == 1 && roomId ) {
 			stateType = 'alarm';
 			stateLabel = this.state.alarm == 0 ? '提醒' : '已开启';
 		}

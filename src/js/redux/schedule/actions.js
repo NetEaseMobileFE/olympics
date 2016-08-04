@@ -278,7 +278,7 @@ function unusedEliminate(list) {
 			}
 
 			// 截取赛果长度，团体只看第一名
-			if ( isFinished && competitorMapList && competitorMapList.length ) {
+			if ( competitorMapList && competitorMapList.length ) {
 				let tmpCpt;
 				if ( organisations.length == 2 ) {
 					if ( competitorMapList[0].organisation != competitors[0].code ) { // 按照默认顺序显示结果
@@ -313,7 +313,8 @@ function unusedEliminate(list) {
 			withChina: organisations && organisations.length > 0 && organisations.indexOf('CHN') > -1,
 			isFinished,
 			isFinal: schedule.medal == 1,
-			startTime: schedule.startDate.substr(11, 5),
+			startTime: schedule.startDate.slice(0, -4),
+			// endTime: schedule.endDate.slice(0, -4),
 			live: schedule.live,
 			roomId: schedule.roomId,
 			competitors

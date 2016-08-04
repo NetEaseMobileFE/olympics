@@ -18,6 +18,7 @@ const CHINA = 'china';
 const PERSONAL = 'personal';
 const types = [MEDAL, CHINA, PERSONAL];
 const minHeight = window.innerHeight - rem2px(4.68); // 用于保证列表滑动区域
+const thresholdScrollY = rem2px(5.1); // 滚动超出首屏，切换tab就回到顶部
 
 @CSSModules(styles)
 class Medal extends Component {
@@ -60,6 +61,11 @@ class Medal extends Component {
 					});
 					this.fetchList(type, true);
 				}
+			},
+			onSlideChangeEnd() {
+				if ( window.scrollY > thresholdScrollY ) {
+					window.scrollTo(0, 0);
+				}
 			}
 			
 		});
@@ -74,8 +80,8 @@ class Medal extends Component {
 		this.fetchList(currType, true);
 	};
 
-	fetchList(type = this.state.currType, first) {
-		if ( this.loading[type] || ( first && this.state[type] ) ) return;
+	fetchList(type = this.state.currType, noRepeat) {
+		if ( this.loading[type] || ( noRepeat && this.state[type] ) ) return;
 		let url;
 		if ( type == PERSONAL ) {
 			let pageNo = this.personalPageNo ? this.personalPageNo + 1 : 1;

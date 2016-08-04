@@ -3,6 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import shallowCompare from 'react-addons-shallow-compare';
 import 'swiper';
 import '../../../css/widgets/swiper.scss';
+import '../../../css/widgets/nprogress.css';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/schedule.scss';
 import { createConnect } from '../../utils/util';
@@ -80,7 +81,8 @@ export default class extends Component {
 													oneDayOfMain.list ?
 														oneDayOfMain.list.length ?
 															<Panel label="全部赛程" events={oneDayOfMain.list} date={date}
-																   type={oneDayOfMain.type} showFinished={this.showFinished}
+																   type={oneDayOfMain.type} lastPageNo={oneDayOfMain.lastPageNo}
+																   showFinished={this.showFinished}
 																   showToast={this.showToast}/> :
 															<Empty>相关赛程为空</Empty> :
 														null

@@ -1,10 +1,16 @@
 import { getScript, formatDate } from '../../utils/util';
 import * as types from './types';
 import { assembleDateUrl, assembleScheduleUrl, sportsDates } from '../../config';
+import NProgress from 'nprogress';
 
 
 const today = formatDate();
 const NO_MATCH = '没有相关赛事';
+
+NProgress.configure({
+	showSpinner: false,
+	minimum: 0.2
+});
 
 /**
  * 切换“中国赛程”
@@ -72,8 +78,10 @@ function updateSportsDates(rollBack) {
 		let state = getState();
 		const url = assembleDateUrl(state);
 		let promise = url ? getScript(url) : Promise.resolve(sportsDates);
-
+		NProgress.start();
+		
 		return promise.then(json => {
+			NProgress.done();
 			if ( json.length ) {
 				dispatch(emptyHotSchedule());
 				dispatch(emptyMainSchedule());
@@ -95,6 +103,7 @@ function updateSportsDates(rollBack) {
 			console.warn(error);
 			rollBack();
 			dispatch(toggleToast({ msg: NO_MATCH }));
+			NProgress.done();
 		});
 	}
 }

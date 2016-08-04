@@ -9,7 +9,7 @@ export const api = {
 	}
 };
 
-const link = 'http://g.163.com/a?__newsapp_target=_blank&CID=44213&Values=924384932&Redirect=http://go.163.com/2016/0715/yili/';
+const link = 'http://g.163.com/a?CID=44213&Values=924384932&__newsapp_target=_blank&Redirect=http://go.163.com/2016/0715/yili/';
 
 export const ads = [{
 	src: 'http://t.c.m.163.com/test/olympics/img/ad1s.gif',
@@ -19,5 +19,5 @@ export const ads = [{
 	href: link
 }, {
 	src: 'http://t.c.m.163.com/test/olympics/img/ad2.jpg',
-	href: 'http://g.163.com/a?__newsapp_target=_blank&CID=44221&Values=2122419098&Redirect=http://clickc.admaster.com.cn/c/a72763,b1227618,c369,i0,m101,h'
+	href: 'http://g.163.com/a?CID=44221&Values=2122419098&__newsapp_target=_blank&Redirect=http://clickc.admaster.com.cn/c/a72763,b1227618,c369,i0,m101,h'
 }];

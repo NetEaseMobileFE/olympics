@@ -43,14 +43,8 @@ export default class extends Component {
 				<div className="swiper-wrapper">
 					{
 						frames.map((frame, i) => {
-							{/*let src = frame.src.replace(/^https?:\/\//, '');*/}
-							let href = ua.isNewsApp ?
-								frame.href + ( frame.href.indexOf('?') > -1 ? '&' : '?' ) + '__newsapp_target=_blank' :
-								frame.href;
-							
 							return (
-								<a className="swiper-slide" href={href} target="_blank" key={i}>
-									{/*<img src={`http://s.cimg.163.com/i/${src}.750x380.80.jpg`}/>*/}
+								<a className="swiper-slide" href={frame.href} target="_blank" key={i}>
 									<img data-src={frame.src} className="swiper-lazy"/>
 									<span className="swiper-lazy-preloader"/>
 								</a>

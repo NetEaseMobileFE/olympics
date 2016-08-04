@@ -4,6 +4,7 @@ import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/schedule/panel.scss';
 import Clip from '../common/clip';
 import State from '../common/state';
+import Loading from '../common/loading';
 import ua from '../../utils/ua';
 
 
@@ -127,16 +128,26 @@ class Event extends Component {
  */
 @CSSModules(styles)
 export default class extends Component {
-	shouldComponentUpdate(nextProps) {
-		return shallowCompare(this, nextProps);
+	constructor(props) {
+		super(props);
+		this.state = {
+			pending: false
+		}
+	}
+	
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
 	}
 
 	handleClick = () => {
 		this.props.showFinished();
+		this.setState({
+			pending: true
+		});
 	};
 
 	render() {
-		let { label, events, date, showToast } = this.props;
+		let { label, events, date, showToast, type, lastPageNo } = this.props;
 
 		return (
 			<section styleName="panel">
@@ -145,9 +156,11 @@ export default class extends Component {
 				</div>
 				<div styleName="panel__main">
 					{
-						this.props.type == 'active' ?
-							<div styleName="show-more" onClick={this.handleClick}>查看全部赛程<i/></div> :
-							null
+						this.state.pending && lastPageNo == 0 ?
+							<div styleName="show-more"><Loading/></div> :
+							type == 'active' ?
+								<div styleName="show-more" onClick={this.handleClick}>查看全部赛程<i/></div> :
+								null
 					}
 					{
 						events && events.map((event, i) =>

@@ -53,6 +53,10 @@
         margin-left: 12px;
         opacity: .75;
     }
+
+    :global(.loading) {
+        height: 105px;
+    }
 }
 
 

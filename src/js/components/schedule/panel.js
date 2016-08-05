@@ -163,8 +163,8 @@ export default class extends Component {
 								null
 					}
 					{
-						events && events.map((event, i) =>
-							<Event key={i} {...event} date={date} showToast={showToast}/>
+						events && events.map(event =>
+							<Event key={event.rsc} {...event} date={date} showToast={showToast}/>
 						)
 					}
 				</div>

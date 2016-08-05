@@ -233,6 +233,10 @@ function showMoreSchedule() {
 	}
 }
 
+function updateResult(di) {
+	
+}
+
 // 清空赛程
 function emptyHotSchedule() {
 	return {

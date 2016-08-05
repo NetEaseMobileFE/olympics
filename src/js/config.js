@@ -188,7 +188,6 @@ function assembleAllScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {
 	return apiBaseUrl + url + sourceParam;
 }
 
-
 function checkMode(params) {
 	return `${params.onlyChina ? 'c' : ''}${params.onlyGold ? 'g' : ''}${params.selectedDiscipline.id ? 'd' : ''}`;
 }

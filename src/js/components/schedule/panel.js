@@ -46,7 +46,7 @@ class Competetion extends Component {
 
 				<div styleName="competition__rival">
 					<img styleName="competition__rival__flag" src={away.flag}/>
-					<span styleName="competition__rival__player">{away.name}</span>
+					<div styleName="competition__rival__player">{away.name}</div>
 				</div>
 			</div>
 		)
@@ -111,7 +111,7 @@ class Event extends Component {
 								<Competetion competitors={competitors}/> :
 								isFinished && competitors[0] ?
 									<div styleName="competition__rival">
-										<span styleName="competition__rival__player" className="long">第一名：{competitors[0].name}</span>
+										<div styleName="competition__rival__player" className="long">第一名：{competitors[0].name}</div>
 										<img styleName="competition__rival__flag" src={competitors[0].flag}/>
 									</div> : null
 						}

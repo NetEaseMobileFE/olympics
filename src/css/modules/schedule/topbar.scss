@@ -1,14 +1,12 @@
 .topbar {
-    background-repeat: no-repeat;
-    background-size: cover;
 
     :global(.bar--touch) & {
         height: 98px;
-        background-image: url('http://img3.cache.netease.com/f2e/wap/touch_special_olympic/olympic_index_2016/dist/images/ol_top_course.png');
     }
 
     :global(.bar--app) & {
         height: 62px;
-        background-image: url('http://img4.cache.netease.com/apps/olympics2016/img/titled-bar.png');
+        background: url('http://img4.cache.netease.com/apps/olympics2016/img/titled-bar.png') no-repeat;
+        background-size: cover;
     }
 }

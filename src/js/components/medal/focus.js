@@ -4,7 +4,6 @@ import styles from '../../../css/modules/medal/focus.scss';
 import 'swiper';
 import '../../../css/widgets/swiper.scss';
 import { ads } from '../medal/config';
-import ua from '../../utils/ua';
 
 
 const now = new Date();

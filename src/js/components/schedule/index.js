@@ -19,7 +19,9 @@ import { showTypeAll, showMoreSchedule, toggleToast } from '../../redux/schedule
 
 
 const isNewsApp = ua.isNewsApp;
-const swiperHeight = window.innerHeight - rem2px(isNewsApp ? 2.89 : 3.25 ) - 1;
+const isSkoy = window.location.href.indexOf('qd=skoy') > -1;
+const topHeight = isSkoy && !isNewsApp ? 2.27 : ( isNewsApp ? 2.89 : 3.25 );
+const swiperHeight = window.innerHeight - rem2px(topHeight) - 1;
 
 @createConnect(['sportsDates', 'hotSchedule', 'mainSchedule', 'toast'])
 @CSSModules(styles)
@@ -55,7 +57,7 @@ export default class extends Component {
 		let ToastCmp = toast ? <Toast {...toast}/> : null;
 
 		return (
-			<div styleName="page" className={ isNewsApp ? 'bar--app' : 'bar--touch' }>
+			<div styleName="page" className={ isNewsApp ? 'bar--app' : ( isSkoy ? '' : 'bar--touch') }>
 				<header styleName="page__hd">
 					<Topbar/>
 					<Filter/>

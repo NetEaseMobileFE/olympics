@@ -1,4 +1,5 @@
 import Immutable from 'seamless-immutable';
+import ua from './utils/ua';
 
 
 let dates = [];
@@ -52,6 +53,8 @@ const disciplines = Immutable([
 
 const apiBaseUrl = `http://data.2016.163.com/schedule/`;
 // const apiBaseUrl = `http://220.181.98.148/schedule/`;
+const source = ua.isNewsApp || window.location.href.indexOf('spss=newsapp') ? 'app' : 'wap';
+const sourceParam = '&source=' + source;
 
 function assembleScheduleUrl(type, params) {
 	if ( type == 'hot' ) {
@@ -107,12 +110,12 @@ function assembleDateUrl(params) {
 			return;
 	}
 
-	return apiBaseUrl + url;
+	return apiBaseUrl + url + sourceParam;
 }
 
 function assembleHotScheduleUrl(selectedDate) {
 	selectedDate = selectedDate.replace(/-/g, '');
-	return apiBaseUrl + `weight/8099/${selectedDate}.json?callback=scA`;
+	return apiBaseUrl + `weight/8099/${selectedDate}.json?callback=scA` + sourceParam;
 }
 
 function assembleActiveScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {
@@ -147,7 +150,7 @@ function assembleActiveScheduleUrl(mode, { selectedDate, disciplineID, pageNo })
 			break;
 	}
 
-	return apiBaseUrl + url;
+	return apiBaseUrl + url + sourceParam;
 }
 
 function assembleAllScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {
@@ -182,7 +185,7 @@ function assembleAllScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {
 			break;
 	}
 
-	return apiBaseUrl + url;
+	return apiBaseUrl + url + sourceParam;
 }
 
 

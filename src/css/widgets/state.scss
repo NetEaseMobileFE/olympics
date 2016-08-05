@@ -39,20 +39,20 @@
     }
 }
 
-//.label--live {
-//    @extend %label;
-//
-//    &__icon {
-//        margin-right: 9px;
-//        @include icon('play.png');
-//    }
-//
-//    &__txt {
-//        @extend %label__txt;
-//        color: #004b88;
-//        border-color: #b2c9db;
-//    }
-//}
+.label--live {
+    @extend %label;
+
+    &__icon {
+        margin-right: 9px;
+        @include icon('play.png');
+    }
+
+    &__txt {
+        @extend %label__txt;
+        color: #004b88;
+        border-color: #b2c9db;
+    }
+}
 
 .label--live--fade {
     @extend %label;
@@ -69,27 +69,27 @@
     }
 }
 
-.label--live--spin {
-    @extend %label;
-
-    &__icon {
-        margin-right: 9px;
-        @include icon('arrow-green.png');
-
-        > i {
-            display: block;
-            @include icon('ring.png');
-            will-change: transform, opacity, pulsate;
-            animation: spin 1s linear infinite;
-        }
-    }
-
-    &__txt {
-        @extend %label__txt;
-        color: #004b88;
-        border-color: #b2c9db;
-    }
-}
+//.label--live--spin {
+//    @extend %label;
+//
+//    &__icon {
+//        margin-right: 9px;
+//        @include icon('arrow-green.png');
+//
+//        > i {
+//            display: block;
+//            @include icon('ring.png');
+//            will-change: transform, opacity, pulsate;
+//            animation: spin 1s linear infinite;
+//        }
+//    }
+//
+//    &__txt {
+//        @extend %label__txt;
+//        color: #004b88;
+//        border-color: #b2c9db;
+//    }
+//}
 
 .label--alarm {
     @extend %label;

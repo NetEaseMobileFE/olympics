@@ -75,7 +75,8 @@ export default class extends Component {
 			stateType = 'live--fade';
 			stateLabel = '直播结束';
 		} else if ( now > startTimeNumber ) { // 直播中
-			stateType = 'live--spin';
+			// stateType = 'live--spin'; todo
+			stateType = 'live';
 			if ( ua.isNewsApp ) {
 				stateLabel = '正在直播';
 			} else if ( live == 1 ) {

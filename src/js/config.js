@@ -188,6 +188,17 @@ function assembleAllScheduleUrl(mode, { selectedDate, disciplineID, pageNo }) {
 	return apiBaseUrl + url + sourceParam;
 }
 
+<<<<<<< HEAD
+=======
+function assembleFragmentUrl(disciplines) {
+	if ( typeof disciplines == 'string' ) {
+		disciplines = [disciplines];
+	}
+	
+	return `http://data.2016.163.com/stats/fragment/${disciplines.join('_')}.json?callback=stm${sourceParam}`;
+}
+
+>>>>>>> resultApi
 function checkMode(params) {
 	return `${params.onlyChina ? 'c' : ''}${params.onlyGold ? 'g' : ''}${params.selectedDiscipline.id ? 'd' : ''}`;
 }
@@ -197,5 +208,6 @@ export {
 	sportsDates,
 	disciplines,
 	assembleScheduleUrl,
-	assembleDateUrl
+	assembleDateUrl,
+	assembleFragmentUrl
 }

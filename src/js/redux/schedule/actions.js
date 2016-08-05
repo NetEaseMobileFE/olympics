@@ -1,6 +1,6 @@
 import { getScript, formatDate } from '../../utils/util';
 import * as types from './types';
-import { assembleDateUrl, assembleScheduleUrl, sportsDates } from '../../config';
+import { assembleDateUrl, assembleScheduleUrl, assembleFragmentUrl, sportsDates } from '../../config';
 import NProgress from 'nprogress';
 
 
@@ -138,13 +138,13 @@ function updateHotSchedule() {
 		dispatch(fetchingHotSchedule(selectedDate));
 
 		return getScript(url).then(json => {
+			return amendResult(json.scheduleList);
+		}).then(list => {
 			dispatch(fetchingHotSchedule(selectedDate, false));
 			dispatch({
 				type: types.UPDATE_HOT_SCHEDULE,
 				data: {
-					[selectedDate]: {
-						list: json.scheduleList && json.scheduleList.length ? unusedEliminate(json.scheduleList) : null
-					}
+					[selectedDate]: { list }
 				}
 			});
 		}).catch(error => console.warn(error));
@@ -169,18 +169,19 @@ function updateMainSchedule() {
 				dispatch(showTypeAll());
 				return;
 			}
-			
-			dispatch(fetchingMainSchedule(selectedDate, false));
-			dispatch({
-				type: types.UPDATE_MAIN_SCHEDULE,
-				data: {
-					[selectedDate]: {
-						type,
-						list: unusedEliminate(json.scheduleList),
-						lastPageNo: json.pageNo,
-						noMore: json.pageNo == json.pageNum
+			amendResult(json.scheduleList).then(list => {
+				dispatch(fetchingMainSchedule(selectedDate, false));
+				dispatch({
+					type: types.UPDATE_MAIN_SCHEDULE,
+					data: {
+						[selectedDate]: {
+							type,
+							list,
+							lastPageNo: json.pageNo,
+							noMore: json.pageNo == json.pageNum
+						}
 					}
-				}
+				});
 			});
 		}).catch(error => {
 			// 标记没有数据
@@ -233,6 +234,10 @@ function showMoreSchedule() {
 	}
 }
 
+function updateResult(di) {
+	
+}
+
 // 清空赛程
 function emptyHotSchedule() {
 	return {
@@ -263,13 +268,48 @@ function fetchingMainSchedule(date, state = true) {
 	}
 }
 
+// 修正赛果
+function amendResult(list) {
+	if ( !list || !list.length ) return Promise.resolve(null);
+	return new Promise((resolve, reject) => {
+		const needRealResult = list.filter(s => {
+			if ( s.organisations && s.organisations.length == 2 ) { // 个人 1v1
+				return s.competitionType = 'D'; // duel
+			} else if ( s.competitorMapList && s.competitorMapList.length && s.competitorMapList[0].competitorType == 'A' ) { // 多国个人
+				return s.competitionType = 'A'; // duel
+			}
+		}).map(s => s.rsc);
+		
+		if ( needRealResult.length ) {
+			getScript(assembleFragmentUrl(needRealResult)).then(results => {
+				if ( results && results.length > 0 ) {
+					results.forEach(result => {
+						list.forEach((s => {
+							if ( result.rsc == s.rsc ) {
+								s.competitorMapList = result.competitors;
+							}
+						}))
+					});
+				}
+				
+				resolve(unusedEliminate(list));
+			}).catch((error) => {
+				console.warn(error);
+				resolve(unusedEliminate(list));
+			});
+		} else {
+			resolve(unusedEliminate(list));
+		}
+	});
+}
+
 // 剔除不用的属性，统一赛果 competitors
 function unusedEliminate(list) {
 	return list.map(schedule => {
-		let { organisations, organisationsName, organisationsImgUrl, competitorMapList } = schedule;
+		let { organisations, organisationsName, organisationsImgUrl, competitorMapList, competitionType } = schedule;
 		let isFinished = schedule.status == 'FINISHED';
 		let competitors = [];
-
+		
 		if ( organisations && organisations.length ) {
 			if ( organisations.length == 2 ) {
 				organisations.forEach((o, i) => {
@@ -285,23 +325,33 @@ function unusedEliminate(list) {
 					competitors.reverse();
 				}
 			}
-
+			
 			// 截取赛果长度，团体只看第一名
 			if ( competitorMapList && competitorMapList.length ) {
 				let tmpCpt;
-				if ( organisations.length == 2 ) {
+				if ( competitionType == 'D' ) {
 					if ( competitorMapList[0].organisation != competitors[0].code ) { // 按照默认顺序显示结果
 						competitorMapList.reverse();
 					}
 					
 					competitors.forEach((c, i) => {
 						tmpCpt = competitorMapList[i];
+						c.flag = tmpCpt.organisationImgUrl;
 						c.name = tmpCpt.competitorName; // 如果是个人名字的话，优先显示个人
 						c.result = tmpCpt.result;
-						c.resultType = tmpCpt.resultType;
-						c.rank = tmpCpt.rank;
+						c.wlt = tmpCpt.wlt;
+						// c.resultType = tmpCpt.resultType;
+						// c.rank = tmpCpt.rank;
 					});
-				} else {
+				} else if ( competitionType == 'A' ) {
+					competitors = competitorMapList.map(tmpCpt => {
+						return {
+							name: tmpCpt.competitorName,
+							code: tmpCpt.organisation,
+							flag: tmpCpt.organisationImgUrl
+						}
+					});
+				} else if ( isFinished ) {
 					tmpCpt = competitorMapList[0];
 					competitors.push({
 						name: tmpCpt.competitorName,
@@ -314,7 +364,7 @@ function unusedEliminate(list) {
 				}
 			}
 		}
-
+		
 		return {
 			rsc: schedule.rsc,
 			disciplineName: schedule.disciplineName,
@@ -326,6 +376,7 @@ function unusedEliminate(list) {
 			// endTime: schedule.endDate.slice(0, -4),
 			live: schedule.live,
 			roomId: schedule.roomId,
+			competitionType,
 			competitors
 		}
 	});

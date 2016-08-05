@@ -43,7 +43,7 @@ export default class extends Component {
 					{
 						frames.map((frame, i) => {
 							return (
-								<a className="swiper-slide" href={frame.href} target="_blank" key={i}>
+								<a className="swiper-slide" styleName="focus-link" href={frame.href} target="_blank" key={i}>
 									<img data-src={frame.src} className="swiper-lazy"/>
 									<span className="swiper-lazy-preloader"/>
 								</a>

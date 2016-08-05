@@ -4,6 +4,13 @@
     @include icon('gt.png');
 }
 
+%flag {
+    box-sizing: content-box;
+    width: 39px;
+    max-height: 30px;
+    border: 1px solid #d9d9d9;
+}
+
 .panel {
     margin: 20px 20px 0;
 
@@ -93,7 +100,6 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-        overflow: hidden;
 	}
 
 	& + & {
@@ -153,7 +159,7 @@
         align-items: center;
 
         &__player {
-            max-width: 170px;
+            max-width: 130px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -164,10 +170,7 @@
         }
 
         &__flag {
-            box-sizing: content-box;
-            width: 39px;
-            max-height: 30px;
-            border: 1px solid #d9d9d9;
+            @extend %flag;
         }
 
         &__player + &__flag, &__flag + &__player {
@@ -177,8 +180,9 @@
 
     &__vs {
         display: flex;
-        width: 110px;
+        width: 125px;
         text-align: center;
+        font-size: 24px;
 
         &__score {
             flex: 1;
@@ -196,6 +200,25 @@
     }
 }
 
+.competitors {
+    display: flex;
+    align-items: center;
+    font-size: 26px;
+
+    &__flag {
+        margin-right: 8px;
+        @extend %flag;
+    }
+
+    &__name {
+        margin-right: 8px;
+        color: rgba(44,192,228,.9);
+    }
+
+    &__tip {
+        color: rgba(91,91,91,.9);
+    }
+}
 
 :global {
     .matches-leave {

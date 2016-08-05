@@ -34,9 +34,9 @@ class Competetion extends Component {
 					home.result ?
 						(
 							<div styleName="competition__vs">
-								<div styleName="competition__vs__score">{formatResult(home, away)}</div>
+								<div styleName="competition__vs__score">{formatResult(home)}</div>
 								<div styleName="competition__vs__sep">:</div>
-								<div styleName="competition__vs__score">{formatResult(away, home)}</div>
+								<div styleName="competition__vs__score">{formatResult(away)}</div>
 							</div>
 						) :
 						(
@@ -74,8 +74,9 @@ class Event extends Component {
 		let {
 			rsc, disciplineName, scheduleName, date, startTime,
 			withChina, isFinished, isFinal, live, roomId,
-			competitors
+			competitors, competitionType
 		} = this.props;
+		let chinaCompetitors, moreChinaCompetitors;
 		let href;
 
 		if ( ua.isNewsApp && live == 1 && roomId ) {
@@ -88,6 +89,15 @@ class Event extends Component {
 			if ( ua.isNewsApp ) {
 				href += '&__newsapp_target=_blank';
 			}
+		}
+		
+		if ( competitionType == 'A' && withChina ) {
+			let maxNum = isFinal ? 3 : 4;
+			chinaCompetitors = competitors.filter(competitor => competitor.code == 'CHN');
+			if ( chinaCompetitors.length > maxNum ) {
+				moreChinaCompetitors = true;
+			}
+			chinaCompetitors = chinaCompetitors.slice(0, maxNum);
 		}
 		
 		return (
@@ -107,13 +117,25 @@ class Event extends Component {
 							{scheduleName}
 						</div>
 						{
-							competitors.length == 2 ?
+							competitionType == 'D' ?
 								<Competetion competitors={competitors}/> :
 								isFinished && competitors[0] ?
 									<div styleName="competition__rival">
 										<span styleName="competition__rival__player" className="long">第一名：{competitors[0].name}</span>
 										<img styleName="competition__rival__flag" src={competitors[0].flag}/>
 									</div> : null
+						}
+						{
+							chinaCompetitors ?
+								<div styleName="competitors">
+									<img styleName="competitors__flag" src={chinaCompetitors[0].flag}/>
+									{
+										chinaCompetitors.map((competitor, i) =>
+											<span key={i} styleName="competitors__name">{competitor.name}</span>)
+									}
+									{ moreChinaCompetitors ? <span styleName="competitors__tip">等</span> : null }
+									{ isFinal ? <span styleName="competitors__tip">有望冲金</span> : null }
+								</div> : null
 						}
 					</div>
 				</div>
@@ -173,10 +195,17 @@ export default class extends Component {
 	}
 }
 
-function formatResult(home, away) {
-	if ( home.resultType == 'POINTS' || home.resultType == 'SCORE' ) {
-		return home.result;
+function formatResult(competitor) {
+	if ( competitor.result !== null ) {
+		return competitor.result;
+	} else if ( competitor.wlt ) {
+		return competitor.wlt == 'w' ? '胜' : '负'
 	} else {
-		return home.rank > away.rank ? '胜' : '负';
+		return '';
 	}
+	// if ( home.resultType == 'POINTS' || home.resultType == 'SCORE' ) {
+	// 	return home.result;
+	// } else {
+	// 	return home.rank > away.rank ? '胜' : '负';
+	// }
 }

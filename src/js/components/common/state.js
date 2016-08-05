@@ -75,7 +75,6 @@ export default class extends Component {
 			stateType = 'live--fade';
 			stateLabel = '直播结束';
 		} else if ( now > startTimeNumber ) { // 直播中
-			// stateType = 'live--spin'; todo
 			stateType = 'live';
 			if ( ua.isNewsApp ) {
 				stateLabel = '正在直播';
@@ -96,7 +95,14 @@ export default class extends Component {
 			<div styleName="state">
 				<div styleName="state__entity">
 					<div styleName={statecn} onClick={ stateType == 'alarm' ? this.handleClick : null }>
-						<div styleName={`${statecn}__icon`}><i/></div>
+						{
+							stateType == 'live' ?
+								<div styleName={`${statecn}__icon`}>
+									<i styleName={`${statecn}__icon__inner`}/>
+									<i styleName={`${statecn}__icon__outer`}/>
+								</div> :
+								<div styleName={`${statecn}__icon`}/>
+						}
 						<div styleName={`${statecn}__txt`}>{stateLabel}</div>
 					</div>
 				</div>

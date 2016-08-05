@@ -69,25 +69,41 @@ import { connect } from 'react-redux';
 // 	});
 // };
 
+// finally
+Promise.prototype.finally = function(callback) {
+	const P = this.constructor;
+	return this.then(
+		value  => P.resolve(callback()).then(() => value),
+		reason => P.resolve(callback()).then(() => { throw reason })
+	);
+};
 
 /**
  * JSONP
  */
 const noop = function() {};
 const scriptCache = {};
+const pending = {};
 
 export let getScript = url => {
 	let cache = scriptCache[url];
+	let callbackName = url.match(/callback=(\w+)/)[1];
 	if ( cache ) {
 		if ( cache instanceof Error ) {
 			return Promise.reject(cache);
 		} else {
 			return Promise.resolve(cache);
 		}
+	} else if ( pending[callbackName] ) {
+		return new Promise(resolve => {
+			pending[callbackName].finally(() => {
+				pending[callbackName] = null;
+				resolve(getScript(url));
+			})
+		});
 	}
 
 	let script = document.createElement('script');
-	let callbackName = url.match(/callback=(\w+)/)[1];
 	let cleanup = () => {
 		if ( script && script.parentNode ) {
 			script.parentNode.removeChild(script);
@@ -96,11 +112,12 @@ export let getScript = url => {
 		window[callbackName] = noop;
 	};
 
-	return new Promise((resolve, reject) => {
+	let prms = new Promise((resolve, reject) => {
 		window[callbackName] = json => {
 			cleanup();
 			scriptCache[url] = json;
-			resolve(json)
+			resolve(json);
+			pending[callbackName] = null;
 		};
 
 		script.async = true;
@@ -112,9 +129,13 @@ export let getScript = url => {
 				scriptCache[url] = error;
 				reject(error);
 			}
+			pending[callbackName] = null;
 		};
 		document.head.appendChild(script);
-	})
+	});
+	pending[callbackName] = prms;
+	
+	return prms;
 };
 
 /**

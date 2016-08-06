@@ -34,7 +34,7 @@ export default class extends Component {
 			th = '国家/地区';
 			list.some((row, i)=> {
 				if ( row.organisationName == '中国' ) {
-					rankOfChina = i;
+					rankOfChina = i + 1;
 					return true;
 				}
 			});
@@ -64,13 +64,13 @@ export default class extends Component {
 						list.slice(0, size).map((row, i) => {
 							// 添加展开更多占位符，并隐藏中间名次的 row
 							if ( shouldUnfold ) {
-								if ( i == 6 ) {
+								if ( i == 5 ) {
 									return (
 										<tr key='placeholder'>
 											<td colSpan="6" onClick={this.handleClick}><span styleName="unfold">点击展开</span></td>
 										</tr>
 									)
-								} else if ( i > 6 && i < rankOfChina ) {
+								} else if ( i > 5 && i < rankOfChina - 1 ) {
 									return null;
 								}
 							}

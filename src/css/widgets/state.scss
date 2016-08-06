@@ -96,7 +96,11 @@
         }
 
         &__outer {
-            @include icon('ring-outer.png');
+            $url: 'ring-outer.png';
+            width: width($url);
+            height: height($url);
+            background: inline($url) no-repeat;
+            background-size: contain;
             opacity: .1;
             will-change: transform, opacity, pulsate;
             animation: spin-opacity 1s linear infinite;

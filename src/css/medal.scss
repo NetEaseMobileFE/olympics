@@ -34,19 +34,15 @@
 }
 
 .bottom-bar {
-    padding: 10px 0 50px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 50px;
 
     > a {
         display: block;
         height: 54px;
         background: url('http://img4.cache.netease.com/apps/olympics2016/img/bottom-bar.jpg') no-repeat;
         background-size: cover;
-    }
-
-    &:global(.is--sticky) {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
     }
 }

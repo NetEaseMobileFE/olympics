@@ -25,7 +25,7 @@ export default class extends Component {
 	};
 	
 	render() {
-		let { type, list, noMore } = this.props;
+		let { type, list, noMore, size } = this.props;
 		if ( !list ) return <Loading />;
 		
 		let rankOfChina;
@@ -61,12 +61,12 @@ export default class extends Component {
 					</thead>
 					<tbody>
 					{
-						list.map((row, i) => {
+						list.slice(0, size).map((row, i) => {
 							// 添加展开更多占位符，并隐藏中间名次的 row
 							if ( shouldUnfold ) {
 								if ( i == 6 ) {
 									return (
-										<tr key={i}>
+										<tr key='placeholder'>
 											<td colSpan="6" onClick={this.handleClick}><span styleName="unfold">点击展开</span></td>
 										</tr>
 									)
@@ -77,6 +77,7 @@ export default class extends Component {
 							
 							let cn = '';
 							let td;
+							let key;
 							
 							if ( type == 'medal' ) {
 								td = (
@@ -87,8 +88,10 @@ export default class extends Component {
 								if ( row.organisationName == '中国' ) {
 									cn = 'is-highlight';
 								}
+								key = row.organisation;
 							} else if ( type == 'china' ) {
 								td = <div styleName="discipline">{row.disciplineName}</div>;
+								key = row.discipline;
 							} else {
 								td = (
 									<div styleName="athlete">
@@ -96,10 +99,11 @@ export default class extends Component {
 										<div styleName="state">{row.organisationName}<img src={row.flag} styleName="state__flag"/></div>
 									</div>
 								);
+								key = row.athleteCode;
 							}
 							
 							return (
-								<tr key={i} styleName={cn}
+								<tr key={key} styleName={cn}
 									onClick={ type == 'medal' && row.organisationName == '中国' ? this.props.switchToChina.bind(null, 'china') : null }>
 									<td>{i + 1}</td>
 									<td colspan={ shouldUnfold && i == 6 ? '6' : false }>{td}</td>

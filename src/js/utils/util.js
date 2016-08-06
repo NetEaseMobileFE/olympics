@@ -85,8 +85,8 @@ const noop = function() {};
 const scriptCache = {};
 const pending = {};
 
-export let getScript = url => {
-	let cache = scriptCache[url];
+export let getScript = (url, disableCache) => {
+	let cache = !disableCache && scriptCache[url];
 	let callbackName = url.match(/callback=(\w+)/)[1];
 	if ( cache ) {
 		if ( cache instanceof Error ) {
@@ -115,7 +115,9 @@ export let getScript = url => {
 	let prms = new Promise((resolve, reject) => {
 		window[callbackName] = json => {
 			cleanup();
-			scriptCache[url] = json;
+			if ( !disableCache ) {
+				scriptCache[url] = json;
+			}
 			resolve(json);
 			pending[callbackName] = null;
 		};

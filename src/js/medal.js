@@ -13,11 +13,13 @@ import List from './components/medal/list';
 import { api } from './components/medal/config';
 
 
+const pageSize = 20;
+const updateInterval = 10 * 1000;
 const MEDAL = 'medal';
 const CHINA = 'china';
 const PERSONAL = 'personal';
 const types = [MEDAL, CHINA, PERSONAL];
-const minHeight = window.innerHeight - rem2px(4.68); // 用于保证列表滑动区域
+const minHeight = window.innerHeight - rem2px(4.88); // 用于保证列表滑动区域
 const thresholdScrollY = rem2px(5.1); // 滚动超出首屏，切换tab就回到顶部
 
 @CSSModules(styles)
@@ -27,8 +29,10 @@ class Medal extends Component {
 		super(props);
 		this.state = {
 			currType: expectedTab || MEDAL
+			
 		};
 		this.loading = {};
+		this.timer = {};
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -44,23 +48,21 @@ class Medal extends Component {
 		}, false);
 	};
 
-	// unbindScroll() {
-	// 	this.refs.loader.removeEventListener('scroll', this.scrollHandler);
-	// };
-
 	componentDidMount() {
-		this.fetchList();
+		this.updateMedalList();
 		this.swiper = new Swiper(this.refs.swiper, {
 			autoHeight: true,
 			resistanceRatio: .7,
 			onSlideChangeStart: (s) => {
 				let type = types[s.activeIndex];
-				if ( type !== this.state.currType ) {
-					this.setState({
-						currType: type
-					});
-					this.fetchList(type, true);
+				this.setState({
+					currType: type
+				});
+				if ( this.timer[type] ) {
+					clearTimeout(this.timer[type]);
+					this.timer[type] = null;
 				}
+				this.updateMedalList(type);
 			},
 			onSlideChangeEnd() {
 				if ( window.scrollY > thresholdScrollY ) {
@@ -73,110 +75,130 @@ class Medal extends Component {
 	}
 
 	handleChange = currType => {
-		this.setState({
-			currType
-		});
 		this.swiper.slideTo(types.indexOf(currType));
-		this.fetchList(currType, true);
 	};
-
-	fetchList(type = this.state.currType, noRepeat) {
-		if ( this.loading[type] || ( noRepeat && this.state[type] ) ) return;
-		let url;
-		if ( type == PERSONAL ) {
-			let pageNo = this.personalPageNo ? this.personalPageNo + 1 : 1;
-			url = api.personal(pageNo);
-		} else {
-			url = api[type];
+	
+	updateMedalList(type = this.state.currType) {
+		if ( this.loading[type] || this.timer[type] ) return ;
+		this.loading[type] = true;
+		if ( type !== PERSONAL ) {
+			this.timer[type] = setTimeout(() => {
+				this.timer[type] = false;
+				this.updateMedalList(type);
+			}, updateInterval);
 		}
 		
-		this.loading[type] = true;
-		getScript(url).then(json => {
-			let data, noMore;
-			
-			if ( type == MEDAL ) {
-				data = json.msList.map(st => {
-					st = st.medal;
-					return {
-						organisationName: st.organisationName,
-						flag: st.organisationImgUrl,
-						medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
-					}
-				});
-				this.medalList = data;
-				data = data.slice(0, Math.min(data.length, 20));
-				noMore = this.medalList.length <= 20;
-			} else if ( type == CHINA ) {
-				data = json.mst.msList.map(st => {
-					return {
-						disciplineName: st.disciplineName,
-						medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
-					}
-				});
-				this.chinaList = data;
-				data = data.slice(0, Math.min(data.length, 20));
-				noMore = this.chinaList.length <= 20;
-			} else {
-				let personal = this.state[PERSONAL];
-				this.personalPageNo = json.pageNo;
-				data = json.mpsList.map(st => {
-					return {
-						athleteName: st.athleteName,
-						organisationName: st.organisationName || '',
-						flag: st.athleteMedalList[0].organisationImgUrl,
-						medals: [st.gold, st.silver, st.bronze, st.total]
-					}
-				});
+		this.fetchList(type).then(list => {
+			if ( list ) {
+				let noMore, size;
+				if ( type == PERSONAL ) {
+					noMore = this.personalPageNo == this.personalPageNum;
+					size = this.personalTotalMps;
+				} else {
+					noMore = list.length <= 20;
+					size = this.state[type] ? this.state[type].size : pageSize;
+				}
 				
-				if ( personal ) {
-					data = personal.data.concat(data);
-				}
-				noMore = json.pageNo == json.pageNum;
-			}
-			
-			this.setState({
-				[type]: {
-					data,
-					noMore
-				}
-			});
-			
-			setTimeout(() => {
-				this.swiper.update();
-				this.loading[type] = false;
-			}, 50);
-		}).catch(() => {
-			if ( !this.state[type] ) {
 				this.setState({
-					[type]: {
-						data: [],
-						noMore: true
-					}
+					[type]: { list, noMore, size }
 				});
+				setTimeout(() => {
+					this.swiper.update();
+					this.loading[type] = false;
+				}, 50);
+			} else {
+				if ( !this.state[type] ) {
+					this.setState({
+						[type]: {
+							list: [],
+							noMore: true
+						}
+					});
+					this.loading[type] = false;
+				}
 			}
 		});
 	}
-
-	loadMore() {
-		let { currType } = this.state;
-		if ( this.state[currType].noMore || this.loading[currType] ) return;
-		
-		if ( currType == PERSONAL ) {
-			this.fetchList(currType);
-		}  else {
-			let list = currType == CHINA ? this.chinaList : this.medalList;
-			let len = Math.min(this.state[currType].data.length + 20, list.length);
+	
+	fetchList(type) {
+		return new Promise(resolve => {
+			let url;
+			if ( type == PERSONAL ) {
+				let pageNo = this.personalPageNo ? this.personalPageNo + 1 : 1;
+				url = api.personal(pageNo);
+			} else {
+				url = api[type];
+			}
 			
-			this.loading[currType] = true;
+			getScript(url, true).then(json => {
+				let data;
+				
+				if ( type == MEDAL ) {
+					data = json.msList.map(st => {
+						st = st.medal;
+						return {
+							organisation: st.organisation,
+							organisationName: st.organisationName,
+							flag: st.organisationImgUrl,
+							medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
+						}
+					});
+				} else if ( type == CHINA ) {
+					data = json.mst.msList.map(st => {
+						return {
+							discipline: st.discipline,
+							disciplineName: st.disciplineName,
+							medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
+						}
+					});
+				} else {
+					let personal = this.state[PERSONAL];
+					this.personalPageNo = json.pageNo;
+					this.personalPageNum = json.pageNum;
+					this.personalTotalMps = json.totalMps;
+					data = json.mpsList.map(st => {
+						return {
+							athleteCode: st.athleteCode,
+							athleteName: st.athleteName,
+							organisationName: st.organisationName || '',
+							flag: st.athleteMedalList[0].organisationImgUrl,
+							medals: [st.gold, st.silver, st.bronze, st.total]
+						}
+					});
+					
+					if ( personal ) {
+						data = personal.list.concat(data);
+					}
+				}
+				
+				resolve(data);
+			}).catch(() => {
+				resolve();
+			});
+		});
+	}
+	
+	loadMore() {
+		let { currType:type } = this.state;
+		if ( this.state[type].noMore || this.loading[type] ) return;
+		
+		if ( type == PERSONAL ) {
+			this.updateMedalList(type);
+		}  else {
+			let data = this.state[type];
+			let size = data.size + pageSize;
+			
+			this.loading[type] = true;
 			this.setState({
-				[currType]: {
-					data: list.slice(0, len),
-					noMore: len == list.length
+				[type]: {
+					list: data.list,
+					size,
+					noMore: data.list.length <= size
 				}
 			});
 			setTimeout(() => {
 				this.swiper.update();
-				this.loading[currType] = false;
+				this.loading[type] = false;
 			}, 50);
 		}
 	}
@@ -198,11 +220,10 @@ class Medal extends Component {
 									let state = this.state[type] || {};
 									return (
 										<div className="swiper-slide" key={i} style={{ minHeight }}>
-											<List list={state.data}
-												  switchToChina={ type == MEDAL ? this.handleChange : null }
-												  noMore={state.noMore} type={type}/>
+											<List type={type} switchToChina={ type == MEDAL ? this.handleChange : null }
+												  {...state} />
 											{
-												type == CHINA ? <div styleName="bottom-bar" className={ state.data && state.data.length ? '' : 'is--sticky' }>
+												type == CHINA ? <div styleName="bottom-bar">
 													<a href="http://g.163.com/a?__newsapp_target=_blank&CID=44220&Values=689184690&Redirect=http://clickc.admaster.com.cn/c/a72763,b1227619,c369,i0,m101,h
 " target="_blank"/>
 												</div> : null

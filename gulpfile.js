@@ -100,7 +100,7 @@ gulp.task('html', ['assets'], function() {
 		}))
 		.pipe(htmlmin({ collapseWhitespace: true, removeComments: true, minifyJS: true, minifyCSS: true }))
 		.pipe(gulp.dest('dist'))
-		// .pipe(conn.dest(publishConfig.htmlDir));
+		// .pipe(conn.dest(publishConfig.htmlDir)); todo
 });
 
 // Optimize images

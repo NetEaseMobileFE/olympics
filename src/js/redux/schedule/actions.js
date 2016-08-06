@@ -343,6 +343,17 @@ function unusedEliminate(list) {
 						// c.resultType = tmpCpt.resultType;
 						// c.rank = tmpCpt.rank;
 					});
+				} else if ( isFinished ) {
+					tmpCpt = competitorMapList[0];
+					competitors.push({
+						name: tmpCpt.competitorName,
+						code: tmpCpt.organisation,
+						flag: tmpCpt.organisationImgUrl,
+						record: tmpCpt.recordIndicators && tmpCpt.recordIndicators.map(r => r.recordType)
+						// result: tmpCpt.result,
+						// resultType: tmpCpt.resultType,
+						// wlt: tmpCpt.wlt
+					});
 				} else if ( competitionType == 'A' ) {
 					competitors = competitorMapList.map(tmpCpt => {
 						return {
@@ -350,16 +361,6 @@ function unusedEliminate(list) {
 							code: tmpCpt.organisation,
 							flag: tmpCpt.organisationImgUrl
 						}
-					});
-				} else if ( isFinished ) {
-					tmpCpt = competitorMapList[0];
-					competitors.push({
-						name: tmpCpt.competitorName,
-						code: tmpCpt.organisation,
-						flag: tmpCpt.organisationImgUrl
-						// result: tmpCpt.result,
-						// resultType: tmpCpt.resultType,
-						// wlt: tmpCpt.wlt
 					});
 				}
 			}

@@ -110,7 +110,7 @@ class Event extends Component {
 							<div styleName="tags__discipline">{disciplineName}</div>
 							{
 								<State roomId={roomId} live={live} startTime={startTime}
-										   isFinished={isFinished} date={date} matchName={disciplineName + '-' + scheduleName}/>
+										   isFinished={isFinished} matchName={disciplineName + '-' + scheduleName}/>
 							}
 						</div>
 						<div styleName="event-name">
@@ -121,12 +121,17 @@ class Event extends Component {
 								<Competetion competitors={competitors}/> :
 								isFinished && competitors[0] ?
 									<div styleName="competition__rival">
-										<div styleName="competition__rival__player" className="long">第一名：{competitors[0].name}</div>
+										<div styleName="competition__rival__player" className="long">
+											<span className={ isFinal ? 'is--highlight' : '' }>{ isFinal ? '金牌' : '第一名'}：</span>{competitors[0].name}
+										</div>
 										<img styleName="competition__rival__flag" src={competitors[0].flag}/>
+										{ competitors[0].record ? competitors[0].record.map(r => {
+											return <div styleName="record" key={r}>{r}</div>
+										}) : null }
 									</div> : null
 						}
 						{
-							chinaCompetitors ?
+							!isFinished && chinaCompetitors ?
 								<div styleName="competitors">
 									<img styleName="competitors__flag" src={chinaCompetitors[0].flag}/>
 									{

@@ -47,8 +47,8 @@ export default class extends Component {
 
 	componentDidMount() {
 		if ( this.stateType == 'alarm' ) {
-			let { date, startTime, roomId, matchName } = this.props;
-			let matchTime = date + ' ' + startTime + ':00';
+			let { startTime, roomId, matchName } = this.props;
+			let matchTime = startTime + ':00';
 			
 			this.alarmConfig = {
 				url: `newsapp://live/${roomId}`,
@@ -73,7 +73,7 @@ export default class extends Component {
 
 		if ( isFinished ) {
 			stateType = 'live--fade';
-			stateLabel = '直播结束';
+			stateLabel = '直播回顾';
 		} else if ( now > startTimeNumber ) { // 直播中
 			stateType = 'live';
 			if ( ua.isNewsApp ) {

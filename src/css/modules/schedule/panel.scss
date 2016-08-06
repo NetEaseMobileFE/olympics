@@ -7,9 +7,11 @@
 %flag {
     box-sizing: content-box;
     width: 39px;
-    max-height: 30px;
+    height: 26px;
     border: 1px solid #d9d9d9;
 }
+
+$c-orange: rgba(253,178,59,.9);
 
 .panel {
     margin: 20px 20px 0;
@@ -157,6 +159,7 @@
     &__rival {
         display: flex;
         align-items: center;
+        font-size: 26px;
 
         &__player {
             max-width: 130px;
@@ -165,7 +168,15 @@
             text-overflow: ellipsis;
 
             &:global(.long) {
-                max-width: 420px;
+                max-width: 320px;
+            }
+
+            > span {
+                margin-right: 4px;
+
+                &:global(.is--highlight) {
+                    color: $c-orange;
+                }
             }
         }
 
@@ -218,6 +229,15 @@
     &__tip {
         color: rgba(91,91,91,.9);
     }
+}
+
+.record {
+    padding: 0 2px;
+    height: 28px;
+    line-height: 28px;
+    margin-left: 13px;
+    color: rgba(253,178,59,.9);
+    border: 1px solid $c-orange;
 }
 
 :global {

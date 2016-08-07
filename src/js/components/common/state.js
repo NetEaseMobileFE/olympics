@@ -74,7 +74,7 @@ export default class extends Component {
 		if ( isFinished ) {
 			stateType = 'live--fade';
 			stateLabel = '直播回顾';
-		} else if ( now > startTimeNumber ) { // 直播中
+		} else if ( now >= startTimeNumber ) { // 直播中
 			stateType = 'live';
 			if ( ua.isNewsApp ) {
 				stateLabel = '正在直播';

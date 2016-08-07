@@ -125,9 +125,7 @@ class Event extends Component {
 											<span className={ isFinal ? 'is--highlight' : '' }>{ isFinal ? '金牌' : '第一名'}：</span>{competitors[0].name}
 										</div>
 										<img styleName="competition__rival__flag" src={competitors[0].flag}/>
-										{ competitors[0].record ? competitors[0].record.map(r => {
-											return <div styleName="record" key={r}>{r}</div>
-										}) : null }
+										{ competitors[0].record ? <div styleName="record">{competitors[0].record}</div> : null }
 									</div> : null
 						}
 						{

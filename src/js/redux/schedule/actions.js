@@ -5,6 +5,7 @@ import NProgress from 'nprogress';
 
 
 const today = formatDate();
+const now = +new Date();
 const NO_MATCH = '没有相关赛事';
 
 NProgress.configure({
@@ -120,7 +121,7 @@ function selectDate(date) {
 
 		const { selectedDate, mainSchedule } = getState();
 		const oneDay = mainSchedule[selectedDate];
-		if ( !oneDay || ( selectedDate >= today && Date.now() - oneDay.updateTime > 300000 ) ) { // 缓存5分钟
+		if ( !oneDay ) { // 缓存5分钟
 			dispatch(updateHotSchedule());
 			dispatch(updateMainSchedule());
 		}
@@ -140,6 +141,13 @@ function updateHotSchedule() {
 		return getScript(url).then(json => {
 			return amendResult(json.scheduleList);
 		}).then(list => {
+			if ( selectedDate <= today ) { // 今天及以前
+				let running = list.filter(s => !s.isFinished && now >= +new Date(s.startTime.replace(/-/g,'/')));
+				let scheduled = list.filter(s => !s.isFinished && now < +new Date(s.startTime.replace(/-/g,'/')));
+				let finished = list.filter(s => s.isFinished).reverse();
+				list = running.concat(scheduled, finished);
+			}
+			
 			dispatch(fetchingHotSchedule(selectedDate, false));
 			dispatch({
 				type: types.UPDATE_HOT_SCHEDULE,
@@ -234,9 +242,6 @@ function showMoreSchedule() {
 	}
 }
 
-function updateResult(di) {
-	
-}
 
 // 清空赛程
 function emptyHotSchedule() {
@@ -351,7 +356,7 @@ function unusedEliminate(list) {
 						flag: tmpCpt.organisationImgUrl,
 						record: tmpCpt.recordIndicators && tmpCpt.recordIndicators
 							.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
-							.map(r => r.recordType)
+							.map(r => r.recordType)[0]
 						// result: tmpCpt.result,
 						// resultType: tmpCpt.resultType,
 						// wlt: tmpCpt.wlt

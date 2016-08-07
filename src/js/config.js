@@ -65,7 +65,7 @@ function assembleScheduleUrl(type, params) {
 	let { selectedDate, selectedDiscipline, mainSchedule } = params;
 	let disciplineID = selectedDiscipline.id;
 	let oneDay = mainSchedule[selectedDate];
-	let pageNo = oneDay ? oneDay.lastPageNo + 1 : 1;
+	let pageNo = oneDay && oneDay.lastPageNo ? oneDay.lastPageNo + 1 : 1;
 	let p = {
 		selectedDate,
 		disciplineID,

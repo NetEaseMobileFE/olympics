@@ -108,7 +108,7 @@ export default class extends Component {
 								<tr key={key} styleName={cn}
 									onClick={ type == 'medal' && row.organisationName == '中国' ? this.props.switchToChina.bind(null, 'china') : null }>
 									<td>{rank}</td>
-									<td colspan={ shouldUnfold && i == 6 ? '6' : false }>{td}</td>
+									<td colSpan={ shouldUnfold && i == 6 ? '6' : false }>{td}</td>
 									<td className="is-lighter">{row.medals[0]}</td>
 									<td className="is-lighter">{row.medals[1]}</td>
 									<td className="is-lighter">{row.medals[2]}</td>

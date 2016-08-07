@@ -191,7 +191,7 @@ $c-orange: rgba(253,178,59,.9);
 
     &__vs {
         display: flex;
-        width: 125px;
+        min-width: 125px;
         text-align: center;
         font-size: 24px;
 

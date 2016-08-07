@@ -58,11 +58,13 @@ class Medal extends Component {
 				this.setState({
 					currType: type
 				});
-				if ( this.timer[type] ) {
-					clearTimeout(this.timer[type]);
-					this.timer[type] = null;
+				// if ( this.timer[type] ) {
+				// 	clearTimeout(this.timer[type]);
+				// 	this.timer[type] = null;
+				// }
+				if ( !this.state[type] ) {
+					this.updateMedalList(type);
 				}
-				this.updateMedalList(type);
 			},
 			onSlideChangeEnd() {
 				if ( window.scrollY > thresholdScrollY ) {
@@ -79,14 +81,14 @@ class Medal extends Component {
 	};
 	
 	updateMedalList(type = this.state.currType) {
-		if ( this.loading[type] || this.timer[type] ) return ;
+		if ( this.loading[type] /*|| this.timer[type]*/ ) return ;
 		this.loading[type] = true;
-		if ( type !== PERSONAL ) {
-			this.timer[type] = setTimeout(() => {
-				this.timer[type] = false;
-				this.updateMedalList(type);
-			}, updateInterval);
-		}
+		// if ( type !== PERSONAL ) {
+		// 	this.timer[type] = setTimeout(() => {
+		// 		this.timer[type] = false;
+		// 		this.updateMedalList(type);
+		// 	}, updateInterval);
+		// }
 		
 		this.fetchList(type).then(list => {
 			if ( list ) {

@@ -349,7 +349,9 @@ function unusedEliminate(list) {
 						name: tmpCpt.competitorName,
 						code: tmpCpt.organisation,
 						flag: tmpCpt.organisationImgUrl,
-						record: tmpCpt.recordIndicators && tmpCpt.recordIndicators.map(r => r.recordType)
+						record: tmpCpt.recordIndicators && tmpCpt.recordIndicators
+							.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
+							.map(r => r.recordType)
 						// result: tmpCpt.result,
 						// resultType: tmpCpt.resultType,
 						// wlt: tmpCpt.wlt

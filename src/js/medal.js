@@ -137,6 +137,7 @@ class Medal extends Component {
 					data = json.msList.map(st => {
 						st = st.medal;
 						return {
+							rank: st.rank,
 							organisation: st.organisation,
 							organisationName: st.organisationName,
 							flag: st.organisationImgUrl,

@@ -34,17 +34,17 @@ export default class extends Component {
             })
         });
 
-        return list.length ? (
+        return (
             <div>
                 <div styleName="project-title">
-                    <h4><i styleName="medal-gold-v2">{totalTOT}</i><span>{disciplineName}</span>奖牌榜</h4>
+                    <h4><i styleName="medal-gold-v2">{totalTOT || 0}</i><span>{disciplineName}</span>奖牌榜</h4>
                     <div styleName="selector" onClick={this.showDP}>
                         <div styleName="selector__label">项目筛选</div>
                         <em styleName="selector__arrow"></em>
                     </div>
                 </div>
                 {
-					list.slice(0, size).map((event, i) => {
+					list.length ? list.slice(0, size).map((event, i) => {
 						let matches = event.startTime.match(/\d{4}-(\d{2})-(\d{2}) ([\d:]{5}):.+/);
 						
                         return (
@@ -96,13 +96,13 @@ export default class extends Component {
                                 </table>
                             </section>
                         )
-                    })
+                    }) : <div styleName="empty">暂时还没有奖牌产生</div>
                 }
 	
 				{
 					noMore !== true ? <Loading /> : null
 				}
             </div>
-        ) : <div styleName="empty">暂时还没有奖牌产生</div>
+        )
     }
 }

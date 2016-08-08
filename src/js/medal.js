@@ -37,7 +37,8 @@ class Medal extends Component {
 			showDP: false
 			
 		};
-		this.disciplineId = search.did || 'AR';
+		this.disciplineId = search.did || disciplines[0].id;
+		this.disciplineName = disciplines.filter(d => d.id == this.disciplineId)[0].name;
 		this.loading = {};
 		this.timer = {};
 	}
@@ -98,14 +99,21 @@ class Medal extends Component {
 		if ( value ) {
 			this.disciplineId = value.id;
 			this.setState({
-				[DISCIPLINE]: value.id
+				[DISCIPLINE]: null
 			});
 			this.updateMedalList(DISCIPLINE);
 		}
 	};
 	
 	switchDiscipline = disciplineId => {
-		this.disciplineId = disciplineId;
+		if ( this.disciplineId != disciplineId ) {
+			this.disciplineId = disciplineId;
+			this.setState({
+				[DISCIPLINE]: null
+			});
+			this.updateMedalList(DISCIPLINE);
+		}
+		
 		this.handleChange(DISCIPLINE);
 	};
 	
@@ -175,7 +183,7 @@ class Medal extends Component {
 			getScript(url, true).then(json => {
 				let data;
 				
-				if ( type == MEDAL ) {
+				if ( type == MEDAL && json.msList ) {
 					const list = json.msList.map(st => {
 						st = st.medal;
 						return {
@@ -188,7 +196,7 @@ class Medal extends Component {
 					});
 					
 					data = { list };
-				} else if ( type == CHINA ) {
+				} else if ( type == CHINA && json.mst ) {
 					const msList = json.mst.msList;
 					const list = json.dateCmList.map(st => {
 						let currMs = msList.filter(ms => ms.dateText == st.dateText)[0];
@@ -216,19 +224,19 @@ class Medal extends Component {
 						
 					}
 					
-				} else if ( type == DISCIPLINE ) {
+				} else if ( type == DISCIPLINE && json.competitorMedalList ) {
 					const events = {};
 					json.competitorMedalList.forEach(cm => {
-						if ( !events[cm.rsc] ) {
-							events[cm.rsc] = {
-								rsc: cm.rsc,
+						if ( !events[cm.scheduleRsc] ) {
+							events[cm.scheduleRsc] = {
+								rsc: cm.scheduleRsc,
 								eventName: cm.eventName,
 								startTime: cm.scheduleStartDate,
 								medals: []
 							};
 						}
 						
-						events[cm.rsc].medals.push({
+						events[cm.scheduleRsc].medals.push({
 							medalType: cm.medalType,
 							organisation: cm.organisation,
 							organisationName: cm.organisationName,
@@ -241,6 +249,9 @@ class Medal extends Component {
 					
 					const list = [];
 					for ( let k in events ) {
+						events[k].medals.sort((a, b) => { // 纠正奖牌顺序
+							return a.medalType == 'ME_GOLD' ? -1 : a.medalType == 'ME_SILVER' && b.medalType != 'ME_GOLD' ? -1 : 1
+						});
 						list.push(events[k]);
 					}
 					
@@ -249,7 +260,7 @@ class Medal extends Component {
 						totalTOT: json.mst.totalTOT,
 						list
 					};
-				} else {
+				} else if ( json.mpsList ) {
 					let personal = this.state[PERSONAL];
 					this.personalPageNo = json.pageNo;
 					this.personalPageNum = json.pageNum;
@@ -269,6 +280,9 @@ class Medal extends Component {
 					}
 					
 					data = { list };
+				} else {
+					resolve();
+					return;
 				}
 				
 				resolve(data);
@@ -308,7 +322,7 @@ class Medal extends Component {
 		let { currType, showDP } = this.state;
 		let disciplineName = disciplines.filter(d => d.id == this.disciplineId)[0].name;
 		let dp = showDP ?
-			<DP key={1} disciplines={disciplines} disciplineName={disciplineName}
+			<DP key={1} disciplines={disciplines} disciplineName={disciplineName} cover
 				hide={this.toggleDP} onChange={this.handleDisciplineChange}/>
 			: null;
 		
@@ -338,6 +352,7 @@ class Medal extends Component {
 												  switchDiscipline={ type == CHINA ? this.switchDiscipline : null }
 												  switchOrganisation={ type == DISCIPLINE ? this.switchOrganisation : null }
 												  toggleDP={ type == DISCIPLINE ? this.toggleDP : null }
+												  disciplineName={ type == DISCIPLINE ? disciplineName : null }
 												  {...state} />
 											{
 												type == CHINA ? <div styleName="bottom-bar">
@@ -352,7 +367,7 @@ class Medal extends Component {
 					</div>
 				</div>
 				
-				<ReactCSSTransitionGroup transitionName="dpm" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+				<ReactCSSTransitionGroup transitionName="dpm" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
 					{dp}
 				</ReactCSSTransitionGroup>
 			</div>

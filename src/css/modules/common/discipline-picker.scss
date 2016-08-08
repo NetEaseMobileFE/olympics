@@ -17,6 +17,32 @@
     :global(.bar--app) & {
         top: 143px;
     }
+
+    &:global(.cover) {
+        top: 0;
+    }
+}
+
+.topbar {
+    position: relative;
+    padding: 28px 0;
+
+    &__ttl {
+        text-align: center;
+        font-size: 30px;
+        color: #5b5b5b;
+    }
+
+    &__close {
+        position: absolute;
+        top: 29px;
+        right: 47px;
+        padding-right: 43px;
+        color: #626363;
+        font-size: 26px;
+        background: resolve('close.png') no-repeat right center;
+        background-size: width('close.png');
+    }
 }
 
 .capsules {

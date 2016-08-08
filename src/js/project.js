@@ -6,7 +6,7 @@ import 'swiper';
 import '../css/widgets/swiper.scss';
 import { getScript, getSearch } from './utils/util';
 import CSSModules from 'react-css-modules';
-import styles from '../css/project.scss';
+// import styles from '../css/project.scss';
 import ProjectList from './components/project/project-list';
 
 class Project extends Component {

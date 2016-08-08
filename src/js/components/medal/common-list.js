@@ -38,8 +38,6 @@ export default class extends Component {
 					return true;
 				}
 			});
-		} else if ( type == 'china' ) {
-			th = '项目';
 		} else {
 			th = '运动员';
 		}
@@ -91,10 +89,7 @@ export default class extends Component {
 								}
 								key = row.organisation;
 								rank = row.rank;
-							} else if ( type == 'china' ) {
-								td = <div styleName="discipline">{row.disciplineName}</div>;
-								key = row.discipline;
-							} else {
+							}  else {
 								td = (
 									<div styleName="athlete">
 										<p styleName="athlete__name">{row.athleteName}</p>

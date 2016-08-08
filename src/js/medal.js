@@ -239,10 +239,15 @@ class Medal extends Component {
 						});
 					});
 					
+					const list = [];
+					for ( let k in events ) {
+						list.push(events[k]);
+					}
+					
 					data = {
 						disciplineName: json.disciplineName,
 						totalTOT: json.mst.totalTOT,
-						list: Object.values(events)
+						list
 					};
 				} else {
 					let personal = this.state[PERSONAL];

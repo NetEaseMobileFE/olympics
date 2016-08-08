@@ -1,0 +1,32 @@
+@import "base/mixins";
+@import "base/preset";
+
+h4 {
+    height: 80px;
+    line-height: 80px;
+    padding: 0 40px;
+}
+.org_medal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #eef1f5;
+    overflow: hidden;
+
+   &__hd {
+      position: relative;
+        z-index: 10;
+        padding-bottom: 146px;
+   }
+
+    &__bd {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        overflow: hidden;
+
+        :global(.swiper-wrapper), :global(.swiper-slide) {
+            height: 100%;
+        }
+    }
+}

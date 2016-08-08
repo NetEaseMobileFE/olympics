@@ -13,6 +13,10 @@ module.exports = {
 		medal: [
 			'webpack-hot-middleware/client',
 			'./src/js/medal'
+		],
+		organisation: [
+			'webpack-hot-middleware/client',
+			'./src/js/organisation'
 		]
 	},
 	output: {

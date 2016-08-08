@@ -1,0 +1,230 @@
+.list {
+    margin: 0 20px;
+    padding: 4px 0 20px 0;
+    background: resolve('bar.jpg') no-repeat top;
+    background-size: contain;
+
+    &:global(.china) {
+        padding-bottom: 124px;
+    }
+    &_title {
+      display: flex;
+      height: 118px;
+      line-height: 118px;
+      padding: 0 20px;
+      color: #222222;
+      justify-content: space-between;
+      background-color: #fff;
+      h5 {
+         font-size: 32px;
+      }
+    }
+}
+
+.table-medal {
+    width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+
+    th, td {
+        vertical-align: middle;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    th {
+        height: 68px;
+        font-weight: normal;
+        color: #9d9d9d;
+        &:gloabl.state {
+            text-align: right;
+        }
+    }
+
+    td {
+        height: 170px;
+        font-size: 28px;
+        color: #222222;
+        background-color: #fff;
+        border-top: 1PX solid #ebebeb;
+    }
+    .medal-title {
+      padding-left: 20px;
+    }
+    .dis-title {
+      text-align: left;
+      padding-left: 20px;
+      a {
+         color: #222;
+      }
+      .dis-name {
+         display: inline-block;
+         color: #fff;
+         height: 38px;
+         line-height: 38px;
+         padding: 0 23px;
+         font-size: 24px;
+         background-color: #3bd5fb;
+         border-radius: 18px;
+         margin-bottom: 10px;
+      }
+      em {
+         color: #8f8f8f;
+         font-style: normal;
+         font-size: 24px;
+      }
+      .record {
+          padding: 0 2px;
+          height: 28px;
+          line-height: 28px;
+          margin-right: 10px;
+          color: rgba(253,178,59,.9);
+          border: 1px solid rgba(253,178,59,.9);
+      }
+    }
+    .dis-team {
+      div {
+         width: 190px;
+         height: 80px;
+         word-break: break-all;
+         word-wrap: break-word;
+         overflow: hidden;
+         white-space: normal;
+         margin: 0 auto;
+      }
+      span {
+         display: inline-block;
+         margin: 0 5px;
+      }
+    }
+
+
+    tbody tr {
+        &:nth-child(odd) {
+            background-color: #f3f8fc;
+        }
+
+        &:nth-child(1), &:nth-child(3) {
+            background-color: #e6f5fc;
+        }
+
+        &:nth-child(2) {
+            background-color: #f2fcff;
+        }
+
+        &.is-highlight td {
+            color: #ed1c24;
+        }
+    }
+}
+
+%medal {
+    display: block;
+    margin: auto;
+    width: 55px;
+    height: 55px;
+    background: no-repeat 0;
+    background-size: contain;
+}
+
+.medal--gold {
+    @extend %medal;
+    background-image: resolve('gold.png');
+}
+.medal--silver {
+    @extend %medal;
+    background-image: resolve('silver.png');
+}
+.medal--bronze {
+    @extend %medal;
+    background-image: resolve('bronze.png');
+}
+
+%medal-v2 {
+    display: inline-block;
+    width: 55px;
+    height: 55px;
+    text-align: center;
+    font-style: normal;
+    line-height: 58px;
+    font-size: 26px;
+    margin-left: 28px;
+    background: no-repeat 0;
+    background-size: contain;
+}
+.medal-gold-v2 {
+    @extend %medal-v2;
+    color: #ba9b15;
+    background-image: resolve('gold_v2.png');
+}
+.medal-silver-v2 {
+    @extend %medal-v2;
+    color: #898787;
+    background-image: resolve('silver_v2.png');
+}
+.medal-bronze-v2 {
+    @extend %medal-v2;
+    color: #a35b08;
+    background-image: resolve('bronze_v2.png');
+}
+
+
+.state {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 26px;
+    white-space: nowrap;
+
+    &__flag {
+        box-sizing: border-box;
+        margin-left: 13px;
+        width: 39px;
+        max-height: 30px;
+        border: 1px solid #d9d9d9;
+    }
+
+    &:global(.long) {
+        font-size: 24px;
+    }
+}
+
+.athlete {
+    padding: 13px 0;
+    font-size: 24px;
+    text-align: right;
+
+    &__name {
+        max-width: 270px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .state {
+        font-size: 24px;
+
+        &__flag {
+            margin-top: -1px;
+        }
+    }
+}
+
+.discipline {
+    font-size: 26px;
+}
+
+.unfold {
+    padding-left: 27px;
+    font-size: 28px;
+    color: #999;
+    background: resolve('ellipsis.png') left center no-repeat;
+    background-size: 18px 3px;
+}
+
+
+.empty {
+    padding-top: 180px;
+    font-size: 36px;
+    color: rgb(140, 140, 140);
+    text-align: center;
+}

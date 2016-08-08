@@ -31,6 +31,10 @@
         position: relative;
         min-height: 900px;
     }
+
+    :global(.swiper-slide.china) {
+        padding-bottom: 104px;
+    }
 }
 
 .bottom-bar {

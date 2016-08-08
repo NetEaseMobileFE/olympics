@@ -9,26 +9,29 @@ import CSSModules from 'react-css-modules';
 import styles from '../css/medal.scss';
 import Switcher from './components/medal/switcher';
 import Focus from './components/medal/focus';
-import List from './components/medal/list';
+import CommonList from './components/medal/common-list';
+import OrgList from './components/organisation/org-list';
 import { api } from './components/medal/config';
 
 
 const pageSize = 20;
-const updateInterval = 10 * 1000;
+// const updateInterval = 10 * 1000;
 const MEDAL = 'medal';
 const CHINA = 'china';
 const PERSONAL = 'personal';
-const types = [MEDAL, CHINA, PERSONAL];
+const DISCIPLINE = 'discipline';
+const types = [MEDAL, CHINA, DISCIPLINE, PERSONAL];
 const minHeight = window.innerHeight - rem2px(4.88); // 用于保证列表滑动区域
 const thresholdScrollY = rem2px(5.1); // 滚动超出首屏，切换tab就回到顶部
 
 @CSSModules(styles)
 class Medal extends Component {
 	constructor(props) {
-		let expectedTab = getSearch().tab;
+		const search = getSearch();
 		super(props);
 		this.state = {
-			currType: expectedTab || MEDAL
+			currType: search.tab || MEDAL,
+			disciplineId: search.did || 'AR'
 			
 		};
 		this.loading = {};
@@ -51,6 +54,7 @@ class Medal extends Component {
 	componentDidMount() {
 		this.updateMedalList();
 		this.swiper = new Swiper(this.refs.swiper, {
+			initialSlide: types.indexOf(this.state.currType),
 			autoHeight: true,
 			resistanceRatio: .7,
 			onSlideChangeStart: (s) => {
@@ -80,6 +84,13 @@ class Medal extends Component {
 		this.swiper.slideTo(types.indexOf(currType));
 	};
 	
+	switchDiscipline = disciplineId => {
+		this.setState({ disciplineId });
+		setTimeout(() => {
+			this.handleChange(DISCIPLINE);
+		}, 50);
+	};
+	
 	updateMedalList(type = this.state.currType) {
 		if ( this.loading[type] /*|| this.timer[type]*/ ) return ;
 		this.loading[type] = true;
@@ -90,9 +101,10 @@ class Medal extends Component {
 		// 	}, updateInterval);
 		// }
 		
-		this.fetchList(type).then(list => {
-			if ( list ) {
+		this.fetchList(type).then(data => {
+			if ( data ) {
 				let noMore, size;
+				const list = data.list;
 				if ( type == PERSONAL ) {
 					noMore = this.personalPageNo == this.personalPageNum;
 					size = this.personalTotalMps;
@@ -101,8 +113,12 @@ class Medal extends Component {
 					size = this.state[type] ? this.state[type].size : pageSize;
 				}
 				
+				let newState = { noMore, size };
+				for ( let k in data ) {
+					newState[k] = data[k];
+				}
 				this.setState({
-					[type]: { list, noMore, size }
+					[type]: newState
 				});
 				setTimeout(() => {
 					this.swiper.update();
@@ -128,6 +144,8 @@ class Medal extends Component {
 			if ( type == PERSONAL ) {
 				let pageNo = this.personalPageNo ? this.personalPageNo + 1 : 1;
 				url = api.personal(pageNo);
+			} else if ( type == DISCIPLINE ) {
+				url = api.discipline(this.state.disciplineId);
 			} else {
 				url = api[type];
 			}
@@ -136,7 +154,7 @@ class Medal extends Component {
 				let data;
 				
 				if ( type == MEDAL ) {
-					data = json.msList.map(st => {
+					const list = json.msList.map(st => {
 						st = st.medal;
 						return {
 							rank: st.rank,
@@ -146,20 +164,69 @@ class Medal extends Component {
 							medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
 						}
 					});
+					
+					data = { list };
 				} else if ( type == CHINA ) {
-					data = json.mst.msList.map(st => {
+					const msList = json.mst.msList;
+					const list = json.dateCmList.map(st => {
+						let currMs = msList.filter(ms => ms.dateText == st.dateText)[0];
 						return {
-							discipline: st.discipline,
-							disciplineName: st.disciplineName,
-							medals: [st.goldTOT, st.silverTOT, st.bronzeTOT, st.totalTOT]
+							date: st.dateText,
+							medals: [currMs.goldTOT, currMs.silverTOT, currMs.bronzeTOT],
+							competitions: st.cm.map(cm => {
+								return {
+									medalType: cm.medalType,
+									recordIndicators: filterRecord(cm.competitorMedal.recordIndicators),
+									discipline: cm.discipline,
+									disciplineName: cm.disciplineName,
+									eventName: cm.eventName,
+									scheduleResult: cm.competitorMedal.scheduleResult,
+									athletesList: cm.competitorType == 'T' ? cm.competitorMedal.athletesList.map(a => a.name) : [cm.competitorMedal.competitorName]
+								}
+							})
 						}
 					});
+					
+					data = {
+						list,
+						organisationName: json.organisationName,
+						organisationImgUrl: json.organisationImgUrl
+						
+					}
+					
+				} else if ( type == DISCIPLINE ) {
+					const events = {};
+					json.competitorMedalList.forEach(cm => {
+						if ( !events[cm.rsc] ) {
+							events[cm.rsc] = {
+								rsc: cm.rsc,
+								eventName: cm.eventName,
+								medals: []
+							};
+						}
+						
+						events[cm.rsc].medals.push({
+							medalType: cm.medalType,
+							organisation: cm.organisation,
+							organisationName: cm.organisationName,
+							organisationImgUrl: cm.organisationImgUrl,
+							scheduleResult: cm.scheduleResult,
+							recordIndicators: filterRecord(cm.recordIndicators),
+							athletesList: cm.competitorType == 'T' ? cm.athletesList.map(a => a.name) : [cm.competitorName]
+						});
+					});
+					
+					data = {
+						disciplineName: json.disciplineName,
+						totalTOT: json.totalTOT,
+						list: Object.values(events)
+					};
 				} else {
 					let personal = this.state[PERSONAL];
 					this.personalPageNo = json.pageNo;
 					this.personalPageNum = json.pageNum;
 					this.personalTotalMps = json.totalMps;
-					data = json.mpsList.map(st => {
+					let list = json.mpsList.map(st => {
 						return {
 							athleteCode: st.athleteCode,
 							athleteName: st.athleteName,
@@ -170,12 +237,15 @@ class Medal extends Component {
 					});
 					
 					if ( personal ) {
-						data = personal.list.concat(data);
+						list = personal.list.concat(list);
 					}
+					
+					data = { list };
 				}
 				
 				resolve(data);
-			}).catch(() => {
+			}).catch((e) => {
+				console.warn(e);
 				resolve();
 			});
 		});
@@ -183,7 +253,7 @@ class Medal extends Component {
 	
 	loadMore() {
 		let { currType:type } = this.state;
-		if ( this.state[type].noMore || this.loading[type] ) return;
+		if ( !this.state[type] || this.state[type].noMore || this.loading[type] ) return;
 		
 		if ( type == PERSONAL ) {
 			this.updateMedalList(type);
@@ -221,9 +291,16 @@ class Medal extends Component {
 							{
 								types.map((type, i) => {
 									let state = this.state[type] || {};
+									let List = CommonList;
+									if ( type == CHINA ) {
+										List = OrgList;
+									}
+									
 									return (
-										<div className="swiper-slide" key={i} style={{ minHeight }}>
-											<List type={type} switchToChina={ type == MEDAL ? this.handleChange : null }
+										<div className={'swiper-slide ' + type} key={i} style={{ minHeight }}>
+											<List type={type}
+												  switchToChina={ type == MEDAL ? this.handleChange : null }
+												  switchDiscipline={ type == CHINA ? this.switchDiscipline : null }
 												  {...state} />
 											{
 												type == CHINA ? <div styleName="bottom-bar">
@@ -240,6 +317,12 @@ class Medal extends Component {
 			</div>
 		)
 	}
+}
+
+function filterRecord(recordIndicators) {
+	return recordIndicators ? recordIndicators
+		.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
+		.map(r => r.recordType)[0] : null
 }
 
 

@@ -7,136 +7,146 @@ import '../css/widgets/swiper.scss';
 import { getScript, getSearch } from './utils/util';
 import CSSModules from 'react-css-modules';
 import styles from '../css/organisation.scss';
+import Switcher from './components/medal/switcher';
 import OrgList from './components/organisation/org-list';
+import Focus from './components/medal/focus';
 
+
+const pageSize = 3;
+const apiBaseUrl = `http://data.2016.163.com/`;
+// const apiBaseUrl = `http://220.181.98.148/`;
 
 class Organisation extends Component {
    constructor(props) {
      super(props);
-
-     this.state = {
-          "noMore": true,
-          "size": 20,
-          "list": [
-              {
-                  "date": "2016-08-06",
-                  "medals": [
-                      0,
-                      1,
-                      1
-                  ],
-                  "competitions": [
-                      {
-                          "medalType": "ME_SILVER",
-                          "recordIndicators": 1,
-                          "discipline": "SH",
-                          "disciplineName": "射击",
-                          "eventName": "女子10米气步枪",
-                          "scheduleResult": "207.0",
-                          "athletesList": ["杜丽"]
-                      },
-                      {
-                          "medalType": "ME_BRONZE",
-                          "recordIndicators": null,
-                          "discipline": "SH",
-                          "disciplineName": "射击",
-                          "eventName": "女子10米气步枪",
-                          "scheduleResult": "185.4",
-                          "athletesList": ["易思玲"]
-                      }
-                  ]
-              },
-              {
-                  "date": "2016-08-07",
-                  "medals": [
-                      1,
-                      1,
-                      2
-                  ],
-                  "competitions": [
-                      {
-                          "medalType": "ME_GOLD",
-                          "recordIndicators": null,
-                          "discipline": "SH",
-                          "disciplineName": "射击",
-                          "eventName": "女子10米气手枪",
-                          "scheduleResult": "199.4",
-                          "athletesList": ["张梦雪"]
-                      },
-                      {
-                          "medalType": "ME_SILVER",
-                          "recordIndicators": null,
-                          "discipline": "SW",
-                          "disciplineName": "游泳",
-                          "eventName": "男子400米自由泳",
-                          "scheduleResult": "3:41.68",
-                          "athletesList": ["孙杨"]
-                      },
-                      {
-                          "medalType": "ME_BRONZE",
-                          "recordIndicators": null,
-                          "discipline": "FE",
-                          "disciplineName": "击剑",
-                          "eventName": "女子重剑个人",
-                          "scheduleResult": "15",
-                          "athletesList": ["孙一文"]
-                      },
-                      {
-                          "medalType": "ME_BRONZE",
-                          "recordIndicators": null,
-                          "discipline": "SH",
-                          "disciplineName": "射击",
-                          "eventName": "男子10米气手枪",
-                          "scheduleResult": "180.4",
-                          "athletesList": ["庞伟"]
-                      }
-                  ]
-              },
-              {
-                  "date": "2016-08-08",
-                  "medals": [
-                      2,
-                      0,
-                      0
-                  ],
-                  "competitions": [
-                      {
-                          "medalType": "ME_GOLD",
-                          "recordIndicators": null,
-                          "discipline": "WL",
-                          "disciplineName": "举重",
-                          "eventName": "男子56kg",
-                          "scheduleResult": "307",
-                          "athletesList": ["龙清泉"]
-                      },
-                      {
-                          "medalType": "ME_GOLD",
-                          "recordIndicators": null,
-                          "discipline": "DV",
-                          "disciplineName": "跳水",
-                          "eventName": "女子双人3米跳板",
-                          "scheduleResult": "345.60",
-                          "athletesList": [
-                              "吴敏霞",
-                              "施廷懋",
-                              "孙扬",
-                              "孙扬",
-                              "孙扬",
-                              "庞伟"
-                          ]
-                      }
-                  ]
-              }
-          ],
-          "organisationName": "中国"
-      };
+	   const search = getSearch();
+	   super(props);
+	   this.organisation = search.oid || 'CHN';
+	   this.state = {};
    }
+	
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
+	}
+	
+	bindScroll() {
+		window.addEventListener('scroll', () => {
+			let docEl = document.documentElement;
+			if ( docEl.scrollHeight - docEl.clientHeight - window.scrollY < 200 ) {
+				this.loadMore();
+			}
+		}, false);
+	};
+	
+	componentDidMount() {
+		this.updateMedalList();
+		this.bindScroll();
+	}
+	
+	switchDiscipline = disciplineId => {
+		location.href = 'medal.html?tab=discipline&did=' + disciplineId;
+	};
+	
+	updateMedalList() {
+		if ( this.loading ) return ;
+		this.loading = true;
+		
+		this.fetchList().then(data => {
+			if ( data ) {
+				let noMore, size;
+				const list = data.list;
+				noMore = list.length <= pageSize;
+				size = this.state.size ? this.state.size : pageSize;
+				
+				let newState = { noMore, size };
+				for ( let k in data ) {
+					newState[k] = data[k];
+				}
+				this.setState(newState);
+				this.loading = false;
+			} else {
+				if ( !this.state.list ) {
+					this.setState({
+						list: [],
+						noMore: true
+					});
+					this.loading = false;
+				}
+			}
+		});
+	}
+	
+	fetchList() {
+		return new Promise(resolve => {
+			const url = `${apiBaseUrl}medal/organisation/${this.organisation}/dm.json?callback=mee&source=app`;
+			
+			getScript(url, true).then(json => {
+				let data;
+				
+				const msList = json.mst.msList;
+				const list = json.dateCmList.map(st => {
+					let currMs = msList.filter(ms => ms.dateText == st.dateText)[0];
+					return {
+						date: st.dateText,
+						medals: [currMs.goldTOT, currMs.silverTOT, currMs.bronzeTOT],
+						competitions: st.cm.map(cm => {
+							return {
+								medalType: cm.medalType,
+								recordIndicators: filterRecord(cm.competitorMedal.recordIndicators),
+								discipline: cm.discipline,
+								disciplineName: cm.disciplineName,
+								eventName: cm.eventName,
+								scheduleResult: cm.competitorMedal.scheduleResult,
+								athletesList: cm.competitorType == 'T' ? cm.competitorMedal.athletesList.map(a => a.name) : [cm.competitorMedal.competitorName]
+							}
+						})
+					}
+				});
+				
+				data = {
+					list,
+					organisationName: json.organisationName,
+					organisationImgUrl: json.organisationImgUrl
+					
+				};
+				
+				resolve(data);
+			}).catch((e) => {
+				console.warn(e);
+				resolve();
+			});
+		});
+	}
+	
+	loadMore() {
+		if ( !this.state.list || this.state.noMore || this.loading ) return;
+		
+		let size = this.state.size + pageSize;
+		this.loading = true;
+		this.setState({
+			size,
+			noMore: this.state.list.length <= size
+		});
+		this.loading= false;
+	}
+	
    render() {
       return (
-         <OrgList {...this.state}/>
+		  <div styleName="page">
+			  <div styleName="page__bd">
+				  <Focus />
+					<OrgList {...this.state}/>
+			  </div>
+		  </div>
       )
    }
-};
+}
+
+function filterRecord(recordIndicators) {
+	return recordIndicators ? recordIndicators
+		.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
+		.map(r => r.recordType)[0] : null
+}
 
 render((
    <Organisation />

@@ -4,7 +4,10 @@ const sourceParam = '&source=app';
 
 export const api = {
 	medal: apiBaseUrl + 'medal/index.json?callback=mea' + sourceParam,
-	china: apiBaseUrl + 'medal/organisation/CHN/pm.json?callback=mef' + sourceParam,
+	china: apiBaseUrl + 'medal/organisation/CHN/dm.json?callback=mee' + sourceParam,
+	discipline: discipline => {
+		return `${apiBaseUrl}medal/discipline/${discipline}.json?callback=mec${sourceParam}`;
+	},
 	personal: pageNo => {
 		return `${apiBaseUrl}medal/personal/p_${pageNo}.json?callback=meh` + sourceParam
 	}

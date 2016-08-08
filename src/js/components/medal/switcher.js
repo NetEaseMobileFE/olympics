@@ -7,6 +7,7 @@ import styles from '../../../css/modules/medal/switcher.scss';
 const MEDAL = 'medal';
 const CHINA = 'china';
 const PERSONAL = 'personal';
+const DISCIPLINE = 'discipline';
 const SEP = 'sep';
 const options = [{
 	type: MEDAL,
@@ -19,10 +20,15 @@ const options = [{
 }, {
 	type: SEP
 }, {
-	type: 'personal',
+	type: DISCIPLINE,
+	label: '项目榜'
+}, {
+	type: SEP
+}, {
+	type: PERSONAL,
 	label: '个人榜'
 }];
-const sequence = [MEDAL, CHINA, PERSONAL];
+const sequence = [MEDAL, CHINA, DISCIPLINE, PERSONAL];
 
 @CSSModules(styles)
 export default class extends Component {

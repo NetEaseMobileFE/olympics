@@ -3,10 +3,6 @@
     padding: 4px 0 20px 0;
     background: resolve('bar.jpg') no-repeat top;
     background-size: contain;
-
-    &:global(.china) {
-        padding-bottom: 124px;
-    }
 }
 
 .table-medal {

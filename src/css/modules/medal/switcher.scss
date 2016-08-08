@@ -54,4 +54,9 @@
     &:global(.select-2) &__sep:nth-child(4) {
         visibility: hidden;
     }
+
+    &:global(.select-2) &__sep:nth-child(6),
+    &:global(.select-3) &__sep:nth-child(6) {
+        visibility: hidden;
+    }
 }

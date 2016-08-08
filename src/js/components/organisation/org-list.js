@@ -2,45 +2,42 @@ import React, { Component } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/organisation/list.scss';
+import Loading from '../common/loading';
 
 @CSSModules(styles)
 export default class extends Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         isUnfolded: false
-      };
-   }
-
-   handleClick = () => {
-      this.setState({
-         isUnfolded: true
-      });
-   };
-
+	shouldComponentUpdate(nextProps, nextState) {
+		return shallowCompare(this, nextProps, nextState);
+	}
+	
+	switchDiscipline = discipline => {
+		this.props.switchDiscipline(discipline);
+	};
+	
    render() {
       let { organisationName, list, noMore, size } = this.props;
+	   if ( !list ) return <Loading />;
+	
+	   list.map((v, i) => {
+		   v.date = parseInt(v.date.split('-')[1]) + '月' + parseInt(v.date.split('-')[2]) + '日';
+		   v.competitions.map((v, i) => {
+			   if(v.medalType === 'ME_GOLD') {
+				   v.medalTypeClass = 'medal--gold';
+			   } else if(v.medalType === 'ME_SILVER') {
+				   v.medalTypeClass = 'medal--silver';
+			   } else {
+				   v.medalTypeClass = 'medal--bronze';
+			   }
+		   })
+	   });
 
-      list.map((v, i) => {
-         v.date = parseInt(v.date.split('-')[1]) + '月' + parseInt(v.date.split('-')[2]) + '日';
-         v.competitions.map((v, i) => {
-            if(v.medalType === 'ME_GOLD') {
-               v.medalTypeClass = 'medal--gold';
-            } else if(v.medalType === 'ME_SILVER') {
-               v.medalTypeClass = 'medal--silver';
-            } else {
-               v.medalTypeClass = 'medal--bronze';
-            }
-         })
-      });
-
-      return (
+      return list.length ? (
          <div>
-            <h4>{organisationName}</h4>
+			 { organisationName == '中国' ? null : <h4>{organisationName}</h4> }
             {
-               list.map((v, i) => {
+				list.slice(0, size).map((v, i) => {
                   return (
-                     <section styleName="list">
+                     <section styleName="list" key={i}>
                         <div styleName="list_title">
                            <h5>{v.date}</h5>
                            <span>
@@ -61,19 +58,19 @@ export default class extends Component {
                            <tbody>
                               {v.competitions.map((v, i) => {
                                  return (
-                                    <tr>
+                                    <tr key={i}>
                                        <td styleName="medal-title">
                                           <i styleName={v.medalTypeClass}></i>
                                        </td>
                                        <td styleName="dis-team">
                                           <div>
                                              {v.athletesList.map((v, i) => {
-                                                return <span>{v}</span>
+                                                return <span key={i}>{v}</span>
                                              })}
                                           </div>
                                        </td>
-                                       <td styleName="dis-title">
-                                          <a href={v.discipline}>
+                                       <td styleName="dis-title" onClick={this.switchDiscipline.bind(this, v.discipline)}>
+                                          <a href="javascript:">
                                              <span styleName="dis-name">{v.disciplineName}</span>
                                              <p>{v.eventName}决赛</p>
                                              <em>{v.recordIndicators ? <span styleName="record">{v.recordIndicators}</span>: null}{v.scheduleResult}</em>
@@ -88,7 +85,10 @@ export default class extends Component {
                   )
                })
             }
+			 {
+				 noMore !== true ? <Loading /> : null
+			 }
          </div>
-      )
+      ) : <div styleName="empty">暂时还没有奖牌产生</div>
    }
 }

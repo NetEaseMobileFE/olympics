@@ -7,14 +7,15 @@ import '../css/widgets/swiper.scss';
 import { getScript, getSearch } from './utils/util';
 import CSSModules from 'react-css-modules';
 import styles from '../css/organisation.scss';
-import Switcher from './components/medal/switcher';
 import OrgList from './components/organisation/org-list';
 import Focus from './components/medal/focus';
+import ua from './utils/ua';
 
 
 const pageSize = 3;
 const apiBaseUrl = `http://data.2016.163.com/`;
 // const apiBaseUrl = `http://220.181.98.148/`;
+const iframeEl = ua.isNewsApp && document.querySelector('#iframe');
 
 @CSSModules(styles)
 class Organisation extends Component {
@@ -62,6 +63,13 @@ class Organisation extends Component {
 				let newState = { noMore, size };
 				for ( let k in data ) {
 					newState[k] = data[k];
+				}
+				
+				const title = data.organisationName + '奖牌榜';
+				if ( iframeEl ) {
+					iframeEl.src = 'docmode://modifytitle/' + encodeURIComponent(title);
+				} else {
+					document.title = title;
 				}
 				this.setState(newState);
 				this.loading = false;

@@ -24,6 +24,10 @@ export default class extends Component {
 		});
 	};
 	
+	switchOrganisation = oid => {
+		this.props.switchOrganisation(oid);
+	};
+	
 	render() {
 		let { type, list, noMore, size } = this.props;
 		if ( !list ) return <Loading />;
@@ -103,7 +107,8 @@ export default class extends Component {
 								<tr key={key} styleName={cn}
 									onClick={ type == 'medal' && row.organisationName == '中国' ? this.props.switchToChina.bind(null, 'china') : null }>
 									<td>{rank}</td>
-									<td colSpan={ shouldUnfold && i == 6 ? '6' : false }>{td}</td>
+									<td colSpan={ shouldUnfold && i == 6 ? '6' : false }
+										onClick={ type == 'medal' && row.organisationName != '中国' ? this.switchOrganisation.bind(this, row.organisation) : null }>{td}</td>
 									<td className="is-lighter">{row.medals[0]}</td>
 									<td className="is-lighter">{row.medals[1]}</td>
 									<td className="is-lighter">{row.medals[2]}</td>

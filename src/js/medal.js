@@ -350,7 +350,7 @@ class Medal extends Component {
 											<List type={type}
 												  switchToChina={ type == MEDAL ? this.handleChange : null }
 												  switchDiscipline={ type == CHINA ? this.switchDiscipline : null }
-												  switchOrganisation={ type == DISCIPLINE ? this.switchOrganisation : null }
+												  switchOrganisation={ type == DISCIPLINE || type == MEDAL ? this.switchOrganisation : null }
 												  toggleDP={ type == DISCIPLINE ? this.toggleDP : null }
 												  disciplineName={ type == DISCIPLINE ? disciplineName : null }
 												  {...state} />

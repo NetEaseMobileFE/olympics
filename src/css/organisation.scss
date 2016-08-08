@@ -1,12 +1,15 @@
 @import "base/mixins";
 @import "base/preset";
 
+:global #root {
+    height: auto;
+}
+
 .page {
     display: flex;
     flex-direction: column;
     height: 100%;
     background-color: #eef1f5;
-    overflow: hidden;
 
     &__hd {
         position: relative;

@@ -11,6 +11,7 @@ import Switcher from './components/medal/switcher';
 import Focus from './components/medal/focus';
 import CommonList from './components/medal/common-list';
 import OrgList from './components/organisation/org-list';
+import DisList from './components/project/project-list';
 import { api } from './components/medal/config';
 
 
@@ -91,6 +92,10 @@ class Medal extends Component {
 		}, 50);
 	};
 	
+	switchOrganisation = organisationId => {
+		location.href = 'organisation.html?oid=' + organisationId;
+	};
+	
 	updateMedalList(type = this.state.currType) {
 		if ( this.loading[type] /*|| this.timer[type]*/ ) return ;
 		this.loading[type] = true;
@@ -109,7 +114,7 @@ class Medal extends Component {
 					noMore = this.personalPageNo == this.personalPageNum;
 					size = this.personalTotalMps;
 				} else {
-					noMore = list.length <= 20;
+					noMore = list.length <= pageSize;
 					size = this.state[type] ? this.state[type].size : pageSize;
 				}
 				
@@ -201,6 +206,7 @@ class Medal extends Component {
 							events[cm.rsc] = {
 								rsc: cm.rsc,
 								eventName: cm.eventName,
+								startTime: cm.scheduleStartDate,
 								medals: []
 							};
 						}
@@ -294,6 +300,8 @@ class Medal extends Component {
 									let List = CommonList;
 									if ( type == CHINA ) {
 										List = OrgList;
+									} else if ( type == DISCIPLINE ) {
+										List = DisList;
 									}
 									
 									return (
@@ -301,6 +309,7 @@ class Medal extends Component {
 											<List type={type}
 												  switchToChina={ type == MEDAL ? this.handleChange : null }
 												  switchDiscipline={ type == CHINA ? this.switchDiscipline : null }
+												  switchOrganisation={ type == DISCIPLINE ? this.switchOrganisation : null }
 												  {...state} />
 											{
 												type == CHINA ? <div styleName="bottom-bar">

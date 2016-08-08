@@ -136,7 +136,7 @@ class Organisation extends Component {
 		  <div styleName="page">
 			  <div styleName="page__bd">
 				  <Focus />
-					<OrgList {...this.state}/>
+					<OrgList switchDiscipline={this.switchDiscipline} {...this.state}/>
 			  </div>
 		  </div>
       )

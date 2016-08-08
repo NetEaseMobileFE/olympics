@@ -16,6 +16,7 @@ const pageSize = 3;
 const apiBaseUrl = `http://data.2016.163.com/`;
 // const apiBaseUrl = `http://220.181.98.148/`;
 
+@CSSModules(styles)
 class Organisation extends Component {
    constructor(props) {
      super(props);
@@ -24,11 +25,11 @@ class Organisation extends Component {
 	   this.organisation = search.oid || 'CHN';
 	   this.state = {};
    }
-	
+
 	shouldComponentUpdate(nextProps, nextState) {
 		return shallowCompare(this, nextProps, nextState);
 	}
-	
+
 	bindScroll() {
 		window.addEventListener('scroll', () => {
 			let docEl = document.documentElement;
@@ -37,27 +38,27 @@ class Organisation extends Component {
 			}
 		}, false);
 	};
-	
+
 	componentDidMount() {
 		this.updateMedalList();
 		this.bindScroll();
 	}
-	
+
 	switchDiscipline = disciplineId => {
 		location.href = 'medal.html?tab=discipline&did=' + disciplineId;
 	};
-	
+
 	updateMedalList() {
 		if ( this.loading ) return ;
 		this.loading = true;
-		
+
 		this.fetchList().then(data => {
 			if ( data ) {
 				let noMore, size;
 				const list = data.list;
 				noMore = list.length <= pageSize;
 				size = this.state.size ? this.state.size : pageSize;
-				
+
 				let newState = { noMore, size };
 				for ( let k in data ) {
 					newState[k] = data[k];
@@ -75,14 +76,14 @@ class Organisation extends Component {
 			}
 		});
 	}
-	
+
 	fetchList() {
 		return new Promise(resolve => {
 			const url = `${apiBaseUrl}medal/organisation/${this.organisation}/dm.json?callback=mee&source=app`;
-			
+
 			getScript(url, true).then(json => {
 				let data;
-				
+
 				const msList = json.mst.msList;
 				const list = json.dateCmList.map(st => {
 					let currMs = msList.filter(ms => ms.dateText == st.dateText)[0];
@@ -102,14 +103,14 @@ class Organisation extends Component {
 						})
 					}
 				});
-				
+
 				data = {
 					list,
 					organisationName: json.organisationName,
 					organisationImgUrl: json.organisationImgUrl
-					
+
 				};
-				
+
 				resolve(data);
 			}).catch((e) => {
 				console.warn(e);
@@ -117,10 +118,10 @@ class Organisation extends Component {
 			});
 		});
 	}
-	
+
 	loadMore() {
 		if ( !this.state.list || this.state.noMore || this.loading ) return;
-		
+
 		let size = this.state.size + pageSize;
 		this.loading = true;
 		this.setState({
@@ -129,7 +130,7 @@ class Organisation extends Component {
 		});
 		this.loading= false;
 	}
-	
+
    render() {
       return (
 		  <div styleName="page">

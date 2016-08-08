@@ -9,11 +9,11 @@ export default class extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		return shallowCompare(this, nextProps, nextState);
 	}
-	
+
 	switchOrganisation = oid => {
 		this.props.switchOrganisation(oid);
 	};
-	
+
 	showDP = () => {
 		this.props.toggleDP();
 	};
@@ -46,7 +46,7 @@ export default class extends Component {
                 {
 					list.length ? list.slice(0, size).map((event, i) => {
 						let matches = event.startTime.match(/\d{4}-(\d{2})-(\d{2}) ([\d:]{5}):.+/);
-						
+
                         return (
                             <section styleName="list" key={event.rsc}>
                                 <div styleName="list_title">
@@ -66,7 +66,7 @@ export default class extends Component {
                                         {
                                             event.medals.map((medal, i) => {
                                                 return (
-                                                    <tr key={event.rsc + medal.medalType}>
+                                                    <tr key={i}>
                                                         <td><em styleName={medal.medalTypeClass}/></td>
                                                         <td onClick={this.switchOrganisation.bind(this, medal.organisation)}>
                                                             <img src={medal.organisationImgUrl} />
@@ -98,7 +98,7 @@ export default class extends Component {
                         )
                     }) : <div styleName="empty">暂时还没有奖牌产生</div>
                 }
-	
+
 				{
 					noMore !== true ? <Loading /> : null
 				}

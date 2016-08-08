@@ -17,10 +17,6 @@ module.exports = {
 		organisation: [
 			'webpack-hot-middleware/client',
 			'./src/js/organisation'
-		],
-		project: [
-			'webpack-hot-middleware/client',
-			'./src/js/project'
 		]
 	},
 	output: {

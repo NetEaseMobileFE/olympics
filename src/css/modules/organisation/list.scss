@@ -1,7 +1,17 @@
-h4 {
+.org-title {
+    color: #222;
     height: 80px;
     line-height: 80px;
-    padding: 0 40px;
+    padding: 0 20px;
+    margin-top: -20px;
+    img {
+        display: inline-block;
+        width: 38px;
+        height: 26px;
+        margin-bottom: -1px;
+        margin-right: 18px;
+        border: 1PX solid #d9d9d9;
+    }
 }
 
 .list {
@@ -37,18 +47,18 @@ h4 {
     }
 
     th {
-        height: 68px;
+        height: 78px;
         font-weight: normal;
-        color: #9d9d9d;
+        color: #a9a9a9;
         &:gloabl.state {
             text-align: right;
         }
     }
 
     td {
-        height: 170px;
         font-size: 28px;
         color: #222222;
+        padding: 18px 0;
         background-color: #fff;
         border-top: 1PX solid #ebebeb;
     }
@@ -59,6 +69,8 @@ h4 {
         text-align: left;
         padding-left: 20px;
         a {
+            display: block;
+            width: 280px;
             color: #222;
         }
         .dis-name {
@@ -89,7 +101,7 @@ h4 {
     .dis-team {
         div {
             width: 190px;
-            height: 80px;
+            max-height: 80px;
             word-break: break-all;
             word-wrap: break-word;
             overflow: hidden;

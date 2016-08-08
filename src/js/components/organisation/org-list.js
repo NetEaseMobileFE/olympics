@@ -15,7 +15,7 @@ export default class extends Component {
     };
 
     render() {
-        let { organisationName, list, noMore, size } = this.props;
+        let { organisationImgUrl, organisationName, list, noMore, size } = this.props;
         if ( !list ) return <Loading />;
 
         list.map((v, i) => {
@@ -24,7 +24,7 @@ export default class extends Component {
 
         return list.length ? (
             <div>
-                { organisationName == '中国' ? null : <h4>{organisationName}</h4> }
+                { organisationName == '中国' ? null : <div styleName="org-title"><img src={organisationImgUrl}/>{organisationName}</div> }
                 {
                     list.slice(0, size).map((v, i) => {
                         return (

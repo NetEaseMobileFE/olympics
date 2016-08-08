@@ -1,6 +1,7 @@
 import 'core-js/fn/promise';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import shallowCompare from 'react-addons-shallow-compare';
 import 'swiper';
 import '../css/widgets/swiper.scss';
@@ -12,7 +13,8 @@ import Focus from './components/medal/focus';
 import CommonList from './components/medal/common-list';
 import OrgList from './components/organisation/org-list';
 import DisList from './components/project/project-list';
-import { api } from './components/medal/config';
+import { api, disciplines } from './components/medal/config';
+import DP from './components/common/discipline-picker';
 
 
 const pageSize = 20;
@@ -32,9 +34,10 @@ class Medal extends Component {
 		super(props);
 		this.state = {
 			currType: search.tab || MEDAL,
-			disciplineId: search.did || 'AR'
+			showDP: false
 			
 		};
+		this.disciplineId = search.did || 'AR';
 		this.loading = {};
 		this.timer = {};
 	}
@@ -85,11 +88,25 @@ class Medal extends Component {
 		this.swiper.slideTo(types.indexOf(currType));
 	};
 	
+	toggleDP = () => {
+		this.setState({
+			showDP: !this.state.showDP
+		});
+	};
+	
+	handleDisciplineChange = value => {
+		if ( value ) {
+			this.disciplineId = value.id;
+			this.setState({
+				[DISCIPLINE]: value.id
+			});
+			this.updateMedalList(DISCIPLINE);
+		}
+	};
+	
 	switchDiscipline = disciplineId => {
-		this.setState({ disciplineId });
-		setTimeout(() => {
-			this.handleChange(DISCIPLINE);
-		}, 50);
+		this.disciplineId = disciplineId;
+		this.handleChange(DISCIPLINE);
 	};
 	
 	switchOrganisation = organisationId => {
@@ -150,7 +167,7 @@ class Medal extends Component {
 				let pageNo = this.personalPageNo ? this.personalPageNo + 1 : 1;
 				url = api.personal(pageNo);
 			} else if ( type == DISCIPLINE ) {
-				url = api.discipline(this.state.disciplineId);
+				url = api.discipline(this.disciplineId);
 			} else {
 				url = api[type];
 			}
@@ -224,7 +241,7 @@ class Medal extends Component {
 					
 					data = {
 						disciplineName: json.disciplineName,
-						totalTOT: json.totalTOT,
+						totalTOT: json.mst.totalTOT,
 						list: Object.values(events)
 					};
 				} else {
@@ -283,7 +300,12 @@ class Medal extends Component {
 	}
 
 	render() {
-		let { currType } = this.state;
+		let { currType, showDP } = this.state;
+		let disciplineName = disciplines.filter(d => d.id == this.disciplineId)[0].name;
+		let dp = showDP ?
+			<DP key={1} disciplines={disciplines} disciplineName={disciplineName}
+				hide={this.toggleDP} onChange={this.handleDisciplineChange}/>
+			: null;
 		
 		return (
 			<div styleName="page">
@@ -310,6 +332,7 @@ class Medal extends Component {
 												  switchToChina={ type == MEDAL ? this.handleChange : null }
 												  switchDiscipline={ type == CHINA ? this.switchDiscipline : null }
 												  switchOrganisation={ type == DISCIPLINE ? this.switchOrganisation : null }
+												  toggleDP={ type == DISCIPLINE ? this.toggleDP : null }
 												  {...state} />
 											{
 												type == CHINA ? <div styleName="bottom-bar">
@@ -323,6 +346,10 @@ class Medal extends Component {
 						</div>
 					</div>
 				</div>
+				
+				<ReactCSSTransitionGroup transitionName="dpm" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+					{dp}
+				</ReactCSSTransitionGroup>
 			</div>
 		)
 	}

@@ -128,3 +128,24 @@
     color: rgba(253,178,59,.9);
     border: 1px solid rgba(253,178,59,.9);
 }
+
+
+:global {
+    .dpm-enter {
+        opacity: 0;
+        transform: scale3d(.8, .8, 1);
+    }
+    .dpm-enter-active {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+        transition: all 350ms ease-out;
+    }
+
+    .dpm-leave {
+        opacity: 1;
+    }
+    .dpm-leave-active {
+        opacity: 0;
+        transition: all 300ms;
+    }
+}

@@ -13,9 +13,13 @@ export default class extends Component {
 	switchOrganisation = oid => {
 		this.props.switchOrganisation(oid);
 	};
+	
+	showDP = () => {
+		this.props.toggleDP();
+	};
 
     render() {
-        let { disciplineName, list, noMore, size } = this.props;
+        let { disciplineName, list, noMore, size, totalTOT } = this.props;
 		if ( !list ) return <Loading />;
 
         list.map((v, i) => {
@@ -33,21 +37,20 @@ export default class extends Component {
         return list.length ? (
             <div>
                 <div styleName="project-title">
-                    <h4><i styleName="medal-gold-v2">9</i><span>{disciplineName}</span>奖牌榜</h4>
-                    <div styleName="selector">
+                    <h4><i styleName="medal-gold-v2">{totalTOT}</i><span>{disciplineName}</span>奖牌榜</h4>
+                    <div styleName="selector" onClick={this.showDP}>
                         <div styleName="selector__label">项目筛选</div>
                         <em styleName="selector__arrow"></em>
                     </div>
                 </div>
                 {
-					list.slice(0, size).map((v, i) => {
-						console.log(v); // todo
-						let matches = v.startTime.match(/\d{4}-(\d{2})-(\d{2}) ([\d:]{5}):.+/);
+					list.slice(0, size).map((event, i) => {
+						let matches = event.startTime.match(/\d{4}-(\d{2})-(\d{2}) ([\d:]{5}):.+/);
 						
                         return (
-                            <section styleName="list" key={v.rsc}>
+                            <section styleName="list" key={event.rsc}>
                                 <div styleName="list_title">
-                                    <div>{v.eventName}</div>
+                                    <div>{event.eventName}</div>
                                     <span>{`${parseInt(matches[1])}月${parseInt(matches[2])}日 ${matches[3]}`}</span>
                                 </div>
                                 <table>
@@ -61,18 +64,18 @@ export default class extends Component {
                                     </thead>
                                     <tbody>
                                         {
-                                            v.medals.map((v, i) => {
+                                            event.medals.map((medal, i) => {
                                                 return (
-                                                    <tr key={v.organisation}>
-                                                        <td><em styleName={v.medalTypeClass}/></td>
-                                                        <td onClick={this.switchOrganisation.bind(this, v.organisation)}>
-                                                            <img src={v.organisationImgUrl} />
-                                                            {v.organisationName}
+                                                    <tr key={event.rsc + medal.medalType}>
+                                                        <td><em styleName={medal.medalTypeClass}/></td>
+                                                        <td onClick={this.switchOrganisation.bind(this, medal.organisation)}>
+                                                            <img src={medal.organisationImgUrl} />
+                                                            {medal.organisationName}
                                                         </td>
                                                         <td>
                                                             <div styleName="team">
                                                                 {
-                                                                    v.athletesList.map((v, i) => {
+                                                                    medal.athletesList.map((v, i) => {
                                                                         let key = 'team' + i;
                                                                         return (
                                                                             <span key={key}>{v}</span>
@@ -82,8 +85,8 @@ export default class extends Component {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <p>{v.scheduleResult}</p>
-                                                            {v.recordIndicators ? <span styleName="record">{v.recordIndicators}</span>: null}
+                                                            <p>{medal.scheduleResult}</p>
+                                                            {medal.recordIndicators ? <span styleName="record">{medal.recordIndicators}</span>: null}
                                                         </td>
                                                     </tr>
                                                 )

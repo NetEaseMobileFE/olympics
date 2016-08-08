@@ -63,7 +63,7 @@ export default class extends Component {
                                                     <td styleName="dis-title" onClick={this.switchDiscipline.bind(this, v.discipline)}>
                                                         <a href="javascript:">
                                                             <span styleName="dis-name">{v.disciplineName}</span>
-                                                            <p>{v.eventName}决赛</p>
+                                                            <p>{v.eventName}</p>
                                                             <em>{v.recordIndicators ? <span styleName="record">{v.recordIndicators}</span>: null}{v.scheduleResult}</em>
                                                         </a>
                                                     </td>

@@ -66,7 +66,7 @@ export default class extends Component {
                                         {
                                             event.medals.map((medal, i) => {
                                                 return (
-                                                    <tr key={event.rsc + medal.medalType}>
+                                                    <tr key={i}>
                                                         <td><em styleName={medal.medalTypeClass}/></td>
                                                         <td onClick={this.switchOrganisation.bind(this, medal.organisation)}>
                                                             <img src={medal.organisationImgUrl} />

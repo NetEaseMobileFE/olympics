@@ -13,7 +13,8 @@ module.exports = {
 	devtool: 'source-map-hidden',
 	entry: {
 		schedule: './src/js/schedule',
-		medal: './src/js/medal'
+		medal: './src/js/medal',
+		organisation: './src/js/organisation'
 	},
 	output: {
 		path: path.join(__dirname, 'dist'),

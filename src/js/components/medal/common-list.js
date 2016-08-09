@@ -81,6 +81,7 @@ export default class extends Component {
 							let td;
 							let key;
 							let rank = i + 1;
+							let rowClick = null;
 							
 							if ( type == 'medal' ) {
 								td = (
@@ -90,9 +91,13 @@ export default class extends Component {
 								);
 								if ( row.organisationName == '中国' ) {
 									cn = 'is-highlight';
+									rowClick = this.props.switchToChina.bind(null, 'china')
+								} else {
+									rowClick = this.switchOrganisation.bind(this, row.organisation)
 								}
 								key = row.organisation;
 								rank = row.rank;
+								
 							}  else {
 								td = (
 									<div styleName="athlete">
@@ -104,11 +109,9 @@ export default class extends Component {
 							}
 							
 							return (
-								<tr key={key} styleName={cn}
-									onClick={ type == 'medal' && row.organisationName == '中国' ? this.props.switchToChina.bind(null, 'china') : null }>
+								<tr key={key} styleName={cn} onClick={rowClick}>
 									<td>{rank}</td>
-									<td colSpan={ shouldUnfold && i == 6 ? '6' : false }
-										onClick={ type == 'medal' && row.organisationName != '中国' ? this.switchOrganisation.bind(this, row.organisation) : null }>{td}</td>
+									<td colSpan={ shouldUnfold && i == 6 ? '6' : false }>{td}</td>
 									<td className="is-lighter">{row.medals[0]}</td>
 									<td className="is-lighter">{row.medals[1]}</td>
 									<td className="is-lighter">{row.medals[2]}</td>

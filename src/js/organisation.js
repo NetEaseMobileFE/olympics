@@ -65,14 +65,17 @@ class Organisation extends Component {
 					newState[k] = data[k];
 				}
 				
-				const title = data.organisationName + '奖牌榜';
-				if ( iframeEl ) {
-					iframeEl.src = 'docmode://modifytitle/' + encodeURIComponent(title);
-				} else {
-					document.title = title;
-				}
 				this.setState(newState);
 				this.loading = false;
+				
+				setTimeout(function() {
+					const title = data.organisationName + '奖牌榜';
+					if ( iframeEl ) {
+						iframeEl.src = 'docmode://modifytitle/' + encodeURIComponent(title);
+					} else {
+						document.title = title;
+					}
+				}, 200)
 			} else {
 				if ( !this.state.list ) {
 					this.setState({
@@ -111,7 +114,8 @@ class Organisation extends Component {
 						})
 					}
 				});
-
+				
+				list.sort((a, b) => a.date > b.date ? -1 : 1);
 				data = {
 					list,
 					organisationName: json.organisationName,

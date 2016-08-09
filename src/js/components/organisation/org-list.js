@@ -18,19 +18,17 @@ export default class extends Component {
         let { organisationImgUrl, organisationName, list, noMore, size } = this.props;
         if ( !list ) return <Loading />;
 
-        list.map((v, i) => {
-            v.date = parseInt(v.date.split('-')[1]) + '月' + parseInt(v.date.split('-')[2]) + '日';
-        });
-
         return list.length ? (
             <div>
                 { organisationName == '中国' ? null : <div styleName="org-title"><img src={organisationImgUrl}/>{organisationName}</div> }
                 {
                     list.slice(0, size).map((v, i) => {
+						let date = parseInt(v.date.split('-')[1]) + '月' + parseInt(v.date.split('-')[2]) + '日';
+						
                         return (
                             <section styleName="list" key={i}>
                                 <div styleName="list_title">
-                                    <div>{v.date}</div>
+                                    <div>{date}</div>
                                     <div>
                                         获得
                                         <i styleName="medal-gold-v2">{v.medals[0]}</i>

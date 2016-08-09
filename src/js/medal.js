@@ -35,10 +35,9 @@ class Medal extends Component {
 		this.state = {
 			currType: search.tab || MEDAL,
 			showDP: false
-			
 		};
-		this.disciplineId = search.did || disciplines[0].id;
-		this.disciplineName = disciplines.filter(d => d.id == this.disciplineId)[0].name;
+		this.disciplineId = search.did;
+		this.disciplineName = getDisciplineName(this.disciplineId);
 		this.loading = {};
 		this.timer = {};
 	}
@@ -102,6 +101,7 @@ class Medal extends Component {
 				[DISCIPLINE]: null
 			});
 			this.updateMedalList(DISCIPLINE);
+			window.scrollTo(0, 0);
 		}
 	};
 	
@@ -118,11 +118,40 @@ class Medal extends Component {
 	};
 	
 	switchOrganisation = organisationId => {
-		location.href = 'organisation.html?oid=' + organisationId;
+		if ( organisationId == 'CHN' ) {
+			this.handleChange(CHINA);
+		} else {
+			location.href = 'organisation.html?oid=' + organisationId;
+		}
 	};
+	
+	searchDisciplineId() {
+		return new Promise(resolve => {
+			let url = api[CHINA];
+			getScript(url, true).then(json => {
+				if ( json.mst ) {
+					const latestDate = json.mst.msList.filter(ms => ms.totalTOT > 0).sort((a, b) => a.dateText > b.dateText ? -1 : 1)[0].dateText;
+					const cm = json.dateCmList.filter(cm => cm.dateText == latestDate)[0].cm;
+					const discipline = cm.sort((a, b) => a.scheduleEndDate > b.scheduleEndDate ? -1 : 1)[0].discipline;
+					resolve(discipline);
+				}
+			}).catch(e => {
+				console.log(e);
+				resolve('AR');
+			});
+		});
+	}
 	
 	updateMedalList(type = this.state.currType) {
 		if ( this.loading[type] /*|| this.timer[type]*/ ) return ;
+		if ( type == DISCIPLINE && !this.disciplineId ) {
+			this.searchDisciplineId().then(did => {
+				this.disciplineId = did;
+				this.disciplineName = getDisciplineName(did);
+				this.updateMedalList(DISCIPLINE);
+			});
+			return;
+		}
 		this.loading[type] = true;
 		// if ( type !== PERSONAL ) {
 		// 	this.timer[type] = setTimeout(() => {
@@ -217,6 +246,7 @@ class Medal extends Component {
 						}
 					});
 					
+					list.sort((a, b) => a.date > b.date ? -1 : 1);
 					data = {
 						list,
 						organisationName: json.organisationName,
@@ -320,11 +350,14 @@ class Medal extends Component {
 
 	render() {
 		let { currType, showDP } = this.state;
-		let disciplineName = disciplines.filter(d => d.id == this.disciplineId)[0].name;
-		let dp = showDP ?
-			<DP key={1} disciplines={disciplines} disciplineName={disciplineName} cover
-				hide={this.toggleDP} onChange={this.handleDisciplineChange}/>
-			: null;
+		let disciplineName, dp = null;
+		if ( this.disciplineId ) {
+			disciplineName = getDisciplineName(this.disciplineId);
+			dp = showDP ?
+				<DP key={1} disciplines={disciplines} disciplineName={disciplineName} cover
+					hide={this.toggleDP} onChange={this.handleDisciplineChange}/>
+				: null;
+		}
 		
 		return (
 			<div styleName="page">
@@ -379,6 +412,10 @@ function filterRecord(recordIndicators) {
 	return recordIndicators ? recordIndicators
 		.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
 		.map(r => r.recordType)[0] : null
+}
+
+function getDisciplineName(did) {
+	return did && disciplines.filter(d => d.id == did)[0].name
 }
 
 

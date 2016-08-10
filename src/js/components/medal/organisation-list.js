@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
-import styles from '../../../css/modules/organisation/list.scss';
+import styles from '../../../css/modules/medal/organisation-list.scss';
 import Loading from '../common/loading';
 
 @CSSModules(styles)
@@ -15,12 +15,19 @@ export default class extends Component {
     };
 
     render() {
-        let { organisationImgUrl, organisationName, list, noMore, size } = this.props;
+        let { medals, organisationImgUrl, organisationName, list, noMore, size } = this.props;
         if ( !list ) return <Loading />;
 
         return list.length ? (
             <div>
-                { organisationName == '中国' ? null : <div styleName="org-title"><img src={organisationImgUrl}/>{organisationName}</div> }
+				<div styleName="info">
+					<div styleName="org-title"><img src={organisationImgUrl}/>{organisationName}</div>
+					{
+						medals && medals.length ?
+							<div styleName="total-medals">累计获得<span>{medals[0]}</span>金<span>{medals[1]}</span>银<span>{medals[2]}</span>铜</div>
+						 	: null
+					}
+				</div>
                 {
                     list.slice(0, size).map((v, i) => {
 						let date = parseInt(v.date.split('-')[1]) + '月' + parseInt(v.date.split('-')[2]) + '日';

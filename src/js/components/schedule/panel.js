@@ -72,7 +72,7 @@ class Event extends Component {
 	
 	render() {
 		let {
-			rsc, disciplineName, scheduleName, date, startTime,
+			rsc, disciplineName, scheduleName, startTime,
 			withChina, isFinished, isFinal, live, roomId,
 			competitors, competitionType
 		} = this.props;
@@ -117,7 +117,7 @@ class Event extends Component {
 							{scheduleName}
 						</div>
 						{
-							competitionType == 'D' ?
+							competitors.length && competitionType == 'D' ?
 								<Competetion competitors={competitors}/> :
 								isFinished && competitors[0] ?
 									<div styleName="competition__rival">
@@ -129,7 +129,7 @@ class Event extends Component {
 									</div> : null
 						}
 						{
-							!isFinished && chinaCompetitors ?
+							!isFinished && chinaCompetitors && chinaCompetitors.length ?
 								<div styleName="competitors">
 									<img styleName="competitors__flag" src={chinaCompetitors[0].flag}/>
 									{
@@ -172,7 +172,7 @@ export default class extends Component {
 	};
 
 	render() {
-		let { label, events, date, showToast, type, lastPageNo } = this.props;
+		let { label, events, showToast, type, lastPageNo } = this.props;
 
 		return (
 			<section styleName="panel">
@@ -189,7 +189,7 @@ export default class extends Component {
 					}
 					{
 						events && events.map(event =>
-							<Event key={event.rsc} {...event} date={date} showToast={showToast}/>
+							<Event key={event.rsc} {...event} showToast={showToast}/>
 						)
 					}
 				</div>

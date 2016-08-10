@@ -7,7 +7,7 @@ import '../css/widgets/swiper.scss';
 import { getScript, getSearch } from './utils/util';
 import CSSModules from 'react-css-modules';
 import styles from '../css/organisation.scss';
-import OrgList from './components/organisation/org-list';
+import OrgList from './components/medal/organisation-list';
 import Focus from './components/medal/focus';
 import ua from './utils/ua';
 
@@ -119,8 +119,8 @@ class Organisation extends Component {
 				data = {
 					list,
 					organisationName: json.organisationName,
-					organisationImgUrl: json.organisationImgUrl
-
+					organisationImgUrl: json.organisationImgUrl,
+					medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : []
 				};
 
 				resolve(data);

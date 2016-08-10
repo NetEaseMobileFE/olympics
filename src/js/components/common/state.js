@@ -48,20 +48,13 @@ export default class extends Component {
 	componentDidMount() {
 		if ( this.stateType == 'alarm' ) {
 			let { startTime, roomId, matchName } = this.props;
-			let matchTime = startTime + ':00';
 			
 			this.alarmConfig = {
 				url: `newsapp://live/${roomId}`,
-				date: matchTime,
+				date: startTime,
 				title: '网易新闻',
 				message: `[直播提醒]${matchName}直播现在开始了`
 			};
-			
-			// nahelper.alarm('check', this.alarmConfig).then(state => {
-			// 	this.setState({
-			// 		alarm: state
-			// 	});
-			// }).catch(error => console.warn(error));
 		}
 	}
 

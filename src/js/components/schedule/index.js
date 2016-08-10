@@ -77,12 +77,12 @@ export default class extends Component {
 										<div className="swiper-slide" key={i}>
 											<Loader loading={oneDayOfMain.loading} empty={!oneDayOfMain.list} showMore={shouldShowMore && this.showMore}>
 												{   // 精选赛程
-													oneDayOfHot.list ? <Panel label="精选赛程" events={oneDayOfHot.list} date={date} showToast={this.showToast}/> : null
+													oneDayOfHot.list ? <Panel label="精选赛程" events={oneDayOfHot.list} showToast={this.showToast}/> : null
 												}
 												{   // 全部赛程
 													oneDayOfMain.list ?
 														oneDayOfMain.list.length ?
-															<Panel label="全部赛程" events={oneDayOfMain.list} date={date}
+															<Panel label="全部赛程" events={oneDayOfMain.list}
 																   type={oneDayOfMain.type} lastPageNo={oneDayOfMain.lastPageNo}
 																   showFinished={this.showFinished}
 																   showToast={this.showToast}/> :

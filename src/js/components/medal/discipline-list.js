@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
-import styles from '../../../css/modules/project/list.scss';
+import styles from '../../../css/modules/medal/discipline.scss';
 import Loading from '../common/loading';
 
 @CSSModules(styles)
@@ -19,7 +19,7 @@ export default class extends Component {
 	};
 
     render() {
-        let { disciplineName, list, noMore, size, totalTOT } = this.props;
+        let { disciplineName, list, noMore, size, goldTOT } = this.props;
 		if ( !list ) return <Loading />;
 
         list.map((v, i) => {
@@ -37,7 +37,7 @@ export default class extends Component {
         return (
             <div>
                 <div styleName="project-title">
-                    <h4><i styleName="medal-gold-v2">{totalTOT || 0}</i><span>{disciplineName}</span>奖牌榜</h4>
+                    <h4><i styleName="medal-gold-v2">{goldTOT || 0}</i><span>{disciplineName}</span>奖牌榜</h4>
                     <div styleName="selector" onClick={this.showDP}>
                         <div styleName="selector__label">项目筛选</div>
                         <em styleName="selector__arrow"></em>

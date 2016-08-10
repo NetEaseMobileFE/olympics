@@ -29,16 +29,15 @@ export default class extends Component {
 		this.props.hide &&	this.props.hide();
 	};
 	
-	handleTouch = (e) => {
+	onTouchMove = (e) => {
 		e.preventDefault();
-		e.stopPropagation();
 	};
-
+	
 	render() {
 		let { disciplineName, disciplines, cover } = this.props;
 		
 		return (
-			<div styleName="dp" className={ cover ? 'cover' : '' } onClick={this.close} onTouchMove={this.handleTouch}>
+			<div styleName="dp" className={ cover ? 'cover' : '' } onClick={this.close} onTouchMove={ cover ? this.onTouchMove : null }>
 				{
 					cover ? (
 						<div styleName="topbar">

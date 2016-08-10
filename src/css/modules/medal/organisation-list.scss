@@ -1,16 +1,36 @@
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px 18px 20px;
+}
+
 .org-title {
-    color: #222;
-    height: 80px;
-    line-height: 80px;
-    padding: 0 20px;
-    margin-top: -20px;
+    display: flex;
+    align-items: center;
+    color: #39393a;
+
     img {
-        display: inline-block;
-        width: 38px;
+        box-sizing: content-box;
+        width: 39px;
         height: 26px;
-        margin-bottom: -1px;
         margin-right: 18px;
         border: 1PX solid #d9d9d9;
+    }
+}
+
+.total-medals {
+    padding: 0 18px;
+    height: 44px;
+    line-height: 44px;
+    color: #fff;
+    background-color: #bcbcbd;
+    border-radius: 20px;
+    font-size: 26px;
+    text-shadow: 1Px 1Px 0 rgba(0,0,0,.2);
+
+    > span {
+        margin: 0 5px;
     }
 }
 

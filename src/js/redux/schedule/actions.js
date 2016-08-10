@@ -290,7 +290,7 @@ function amendResult(list) {
 				if ( results && results.length > 0 ) {
 					results.forEach(result => {
 						list.forEach((s => {
-							if ( result.rsc == s.rsc ) {
+							if ( result.rsc == s.rsc && result.competitors && result.competitors.length ) {
 								s.competitorMapList = result.competitors;
 							}
 						}))
@@ -349,26 +349,18 @@ function unusedEliminate(list) {
 						// c.rank = tmpCpt.rank;
 					});
 				} else if ( isFinished ) {
-					// if ( schedule.rsc == 'GAM400101' ) {
-					// 	competitors.push({
-					// 		name: '日本',
-					// 		code: 'JPN',
-					// 		flag: 'http://img1.cache.netease.com/pcluster/olympicinfo/post/fdf/465/681/debdd16cd0bf91592bccabb_90x60.jpg',
-					// 	});
-					// } else {
-						tmpCpt = competitorMapList[0];
-						competitors.push({
-							name: tmpCpt.competitorName,
-							code: tmpCpt.organisation,
-							flag: tmpCpt.organisationImgUrl,
-							record: tmpCpt.recordIndicators && tmpCpt.recordIndicators
-								.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
-								.map(r => r.recordType)[0]
-							// result: tmpCpt.result,
-							// resultType: tmpCpt.resultType,
-							// wlt: tmpCpt.wlt
-						});
-					// }
+					tmpCpt = competitorMapList[0];
+					competitors.push({
+						name: tmpCpt.competitorName,
+						code: tmpCpt.organisation,
+						flag: tmpCpt.organisationImgUrl,
+						record: tmpCpt.recordIndicators && tmpCpt.recordIndicators
+							.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
+							.map(r => r.recordType)[0]
+						// result: tmpCpt.result,
+						// resultType: tmpCpt.resultType,
+						// wlt: tmpCpt.wlt
+					});
 				} else if ( competitionType == 'A' ) {
 					competitors = competitorMapList.map(tmpCpt => {
 						return {

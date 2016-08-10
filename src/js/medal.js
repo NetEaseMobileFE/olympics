@@ -11,8 +11,8 @@ import styles from '../css/medal.scss';
 import Switcher from './components/medal/switcher';
 import Focus from './components/medal/focus';
 import CommonList from './components/medal/common-list';
-import OrgList from './components/organisation/org-list';
-import DisList from './components/project/project-list';
+import OrgList from './components/medal/organisation-list';
+import DisList from './components/medal/discipline-list';
 import { api, disciplines } from './components/medal/config';
 import DP from './components/common/discipline-picker';
 
@@ -250,8 +250,8 @@ class Medal extends Component {
 					data = {
 						list,
 						organisationName: json.organisationName,
-						organisationImgUrl: json.organisationImgUrl
-						
+						organisationImgUrl: json.organisationImgUrl,
+						medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : []
 					}
 					
 				} else if ( type == DISCIPLINE && json.competitorMedalList ) {
@@ -287,7 +287,7 @@ class Medal extends Component {
 					
 					data = {
 						disciplineName: json.disciplineName,
-						totalTOT: json.mst.totalTOT,
+						goldTOT: json.mst.goldTOT,
 						list
 					};
 				} else if ( json.mpsList ) {
@@ -400,7 +400,7 @@ class Medal extends Component {
 					</div>
 				</div>
 				
-				<ReactCSSTransitionGroup transitionName="dpm" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+				<ReactCSSTransitionGroup transitionName="dpm" transitionEnterTimeout={300} transitionLeaveTimeout={250}>
 					{dp}
 				</ReactCSSTransitionGroup>
 			</div>

@@ -355,6 +355,7 @@ function unusedEliminate(list) {
 						code: tmpCpt.organisation,
 						flag: tmpCpt.organisationImgUrl,
 						record: tmpCpt.recordIndicators && tmpCpt.recordIndicators
+							.sort((a, b) => a.order < b.order ? -1 : 1)
 							.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
 							.map(r => r.recordType)[0]
 						// result: tmpCpt.result,

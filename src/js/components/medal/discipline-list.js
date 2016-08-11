@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
-import styles from '../../../css/modules/medal/discipline.scss';
+import styles from '../../../css/modules/medal/discipline-list.scss';
 import Loading from '../common/loading';
 
 @CSSModules(styles)
@@ -69,8 +69,10 @@ export default class extends Component {
                                                     <tr key={i}>
                                                         <td><em styleName={medal.medalTypeClass}/></td>
                                                         <td onClick={this.switchOrganisation.bind(this, medal.organisation)}>
-                                                            <img src={medal.organisationImgUrl} />
-                                                            {medal.organisationName}
+															<div styleName="org">
+																<img src={medal.organisationImgUrl} />
+																{medal.organisationName}
+															</div>
                                                         </td>
                                                         <td>
                                                             <div styleName="team">

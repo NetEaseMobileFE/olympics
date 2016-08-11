@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import shallowCompare from 'react-addons-shallow-compare';
 import 'swiper';
 import '../css/widgets/swiper.scss';
-import { getScript, getSearch } from './utils/util';
+import { getScript, getSearch, getIn } from './utils/util';
 import CSSModules from 'react-css-modules';
 import styles from '../css/organisation.scss';
 import OrgList from './components/medal/organisation-list';
@@ -25,7 +25,7 @@ class Organisation extends Component {
 	   super(props);
 	   this.organisation = search.oid || 'CHN';
 	   this.state = {
-	   		filter: null
+	   		filterBy: 'medal'
 	   };
    }
 
@@ -51,17 +51,19 @@ class Organisation extends Component {
 		location.href = 'medal.html?tab=discipline&did=' + disciplineId;
 	};
 	
-	setFilter = index => {
+	switchFilter = mode => {
 		this.setState({
-			filter: index
+			filterBy: mode,
+			list: null
 		});
-	}
+		this.updateMedalList(mode);
+	};
 
-	updateMedalList() {
+	updateMedalList(mode = this.state.filterBy) {
 		if ( this.loading ) return ;
 		this.loading = true;
 
-		this.fetchList().then(data => {
+		this.fetchList(mode).then(data => {
 			if ( data ) {
 				let noMore, size;
 				const list = data.list;
@@ -83,7 +85,7 @@ class Organisation extends Component {
 					} else {
 						document.title = title;
 					}
-				}, 200)
+				}, 200);
 			} else {
 				if ( !this.state.list ) {
 					this.setState({
@@ -96,41 +98,47 @@ class Organisation extends Component {
 		});
 	}
 
-	fetchList() {
+	fetchList(mode) {
 		return new Promise(resolve => {
-			const url = `${apiBaseUrl}medal/organisation/${this.organisation}/dm.json?callback=mee&source=app`;
-
-			getScript(url, true).then(json => {
+			const url = `${apiBaseUrl}medal/organisation/${this.organisation}/${ mode == 'date' ? 'dm' : 'tm' }.json?callback=me${ mode == 'date' ? 'e' : 'd' }&source=app`;
+			
+			getScript(url).then(json => {
 				let data;
-
-				const msList = json.mst.msList;
-				const list = json.dateCmList.map(st => {
-					let currMs = msList.filter(ms => ms.dateText == st.dateText)[0];
-					return {
-						date: st.dateText,
-						medals: [currMs.goldTOT, currMs.silverTOT, currMs.bronzeTOT],
-						competitions: st.cm.map(cm => {
+				if ( mode == 'date' ) {
+					if ( getIn(json, 'dateCmList') && getIn(json, 'mst.msList') ) {
+						const msList = getIn(json, 'mst.msList');
+						const list = json.dateCmList.map(st => {
+							let currMs = msList.filter(ms => ms.dateText == st.dateText)[0];
 							return {
-								medalType: cm.medalType,
-								recordIndicators: filterRecord(cm.competitorMedal.recordIndicators),
-								discipline: cm.discipline,
-								disciplineName: cm.disciplineName,
-								eventName: cm.eventName,
-								scheduleResult: cm.competitorMedal.scheduleResult,
-								athletesList: cm.competitorType == 'T' ? cm.competitorMedal.athletesList.map(a => a.name) : [cm.competitorMedal.competitorName]
+								date: st.dateText,
+								medals: [currMs.goldTOT, currMs.silverTOT, currMs.bronzeTOT],
+								competitions: st.cm.map(cm => getCompetitorData(cm))
 							}
-						})
+						});
+						
+						list.sort((a, b) => a.date > b.date ? -1 : 1);
+						data = {
+							list,
+							organisationName: json.organisationName,
+							organisationImgUrl: json.organisationImgUrl,
+							medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
+						};
 					}
-				});
+				} else if ( json.medalTypeCmMap && json.mst ) {
+					const list = [json.medalTypeCmMap.ME_GOLD, json.medalTypeCmMap.ME_SILVER, json.medalTypeCmMap.ME_BRONZE].map(medals => {
+						return medals ? {
+							competitions: medals.map(medal => getCompetitorData(medal))
+						} : medals;
+					});
+					
+					data = {
+						list,
+						organisationName: json.organisationName,
+						organisationImgUrl: json.organisationImgUrl,
+						medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
+					};
+				}
 				
-				list.sort((a, b) => a.date > b.date ? -1 : 1);
-				data = {
-					list,
-					organisationName: json.organisationName,
-					organisationImgUrl: json.organisationImgUrl,
-					medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : []
-				};
-
 				resolve(data);
 			}).catch((e) => {
 				console.warn(e);
@@ -156,7 +164,7 @@ class Organisation extends Component {
 		  <div styleName="page">
 			  <div styleName="page__bd">
 				  <Focus />
-					<OrgList switchDiscipline={this.switchDiscipline} setFilter={this.setFilter} {...this.state}/>
+					<OrgList switchDiscipline={this.switchDiscipline} switchFilter={this.switchFilter} {...this.state}/>
 			  </div>
 		  </div>
       )
@@ -167,6 +175,20 @@ function filterRecord(recordIndicators) {
 	return recordIndicators ? recordIndicators
 		.filter(r => r.recordType == 'WR' || r.recordType == 'OR')
 		.map(r => r.recordType)[0] : null
+}
+
+function getCompetitorData(cm) {
+	return {
+		medalType: cm.medalType,
+		recordIndicators: filterRecord(getIn(cm, 'competitorMedal.recordIndicators')),
+		discipline: cm.discipline,
+		disciplineName: cm.disciplineName,
+		eventName: cm.eventName,
+		scheduleResult: getIn(cm, 'competitorMedal.scheduleResult'),
+		athletesList: cm.competitorType == 'T' && getIn(cm, 'competitorMedal.athletesList') ?
+			cm.competitorMedal.athletesList.map(a => a.name) :
+			[getIn(cm, 'competitorMedal.competitorName')]
+	}
 }
 
 render((

@@ -205,3 +205,19 @@ export let getSearch = (href = location.search) => {
 	
 	return data;
 };
+
+
+export const getIn = (obj, keys, arrayNotEmpty = true) => {
+	let result;
+	try {
+		result = keys.split('.').reduce((p, c) => p[c], obj);
+		if ( Object.prototype.toString.call(result) == '[object Array]' && !result.length && arrayNotEmpty ) {
+			result = null;
+		}
+	} catch (e) {
+		console.warn(e);
+		result = null;
+	}
+	
+	return result
+};

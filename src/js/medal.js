@@ -5,7 +5,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import shallowCompare from 'react-addons-shallow-compare';
 import 'swiper';
 import '../css/widgets/swiper.scss';
-import { getScript, getSearch } from './utils/util';
+import { getScript, getSearch, getIn } from './utils/util';
 import CSSModules from 'react-css-modules';
 import styles from '../css/medal.scss';
 import Switcher from './components/medal/switcher';
@@ -34,7 +34,8 @@ class Medal extends Component {
 		super(props);
 		this.state = {
 			currType: search.tab || MEDAL,
-			showDP: false
+			showDP: false,
+			filterBy: 'medal'
 		};
 		this.disciplineId = search.did;
 		this.disciplineName = getDisciplineName(this.disciplineId);
@@ -94,6 +95,19 @@ class Medal extends Component {
 		});
 	};
 	
+	switchFilter = mode => {
+		const data = this.state[CHINA];
+		data.list = null;
+		
+		this.setState({
+			[CHINA]: data,
+			filterBy: mode
+		});
+		setTimeout(() => {
+			this.updateMedalList(CHINA);
+		}, 100)
+	};
+	
 	handleDisciplineChange = value => {
 		if ( value ) {
 			this.disciplineId = value.id;
@@ -127,8 +141,8 @@ class Medal extends Component {
 	
 	searchDisciplineId() {
 		return new Promise(resolve => {
-			let url = api[CHINA];
-			getScript(url, true).then(json => {
+			let url = api.china('date');
+			getScript(url).then(json => {
 				if ( json.mst ) {
 					const latestDate = json.mst.msList.filter(ms => ms.totalTOT > 0).sort((a, b) => a.dateText > b.dateText ? -1 : 1)[0].dateText;
 					const cm = json.dateCmList.filter(cm => cm.dateText == latestDate)[0].cm;
@@ -205,11 +219,13 @@ class Medal extends Component {
 				url = api.personal(pageNo);
 			} else if ( type == DISCIPLINE ) {
 				url = api.discipline(this.disciplineId);
+			} else if ( type == CHINA ) {
+				url = api.china(this.state.filterBy);
 			} else {
 				url = api[type];
 			}
 			
-			getScript(url, true).then(json => {
+			getScript(url).then(json => {
 				let data;
 				
 				if ( type == MEDAL && json.msList ) {
@@ -225,35 +241,41 @@ class Medal extends Component {
 					});
 					
 					data = { list };
-				} else if ( type == CHINA && json.mst ) {
-					const msList = json.mst.msList;
-					const list = json.dateCmList.map(st => {
-						let currMs = msList.filter(ms => ms.dateText == st.dateText)[0];
-						return {
-							date: st.dateText,
-							medals: [currMs.goldTOT, currMs.silverTOT, currMs.bronzeTOT],
-							competitions: st.cm.map(cm => {
+				} else if ( type == CHINA ) {
+					if ( this.state.filterBy == 'date' ) {
+						if ( getIn(json, 'dateCmList') && getIn(json, 'mst.msList') ) {
+							const msList = getIn(json, 'mst.msList');
+							const list = json.dateCmList.map(st => {
+								let currMs = msList.filter(ms => ms.dateText == st.dateText)[0];
 								return {
-									medalType: cm.medalType,
-									recordIndicators: filterRecord(cm.competitorMedal.recordIndicators),
-									discipline: cm.discipline,
-									disciplineName: cm.disciplineName,
-									eventName: cm.eventName,
-									scheduleResult: cm.competitorMedal.scheduleResult,
-									athletesList: cm.competitorType == 'T' ? cm.competitorMedal.athletesList.map(a => a.name) : [cm.competitorMedal.competitorName]
+									date: st.dateText,
+									medals: [currMs.goldTOT, currMs.silverTOT, currMs.bronzeTOT],
+									competitions: st.cm.map(cm => getCompetitorData(cm))
 								}
-							})
+							});
+							
+							list.sort((a, b) => a.date > b.date ? -1 : 1);
+							data = {
+								list,
+								organisationName: json.organisationName,
+								organisationImgUrl: json.organisationImgUrl,
+								medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
+							};
 						}
-					});
-					
-					list.sort((a, b) => a.date > b.date ? -1 : 1);
-					data = {
-						list,
-						organisationName: json.organisationName,
-						organisationImgUrl: json.organisationImgUrl,
-						medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : []
+					} else if ( json.medalTypeCmMap && json.mst ) {
+						const list = [json.medalTypeCmMap.ME_GOLD, json.medalTypeCmMap.ME_SILVER, json.medalTypeCmMap.ME_BRONZE].map(medals => {
+							return medals ? {
+								competitions: medals.map(medal => getCompetitorData(medal))
+							} : medals;
+						});
+						
+						data = {
+							list,
+							organisationName: json.organisationName,
+							organisationImgUrl: json.organisationImgUrl,
+							medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
+						};
 					}
-					
 				} else if ( type == DISCIPLINE && json.competitorMedalList ) {
 					const events = {};
 					json.competitorMedalList.forEach(cm => {
@@ -383,6 +405,8 @@ class Medal extends Component {
 											<List type={type}
 												  switchToChina={ type == MEDAL ? this.handleChange : null }
 												  switchDiscipline={ type == CHINA ? this.switchDiscipline : null }
+												  switchFilter={ type == CHINA ? this.switchFilter : null }
+												  filterBy={ type == CHINA ? this.state.filterBy : null }
 												  switchOrganisation={ type == DISCIPLINE || type == MEDAL ? this.switchOrganisation : null }
 												  toggleDP={ type == DISCIPLINE ? this.toggleDP : null }
 												  disciplineName={ type == DISCIPLINE ? disciplineName : null }
@@ -418,6 +442,19 @@ function getDisciplineName(did) {
 	return did && disciplines.filter(d => d.id == did)[0].name
 }
 
+function getCompetitorData(cm) {
+	return {
+		medalType: cm.medalType,
+		recordIndicators: filterRecord(getIn(cm, 'competitorMedal.recordIndicators')),
+		discipline: cm.discipline,
+		disciplineName: cm.disciplineName,
+		eventName: cm.eventName,
+		scheduleResult: getIn(cm, 'competitorMedal.scheduleResult'),
+		athletesList: cm.competitorType == 'T' && getIn(cm, 'competitorMedal.athletesList') ?
+			cm.competitorMedal.athletesList.map(a => a.name) :
+			[getIn(cm, 'competitorMedal.competitorName')]
+	}
+}
 
 render((
 	<Medal />

@@ -1,3 +1,5 @@
+@import "../../base/mixins";
+
 .info {
     display: flex;
     justify-content: space-between;
@@ -8,7 +10,6 @@
 .org-title {
     display: flex;
     align-items: center;
-    color: #39393a;
 
     img {
         box-sizing: content-box;
@@ -17,247 +18,60 @@
         margin-right: 18px;
         border: 1PX solid #d9d9d9;
     }
+
+    &__name {
+        width: 164px;
+        color: #39393a;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 .total-medals {
-    padding: 0 18px;
-    height: 44px;
-    line-height: 44px;
-    color: #fff;
-    background-color: #bcbcbd;
-    border-radius: 20px;
+    margin-right: 10px;
     font-size: 26px;
-    text-shadow: 1Px 1Px 0 rgba(0,0,0,.2);
+    color: #808080;
 
     > span {
-        margin: 0 5px;
+        margin-left: 10px;
     }
 }
 
-.list {
-    margin: 0 20px;
-    padding: 4px 0 20px 0;
-    background: resolve('bar.jpg') no-repeat top;
-    background-size: contain;
-
-    &:global(.china) {
-        padding-bottom: 124px;
-    }
-    &_title {
-        display: flex;
-        height: 105px;
-        line-height: 105px;
-        padding: 0 20px 10px;
-        color: #222222;
-        font-size: 32px;
-        justify-content: space-between;
-        background-color: #fff;
-    }
-}
-
-.table-medal {
-    width: 100%;
-    background-color: #fff;
-    border-collapse: collapse;
-
-    th, td {
-        vertical-align: middle;
-        text-align: center;
-        white-space: nowrap;
-    }
-
-    th {
-        height: 78px;
-        font-weight: normal;
-        color: #a9a9a9;
-        &:gloabl.state {
-            text-align: right;
-        }
-    }
-
-    td {
-        font-size: 28px;
-        color: #222222;
-        padding: 18px 0;
-        background-color: #fff;
-        border-top: 1PX solid #ebebeb;
-    }
-    .medal-title {
-        padding-left: 20px;
-    }
-    .dis-title {
-        text-align: left;
-        padding-left: 20px;
-        a {
-            display: block;
-            width: 340px;
-            color: #222;
-            white-space: normal;
-        }
-        .dis-name {
-            display: inline-block;
-            color: #fff;
-            height: 38px;
-            line-height: 38px;
-            padding: 0 23px;
-            font-size: 24px;
-            background-color: #3bd5fb;
-            border-radius: 18px;
-            margin-bottom: 10px;
-        }
-        em {
-            color: #8f8f8f;
-            font-style: normal;
-            font-size: 24px;
-        }
-        .record {
-            padding: 0 2px;
-            height: 28px;
-            line-height: 28px;
-            margin-right: 10px;
-            color: rgba(253,178,59,.9);
-            border: 1px solid rgba(253,178,59,.9);
-        }
-    }
-    .dis-team {
-        width: 240px;
-        div {
-            width: 190px;
-            max-height: 80px;
-            word-break: break-all;
-            word-wrap: break-word;
-            overflow: hidden;
-            white-space: normal;
-            margin: 0 auto;
-        }
-        span {
-            display: inline-block;
-            margin: 0 5px;
-        }
-    }
-
-    tbody tr {
-        &:nth-child(odd) {
-            background-color: #f3f8fc;
-        }
-
-        &:nth-child(1), &:nth-child(3) {
-            background-color: #e6f5fc;
-        }
-
-        &:nth-child(2) {
-            background-color: #f2fcff;
-        }
-
-        &.is-highlight td {
-            color: #ed1c24;
-        }
-    }
-}
-
-%medal {
-    display: block;
-    margin: auto;
-    width: 55px;
-    height: 55px;
-    background: no-repeat 0;
-    background-size: contain;
-}
-
-.medal:global(.ME_GOLD) {
-    @extend %medal;
-    background-image: resolve('gold.png');
-}
-.medal:global(.ME_SILVER) {
-    @extend %medal;
-    background-image: resolve('silver.png');
-}
-.medal:global(.ME_BRONZE) {
-    @extend %medal;
-    background-image: resolve('bronze.png');
-}
-
-%medal-v2 {
-    display: inline-block;
-    width: 55px;
-    height: 55px;
-    text-align: center;
-    font-style: normal;
-    line-height: 58px;
-    font-size: 26px;
-    margin-left: 28px;
-    background: no-repeat 0;
-    background-size: contain;
-}
-.medal-gold-v2 {
-    @extend %medal-v2;
-    color: #ba9b15;
-    background-image: resolve('gold_v2.png');
-}
-.medal-silver-v2 {
-    @extend %medal-v2;
-    color: #898787;
-    background-image: resolve('silver_v2.png');
-}
-.medal-bronze-v2 {
-    @extend %medal-v2;
-    color: #a35b08;
-    background-image: resolve('bronze_v2.png');
-}
-
-
-.state {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    font-size: 26px;
-    white-space: nowrap;
-
-    &__flag {
-        box-sizing: border-box;
-        margin-left: 13px;
-        width: 39px;
-        max-height: 30px;
-        border: 1px solid #d9d9d9;
-    }
-
-    &:global(.long) {
-        font-size: 24px;
-    }
-}
-
-.athlete {
-    padding: 13px 0;
+.switcher {
+    position: relative;
+    line-height: 48px;
     font-size: 24px;
-    text-align: right;
 
-    &__name {
-        max-width: 270px;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    &__inner {
+        width: 209px;
+        height: 48px;
+        border: 2px solid #b1d7ee;
+        border-radius: 24px;
     }
 
-    .state {
-        font-size: 24px;
+    &__label {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 112px;
+        color: rgba(30,140,205,.7);
+        text-align: center;
+        border-radius: 24px;
+        right: 0;
 
-        &__flag {
-            margin-top: -1px;
+        &:first-child {
+            left: 0;
         }
+
+        &:global(.is-chosen) {
+            color: #fff;
+            background-color: #31a0e1;
+            z-index: 1;
+        }
+
     }
 }
-
-.discipline {
-    font-size: 26px;
-}
-
-.unfold {
-    padding-left: 27px;
-    font-size: 28px;
-    color: #999;
-    background: resolve('ellipsis.png') left center no-repeat;
-    background-size: 18px 3px;
-}
-
 
 .empty {
     padding-top: 180px;

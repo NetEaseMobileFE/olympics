@@ -348,6 +348,7 @@ function unusedEliminate(list) {
 						// c.resultType = tmpCpt.resultType;
 						// c.rank = tmpCpt.rank;
 					});
+					
 				} else if ( isFinished ) {
 					tmpCpt = competitorMapList[0];
 					competitors.push({

@@ -24,7 +24,9 @@ class Organisation extends Component {
 	   const search = getSearch();
 	   super(props);
 	   this.organisation = search.oid || 'CHN';
-	   this.state = {};
+	   this.state = {
+	   		filter: null
+	   };
    }
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -48,6 +50,12 @@ class Organisation extends Component {
 	switchDiscipline = disciplineId => {
 		location.href = 'medal.html?tab=discipline&did=' + disciplineId;
 	};
+	
+	setFilter = index => {
+		this.setState({
+			filter: index
+		});
+	}
 
 	updateMedalList() {
 		if ( this.loading ) return ;
@@ -148,7 +156,7 @@ class Organisation extends Component {
 		  <div styleName="page">
 			  <div styleName="page__bd">
 				  <Focus />
-					<OrgList switchDiscipline={this.switchDiscipline} {...this.state}/>
+					<OrgList switchDiscipline={this.switchDiscipline} setFilter={this.setFilter} {...this.state}/>
 			  </div>
 		  </div>
       )

@@ -219,6 +219,7 @@ class Medal extends Component {
 	
 	fetchList(type) {
 		return new Promise(resolve => {
+			let filterBy = this.state.filterBy;
 			let url;
 			if ( type == PERSONAL ) {
 				let pageNo = this.personalPageNo ? this.personalPageNo + 1 : 1;
@@ -226,7 +227,7 @@ class Medal extends Component {
 			} else if ( type == DISCIPLINE ) {
 				url = api.discipline(this.disciplineId);
 			} else if ( type == CHINA ) {
-				url = api.china(this.state.filterBy);
+				url = api.china(filterBy);
 			} else {
 				url = api[type];
 			}
@@ -248,7 +249,7 @@ class Medal extends Component {
 					
 					data = { list };
 				} else if ( type == CHINA ) {
-					if ( this.state.filterBy == 'date' ) {
+					if ( filterBy == 'date' ) {
 						if ( getIn(json, 'dateCmList') && getIn(json, 'mst.msList') ) {
 							const msList = getIn(json, 'mst.msList');
 							const list = json.dateCmList.map(st => {
@@ -268,19 +269,43 @@ class Medal extends Component {
 								medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
 							};
 						}
-					} else if ( json.medalTypeCmMap && json.mst ) {
-						const list = [json.medalTypeCmMap.ME_GOLD, json.medalTypeCmMap.ME_SILVER, json.medalTypeCmMap.ME_BRONZE].map(medals => {
-							return medals ? {
-								competitions: medals.map(medal => getCompetitorData(medal))
-							} : medals;
-						});
+					} else if ( filterBy =='medal' ) {
+						if ( json.medalTypeCmMap && json.mst ) {
+							const list = [json.medalTypeCmMap.ME_GOLD, json.medalTypeCmMap.ME_SILVER, json.medalTypeCmMap.ME_BRONZE].map(medals => {
+								return medals ? {
+									competitions: medals.map(medal => getCompetitorData(medal))
+								} : medals;
+							});
+							
+							data = {
+								list,
+								organisationName: json.organisationName,
+								organisationImgUrl: json.organisationImgUrl,
+								medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
+							};
+						}
+					} else {
+						const list = [];
+						let item;
+						for ( let key in json ) {
+							item = json[key];
+							if ( key != 'updata' ) {
+								if( item.gold.length || item.silver.length || item.bronze.length ) {
+									list.push({
+										name: item.name,
+										medals: [item.gold, item.silver, item.bronze]
+									});
+								}
+							}
+						}
 						
+						const disciplineData = this.state[CHINA];
 						data = {
 							list,
-							organisationName: json.organisationName,
-							organisationImgUrl: json.organisationImgUrl,
-							medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
-						};
+							organisationName: disciplineData.organisationName,
+							organisationImgUrl: disciplineData.organisationImgUrl,
+							medals: disciplineData.medals
+						}
 					}
 				} else if ( type == DISCIPLINE && json.competitorMedalList ) {
 					const events = {};

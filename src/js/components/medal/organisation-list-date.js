@@ -13,7 +13,7 @@ export default class extends Component {
     switchDiscipline = discipline => {
         this.props.switchDiscipline(discipline);
     };
-	
+
     render() {
         let { list, size } = this.props;
 
@@ -22,7 +22,7 @@ export default class extends Component {
 				{
 					list.slice(0, size).map((v, i) => {
 						let date = parseInt(v.date.split('-')[1]) + '月' + parseInt(v.date.split('-')[2]) + '日';
-						
+
 						return (
 							<section styleName="list" key={i}>
 								<div styleName="list_title">

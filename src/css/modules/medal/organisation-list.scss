@@ -73,6 +73,20 @@
     }
 }
 
+:global(.is-china) {
+    .org-title__name {
+        width: 70px;
+    }
+    .switcher__inner {
+        width: 309px;
+    }
+    .switcher__label {
+        &:nth-child(2) {
+            right: 99px;
+        }
+    }
+}
+
 .empty {
     padding-top: 180px;
     font-size: 36px;

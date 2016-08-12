@@ -47,7 +47,9 @@ const sourceParam = '&source=app';
 export const api = {
 	medal: apiBaseUrl + 'medal/index.json?callback=mea' + sourceParam,
 	china: mode => {
-		return `${apiBaseUrl}medal/organisation/CHN/${ mode == 'date' ? 'dm' : 'tm' }.json?callback=me${ mode == 'date' ? 'e' : 'd' }` + sourceParam
+		return mode == 'province' ?
+			'http://2016.163.com/special/00050IV6/rioprovincerank.js?callback=rankcallback' :
+			`${apiBaseUrl}medal/organisation/CHN/${ mode == 'date' ? 'dm' : 'tm' }.json?callback=me${ mode == 'date' ? 'e' : 'd' }` + sourceParam
 	},
 	discipline: discipline => {
 		return `${apiBaseUrl}medal/discipline/${discipline}.json?callback=mec${sourceParam}`;

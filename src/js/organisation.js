@@ -50,13 +50,19 @@ class Organisation extends Component {
 	switchDiscipline = disciplineId => {
 		location.href = 'medal.html?tab=discipline&did=' + disciplineId;
 	};
-	
+
 	switchFilter = mode => {
 		this.setState({
 			filterBy: mode,
 			list: null
 		});
 		this.updateMedalList(mode);
+	};
+	
+	navigateTo = rsc => {
+		if ( rsc ) {
+			location.href = `http://3g.163.com/ntes/special/0034073A/olympic2016_live.html?rsc=${rsc}#!/doc`;
+		}
 	};
 
 	updateMedalList(mode = this.state.filterBy) {
@@ -74,10 +80,10 @@ class Organisation extends Component {
 				for ( let k in data ) {
 					newState[k] = data[k];
 				}
-				
+
 				this.setState(newState);
 				this.loading = false;
-				
+
 				setTimeout(function() {
 					const title = data.organisationName + '奖牌榜';
 					if ( iframeEl ) {
@@ -100,8 +106,8 @@ class Organisation extends Component {
 
 	fetchList(mode) {
 		return new Promise(resolve => {
-			const url = `${apiBaseUrl}medal/organisation/${this.organisation}/${ mode == 'date' ? 'dm' : 'tm' }.json?callback=me${ mode == 'date' ? 'e' : 'd' }&source=app`;
-			
+			const url = mode == 'province' ? 'http://2016.163.com/special/00050IV6/rioprovincerank.js?callback=rankcallback' : `${apiBaseUrl}medal/organisation/${this.organisation}/${ mode == 'date' ? 'dm' : 'tm' }.json?callback=me${ mode == 'date' ? 'e' : 'd' }&source=app`;
+
 			getScript(url).then(json => {
 				let data;
 				if ( mode == 'date' ) {
@@ -115,7 +121,7 @@ class Organisation extends Component {
 								competitions: st.cm.map(cm => getCompetitorData(cm))
 							}
 						});
-						
+
 						list.sort((a, b) => a.date > b.date ? -1 : 1);
 						data = {
 							list,
@@ -124,21 +130,44 @@ class Organisation extends Component {
 							medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
 						};
 					}
-				} else if ( json.medalTypeCmMap && json.mst ) {
-					const list = [json.medalTypeCmMap.ME_GOLD, json.medalTypeCmMap.ME_SILVER, json.medalTypeCmMap.ME_BRONZE].map(medals => {
-						return medals ? {
-							competitions: medals.map(medal => getCompetitorData(medal))
-						} : medals;
-					});
-					
+				} else if ( mode =='medal') {
+					if(json.medalTypeCmMap && json.mst ) {
+						const list = [json.medalTypeCmMap.ME_GOLD, json.medalTypeCmMap.ME_SILVER, json.medalTypeCmMap.ME_BRONZE].map(medals => {
+							return medals ? {
+								competitions: medals.map(medal => getCompetitorData(medal))
+							} : medals;
+						});
+
+						data = {
+							list,
+							organisationName: json.organisationName,
+							organisationImgUrl: json.organisationImgUrl,
+							medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
+						};
+					}
+				} else {
+					const list = [];
+					let item;
+					for ( let key in json ) {
+						item = json[key];
+						if ( key != 'updata' ) {
+							if( item.gold.length || item.silver.length || item.bronze.length ) {
+								list.push({
+									name: item.name,
+									medals: [item.gold, item.silver, item.bronze]
+								});
+							}
+						}
+					}
+
 					data = {
 						list,
-						organisationName: json.organisationName,
-						organisationImgUrl: json.organisationImgUrl,
-						medals: json.mst ? [json.mst.goldTOT, json.mst.silverTOT, json.mst.bronzeTOT] : [0,0,0]
-					};
+						organisationName: this.state.organisationName,
+						organisationImgUrl: this.state.organisationImgUrl,
+						medals: this.state.medals
+					}
 				}
-				
+
 				resolve(data);
 			}).catch((e) => {
 				console.warn(e);
@@ -164,7 +193,7 @@ class Organisation extends Component {
 		  <div styleName="page">
 			  <div styleName="page__bd">
 				  <Focus />
-					<OrgList switchDiscipline={this.switchDiscipline} switchFilter={this.switchFilter} {...this.state}/>
+					<OrgList switchDiscipline={this.switchDiscipline} switchFilter={this.switchFilter} navigateTo={this.navigateTo} {...this.state}/>
 			  </div>
 		  </div>
       )

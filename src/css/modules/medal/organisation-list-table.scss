@@ -1,3 +1,5 @@
+@import "../../base/mixins";
+
 .list {
     margin: 0 20px;
     padding: 4px 0 20px 0;
@@ -172,4 +174,76 @@
     @extend %medal-v2;
     color: #a35b08;
     background-image: resolve('bronze_v2.png');
+}
+
+.province-intro {
+    margin: 0 20px 15px;
+    ul {
+        color: #808080;
+        font-size: 20px;
+        height: 80px;
+        overflow: hidden;
+    }
+    .zk-btn{
+        display: block;
+        margin: 5px auto;
+        @include icon('zk.png');
+    }
+}
+
+:global(.show-intro) {
+    ul {
+        height: auto
+    }
+    .zk-btn {
+        display: none;
+    }
+}
+
+
+
+.table-province {
+    width: 100%;
+    background-color: #fff;
+    th {
+        height: 95px;
+        line-height: 95px;
+        padding-left: 33px;
+        text-align: left;
+        color: #222;
+        font-size: 30px;
+        font-weight: normal;
+    }
+    td {
+        color: #232323;
+        padding: 28px 0;
+        border-top: 1PX solid #ebebeb;
+    }
+    .medal-item {
+        width: 130px;
+    }
+    p {
+        display: inline-block;
+        white-space: nowrap;
+        height: 49px;
+        line-height: 49px;
+    }
+    em {
+        display: inline-block;
+        width: 120px;
+        text-align: right;
+        font-style: normal;
+        margin-right: 17px;
+    }
+    .dis-name {
+        display: inline-block;
+        color: #fff;
+        height: 38px;
+        line-height: 38px;
+        padding: 0 23px;
+        font-size: 24px;
+        background-color: #3bd5fb;
+        border-radius: 18px;
+        margin-bottom: 10px;
+    }
 }

@@ -81,6 +81,15 @@ function updateSportsDates(rollBack) {
 		let promise = url ? getScript(url) : Promise.resolve(sportsDates);
 		NProgress.start();
 		
+		if ( !rollBack ) {
+			rollBack =  () => {
+				if ( state.selectedDiscipline ) dispatch(selectDiscipline({ id: '', name: '项目筛选'}));
+				else if ( state.onlyGold ) dispatch(selectGold(false));
+				else dispatch(selectChina(false));
+				
+			}
+		}
+		
 		return promise.then(json => {
 			NProgress.done();
 			if ( json.length ) {
@@ -409,6 +418,7 @@ export {
 	selectChina,
 	selectGold,
 	selectDiscipline,
+	updateSportsDates,
 	selectDate,
 	showTypeAll,
 	showMoreSchedule,

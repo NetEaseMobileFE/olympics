@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import Immutable from 'seamless-immutable';
 import { formatDate } from '../../utils/util';
 import * as types from './types';
-import { disciplines } from '../../config';
 
 
 const emptyObject = Immutable({});
@@ -37,7 +36,7 @@ function selectedDiscipline(state , action) {
 		default:
 			return state || Immutable({  // 默认要显示成 “项目筛选”
 				name: '项目筛选',
-				id: disciplines[0].id
+				id: ''
 			});
 	}
 }

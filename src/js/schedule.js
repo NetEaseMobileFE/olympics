@@ -4,18 +4,24 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './redux/schedule/store';
 import { sportsDates, disciplines } from './config';
+import { getSearch } from './utils/util';
 import Schedule from './components/schedule';
 
 
-let store = configureStore({
-	sportsDates,
+const search = getSearch();
+const onlyChina = search.c == 1 || false;
+const onlyGold = search.g == 1 || false;
+const did = search.did && search.did.toUpperCase();
+const selectedDiscipline = did && disciplines.filter(d => d.id == did)[0];
+const dates = onlyChina || onlyGold || selectedDiscipline ? null : sportsDates;
+
+const store = configureStore({
+	sportsDates: dates,
 	disciplines,
-	onlyChina: true,
-	onlyGold: true,
-	selectedDiscipline: {
-		name: '射箭',
-		id: 'AR'
-	}
+	onlyChina,
+	onlyGold,
+	selectedDate: '2016-08-14',
+	selectedDiscipline
 });
 
 window.store = store;

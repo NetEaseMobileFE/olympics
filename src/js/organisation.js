@@ -159,6 +159,18 @@ class Organisation extends Component {
 							}
 						}
 					}
+					
+					list.sort((a, b) => {
+						if ( a.medals[0].length > b.medals[0].length ) {
+							return -1;
+						} else if ( a.medals[0].length == b.medals[0].length ) {
+							if ( a.medals.reduce((p, c) => p + c.length, 0) > b.medals.reduce((p, c) => p + c.length, 0) ) {
+								return -1
+							}
+							return 1
+						}
+						return 1;
+					});
 
 					data = {
 						list,

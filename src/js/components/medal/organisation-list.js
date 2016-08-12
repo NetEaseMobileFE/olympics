@@ -53,7 +53,7 @@ export default class extends Component {
 					!list && organisationName ?
 						<Loading /> :
 						list && list.length ?
-							<List list={list} size={size} switchDiscipline={switchDiscipline}/> :
+							<List list={list} size={size} switchDiscipline={switchDiscipline} navigateTo={this.props.navigateTo}/> :
 							<div styleName="empty">暂时还没有奖牌产生</div>
 				}
 				{

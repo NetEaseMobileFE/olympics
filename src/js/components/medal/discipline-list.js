@@ -10,35 +10,15 @@ export default class extends Component {
 		return shallowCompare(this, nextProps, nextState);
 	}
 
-	switchOrganisation = oid => {
-		this.props.switchOrganisation(oid);
-	};
-
-	showDP = () => {
-		this.props.toggleDP();
-	};
-
     render() {
         let { disciplineName, list, noMore, size, goldTOT } = this.props;
 		if ( !list ) return <Loading />;
-
-        list.map((v, i) => {
-            v.medals.map((v, i) => {
-                if(v.medalType === 'ME_GOLD') {
-                    v.medalTypeClass = 'medal--gold';
-                } else if(v.medalType === 'ME_SILVER') {
-                    v.medalTypeClass = 'medal--silver';
-                } else {
-                    v.medalTypeClass = 'medal--bronze';
-                }
-            })
-        });
 
         return (
             <div>
                 <div styleName="project-title">
                     <h4><i styleName="medal-gold-v2">{goldTOT || 0}</i><span>{disciplineName}</span>奖牌榜</h4>
-                    <div styleName="selector" onClick={this.showDP}>
+                    <div styleName="selector" onClick={this.props.toggleDP}>
                         <div styleName="selector__label">项目筛选</div>
                         <em styleName="selector__arrow"></em>
                     </div>
@@ -67,8 +47,8 @@ export default class extends Component {
                                             event.medals.map((medal, i) => {
                                                 return (
                                                     <tr key={i}>
-                                                        <td><em styleName={medal.medalTypeClass}/></td>
-                                                        <td onClick={this.switchOrganisation.bind(this, medal.organisation)}>
+                                                        <td><em styleName={medal.medalType}/></td>
+                                                        <td onClick={this.props.switchOrganisation.bind(this, medal.organisation)}>
 															<div styleName="org">
 																<img src={medal.organisationImgUrl} />
 																{medal.organisationName}
@@ -86,7 +66,7 @@ export default class extends Component {
                                                                 }
                                                             </div>
                                                         </td>
-                                                        <td>
+                                                        <td onClick={this.props.navigateTo.bind(this, medal.rsc)}>
                                                             <p>{medal.scheduleResult}</p>
                                                             {medal.recordIndicators ? <span styleName="record">{medal.recordIndicators}</span>: null}
                                                         </td>

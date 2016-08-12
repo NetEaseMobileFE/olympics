@@ -139,6 +139,12 @@ class Medal extends Component {
 		}
 	};
 	
+	navigateTo = rsc => {
+		if ( rsc ) {
+			location.href = `http://3g.163.com/ntes/special/0034073A/olympic2016_live.html?rsc=${rsc}#!/doc`;
+		}
+	};
+	
 	searchDisciplineId() {
 		return new Promise(resolve => {
 			let url = api.china('date');
@@ -289,6 +295,7 @@ class Medal extends Component {
 						}
 						
 						events[cm.scheduleRsc].medals.push({
+							rsc: cm.scheduleRsc,
 							medalType: cm.medalType,
 							organisation: cm.organisation,
 							organisationName: cm.organisationName,
@@ -401,12 +408,12 @@ class Medal extends Component {
 												   switchOrganisation={this.switchOrganisation} {...state}/>;
 											break;
 										case CHINA:
-											List = <OrgList switchDiscipline={this.switchDiscipline}
+											List = <OrgList switchDiscipline={this.switchDiscipline} navigateTo={this.navigateTo}
 													switchFilter={this.switchFilter} filterBy={this.state.filterBy} {...state}/>;
 											break;
 										case DISCIPLINE:
 											List = <DisList switchOrganisation={this.switchOrganisation} toggleDP={this.toggleDP}
-													disciplineName={disciplineName} {...state}/>;
+													navigateTo={this.navigateTo} disciplineName={disciplineName} {...state}/>;
 											break;
 										case PERSONAL:
 											List = <CommonList type={type} {...state}/>;
@@ -451,6 +458,7 @@ function getDisciplineName(did) {
 
 function getCompetitorData(cm) {
 	return {
+		rsc: getIn(cm, 'competitorMedal.scheduleRsc'),
 		medalType: cm.medalType,
 		recordIndicators: filterRecord(getIn(cm, 'competitorMedal.recordIndicators')),
 		discipline: cm.discipline,

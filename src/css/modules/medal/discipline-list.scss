@@ -100,15 +100,15 @@
     background-size: contain;
 }
 
-.medal--gold {
+.ME_GOLD {
     @extend %medal;
     background-image: resolve('gold.png');
 }
-.medal--silver {
+.ME_SILVER {
     @extend %medal;
     background-image: resolve('silver.png');
 }
-.medal--bronze {
+.ME_BRONZE {
     @extend %medal;
     background-image: resolve('bronze.png');
 }
@@ -122,9 +122,8 @@
     font-style: normal;
     line-height: 58px;
     font-size: 26px;
-    background: no-repeat 0;
+    background: resolve('gold_v2.png') no-repeat 0;
     background-size: contain;
-    background-image: resolve('gold_v2.png');
 }
 
 .record {

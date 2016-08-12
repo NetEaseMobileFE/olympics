@@ -91,7 +91,7 @@ export default class extends Component {
 								);
 								if ( row.organisationName == '中国' ) {
 									cn = 'is-highlight';
-									rowClick = this.props.switchToChina.bind(null, 'china')
+									rowClick = this.props.switchToChina
 								} else {
 									rowClick = this.switchOrganisation.bind(this, row.organisation)
 								}

@@ -394,23 +394,30 @@ class Medal extends Component {
 								types.map((type, i) => {
 									let state = this.state[type] || {};
 									let List = CommonList;
-									if ( type == CHINA ) {
-										List = OrgList;
-									} else if ( type == DISCIPLINE ) {
-										List = DisList;
+									
+									switch ( type ) {
+										case MEDAL:
+											List = <CommonList type={type} switchToChina={this.handleChange.bind(null, CHINA)}
+												   switchOrganisation={this.switchOrganisation} {...state}/>;
+											break;
+										case CHINA:
+											List = <OrgList switchDiscipline={this.switchDiscipline}
+													switchFilter={this.switchFilter} filterBy={this.state.filterBy} {...state}/>;
+											break;
+										case DISCIPLINE:
+											List = <DisList switchOrganisation={this.switchOrganisation} toggleDP={this.toggleDP}
+													disciplineName={disciplineName} {...state}/>;
+											break;
+										case PERSONAL:
+											List = <CommonList type={type} {...state}/>;
+											break;
+										default:
+											List = null;
 									}
 									
 									return (
 										<div className={'swiper-slide ' + type} key={i} style={{ minHeight }}>
-											<List type={type}
-												  switchToChina={ type == MEDAL ? this.handleChange : null }
-												  switchDiscipline={ type == CHINA ? this.switchDiscipline : null }
-												  switchFilter={ type == CHINA ? this.switchFilter : null }
-												  filterBy={ type == CHINA ? this.state.filterBy : null }
-												  switchOrganisation={ type == DISCIPLINE || type == MEDAL ? this.switchOrganisation : null }
-												  toggleDP={ type == DISCIPLINE ? this.toggleDP : null }
-												  disciplineName={ type == DISCIPLINE ? disciplineName : null }
-												  {...state} />
+											{List}
 											{
 												type == CHINA ? <div styleName="bottom-bar">
 													<a href="http://g.163.com/a?__newsapp_target=_blank&CID=44220&Values=689184690&Redirect=http://clickc.admaster.com.cn/c/a72763,b1227619,c369,i0,m101,h

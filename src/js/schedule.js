@@ -9,7 +9,13 @@ import Schedule from './components/schedule';
 
 let store = configureStore({
 	sportsDates,
-	disciplines
+	disciplines,
+	onlyChina: true,
+	onlyGold: true,
+	selectedDiscipline: {
+		name: '射箭',
+		id: 'AR'
+	}
 });
 
 window.store = store;

@@ -28,6 +28,7 @@ const types = [MEDAL, CHINA, DISCIPLINE, PERSONAL];
 const minHeight = window.innerHeight - rem2px(4.88); // 用于保证列表滑动区域
 const thresholdScrollY = rem2px(5.1); // 滚动超出首屏，切换tab就回到顶部
 const iframeEl = ua.isNewsApp && document.getElementById('iframe');
+const enableTransition = ua.isIos;
 
 
 @CSSModules(styles)
@@ -51,45 +52,57 @@ class Medal extends Component {
 	}
 
 	bindScroll() {
-		window.addEventListener('scroll', () => {
-			let docEl = document.documentElement;
-			if ( docEl.scrollHeight - docEl.clientHeight - window.scrollY < 200 ) {
-				this.loadMore();
-			}
-		}, false);
+		this.binding = true;
+		window.addEventListener('scroll', this.handleScroll, false);
+	};
+	
+	unbindScroll() {
+		this.binding = false;
+		window.removeEventListener('scroll', this.handleScroll);
+	};
+	
+	handleScroll = () => {
+		let docEl = document.documentElement;
+		if ( docEl.scrollHeight - docEl.clientHeight - window.scrollY < 200 ) {
+			this.loadMore();
+		}
 	};
 
 	componentDidMount() {
 		this.updateMedalList();
+		this.bindScroll();
 		this.swiper = new Swiper(this.refs.swiper, {
 			initialSlide: types.indexOf(this.state.currType),
 			autoHeight: true,
 			resistanceRatio: .7,
+			onTouchEnd: () => {
+				this.winScrollY = window.scrollY;
+			},
 			onSlideChangeStart: (s) => {
 				let type = types[s.activeIndex];
+				this.binding && this.unbindScroll();
 				this.setState({
 					currType: type
 				});
-				// if ( this.timer[type] ) {
-				// 	clearTimeout(this.timer[type]);
-				// 	this.timer[type] = null;
-				// }
-				if ( !this.state[type] ) {
+			},
+			onSlideChangeEnd: (s) => {
+				const type = types[s.activeIndex];
+				const data = this.state[type];
+				if ( !data ) {
 					this.updateMedalList(type);
 				}
-			},
-			onSlideChangeEnd() {
-				if ( window.scrollY > thresholdScrollY ) {
+				if ( this.winScrollY > thresholdScrollY || ( type == PERSONAL && ( !data || !data.list || data.list.length < 16 ) ) ) {
 					window.scrollTo(0, 0);
 				}
+				setTimeout(() => {
+					this.binding || this.bindScroll();
+				}, 200);
 			}
-			
 		});
-		this.bindScroll();
 	}
 
 	handleChange = currType => {
-		this.swiper.slideTo(types.indexOf(currType));
+		this.swiper.slideTo(types.indexOf(currType), enableTransition ? 300 : 0, true);
 	};
 	
 	toggleDP = () => {
@@ -188,13 +201,6 @@ class Medal extends Component {
 			return;
 		}
 		this.loading[type] = true;
-		// if ( type !== PERSONAL ) {
-		// 	this.timer[type] = setTimeout(() => {
-		// 		this.timer[type] = false;
-		// 		this.updateMedalList(type);
-		// 	}, updateInterval);
-		// }
-		
 		this.fetchList(type).then(data => {
 			if ( data ) {
 				let noMore, size;
@@ -217,7 +223,7 @@ class Medal extends Component {
 				setTimeout(() => {
 					this.swiper.update();
 					this.loading[type] = false;
-				}, 50);
+				}, 100);
 			} else {
 				if ( !this.state[type] ) {
 					this.setState({
@@ -442,7 +448,7 @@ class Medal extends Component {
 			setTimeout(() => {
 				this.swiper.update();
 				this.loading[type] = false;
-			}, 50);
+			}, 100);
 		}
 	}
 

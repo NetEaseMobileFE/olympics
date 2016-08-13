@@ -102,7 +102,8 @@ export let getScript = (url, disableCache) => {
 			})
 		});
 	}
-
+	
+	let timer;
 	let script = document.createElement('script');
 	let cleanup = () => {
 		if ( script && script.parentNode ) {
@@ -110,10 +111,12 @@ export let getScript = (url, disableCache) => {
 		}
 
 		window[callbackName] = noop;
+		timer = null;
 	};
-
+	
 	let prms = new Promise((resolve, reject) => {
 		window[callbackName] = json => {
+			timer && clearTimeout(timer);
 			cleanup();
 			if ( !disableCache ) {
 				scriptCache[url] = json;
@@ -121,7 +124,7 @@ export let getScript = (url, disableCache) => {
 			resolve(json);
 			pending[callbackName] = null;
 		};
-
+		
 		script.async = true;
 		script.src = url;
 		script.onerror = function(e) {
@@ -134,6 +137,12 @@ export let getScript = (url, disableCache) => {
 			pending[callbackName] = null;
 		};
 		document.head.appendChild(script);
+		
+		timer = setTimeout(() => {
+			cleanup();
+			reject(new Error('Timeout when loading script ' + url));
+			pending[callbackName] = null;
+		}, 20 * 1000);
 	});
 	pending[callbackName] = prms;
 	

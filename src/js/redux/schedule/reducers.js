@@ -91,7 +91,7 @@ function mainSchedule(state = emptyObject, action) {
 			let date = Object.keys(data)[0];
 			let schedule = data[date];
 
-			if ( schedule.list && schedule.lastPageNo !== 1 ) { // list 数据合并
+			if ( state[date].list && schedule.list && schedule.lastPageNo !== 1 ) { // list 数据合并
 				schedule.list = state[date].list.concat(schedule.list);
 			}
 

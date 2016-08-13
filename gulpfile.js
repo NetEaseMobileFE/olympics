@@ -100,6 +100,7 @@ gulp.task('html', ['assets'], function() {
 		}))
 		.pipe(htmlmin({ collapseWhitespace: true, removeComments: true, minifyJS: true, minifyCSS: true }))
 		.pipe(gulp.dest('dist'))
+		.pipe(gulp.dest('backup/' + publishConfig.revision))
 		// .pipe(conn.dest(publishConfig.htmlDir)); // todo
 });
 

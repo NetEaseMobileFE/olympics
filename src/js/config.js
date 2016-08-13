@@ -143,7 +143,7 @@ function assembleActiveScheduleUrl(mode, { selectedDate, disciplineID, pageNo })
 			url = `run/date/${selectedDate}/gold/${disciplineID}_${pageNo}.json?callback=scK`;
 			break;
 		case 'cgd':
-			url = `date/${selectedDate}/chn_gold/${disciplineID}_${pageNo}.json?callback=scL`;
+			url = `run/date/${selectedDate}/chn_gold/${disciplineID}_${pageNo}.json?callback=scL`;
 			break;
 		default:
 			url = `run/date/${selectedDate}_${pageNo}.json?callback=scM`;

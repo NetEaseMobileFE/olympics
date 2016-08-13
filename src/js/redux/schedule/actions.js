@@ -92,7 +92,10 @@ function updateSportsDates(rollBack) {
 		
 		return promise.then(json => {
 			NProgress.done();
-			if ( json.length ) {
+			if ( json && json.length ) { // 过滤垃圾日期
+				json = json.filter(d => d.indexOf('-') || d >= '20160804' && d <= '20160822');
+			}
+			if ( json && json.length ) {
 				dispatch(emptyHotSchedule());
 				dispatch(emptyMainSchedule());
 
@@ -130,7 +133,7 @@ function selectDate(date) {
 
 		const { selectedDate, mainSchedule } = getState();
 		const oneDay = mainSchedule[selectedDate];
-		if ( !oneDay ) { // 缓存5分钟
+		if ( !oneDay ) {
 			dispatch(updateHotSchedule());
 			dispatch(updateMainSchedule());
 		}

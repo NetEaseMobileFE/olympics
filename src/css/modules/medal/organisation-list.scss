@@ -77,6 +77,11 @@
     .org-title__name {
         width: 70px;
     }
+    .total-medals {
+        > span {
+            margin-left: 8px;
+        }
+    }
     .switcher__inner {
         width: 309px;
     }

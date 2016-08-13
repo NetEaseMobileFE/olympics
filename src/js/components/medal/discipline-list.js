@@ -3,6 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/medal/discipline-list.scss';
 import Loading from '../common/loading';
+import Empty from './empty';
 
 @CSSModules(styles)
 export default class extends Component {
@@ -66,7 +67,7 @@ export default class extends Component {
                                                                 }
                                                             </div>
                                                         </td>
-                                                        <td onClick={this.props.navigateTo.bind(this, medal.rsc)}>
+                                                        <td onClick={this.props.navigateTo.bind(this, { rsc: medal.rsc, report: medal.report })}>
                                                             <p>{medal.scheduleResult}</p>
                                                             {medal.recordIndicators ? <span styleName="record">{medal.recordIndicators}</span>: null}
                                                         </td>
@@ -78,7 +79,7 @@ export default class extends Component {
                                 </table>
                             </section>
                         )
-                    }) : <div styleName="empty">暂时还没有奖牌产生</div>
+                    }) : <Empty cn={styles.empty} text="Opps！奖牌找不到了" />
                 }
 
 				{

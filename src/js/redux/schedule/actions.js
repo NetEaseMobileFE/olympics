@@ -150,7 +150,7 @@ function updateHotSchedule() {
 		return getScript(url).then(json => {
 			return amendResult(json.scheduleList);
 		}).then(list => {
-			if ( selectedDate <= today ) { // 今天及以前
+			if ( list && list.length && selectedDate <= today ) { // 今天及以前
 				let running = list.filter(s => !s.isFinished && now >= +new Date(s.startTime.replace(/-/g,'/')));
 				let scheduled = list.filter(s => !s.isFinished && now < +new Date(s.startTime.replace(/-/g,'/')));
 				let finished = list.filter(s => s.isFinished).reverse();

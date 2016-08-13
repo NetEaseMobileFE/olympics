@@ -5,6 +5,7 @@ import Loading from '../common/loading';
 import OLD from './organisation-list-date';
 import OLM from './organisation-list-medal';
 import OLP from './organisation-list-province';
+import Empty from './empty';
 
 
 let filters = [{
@@ -68,7 +69,7 @@ export default class extends Component {
                         <Loading /> :
                         list && list.length ?
                             <List list={list} size={size} switchDiscipline={switchDiscipline} navigateTo={this.props.navigateTo}/> :
-                            <div styleName="empty">暂时还没有奖牌产生</div>
+							<Empty cn={styles.empty} text="Opps！奖牌找不到了" />
                 }
                 {
                     noMore !== true ? <Loading /> : null

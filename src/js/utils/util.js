@@ -89,11 +89,11 @@ export let getScript = (url, disableCache) => {
 	let cache = !disableCache && scriptCache[url];
 	let callbackName = url.match(/callback=(\w+)/)[1];
 	if ( cache ) {
-		if ( cache instanceof Error ) {
-			return Promise.reject(cache);
-		} else {
+		// if ( cache instanceof Error ) {
+		// 	return Promise.reject(cache);
+		// } else {
 			return Promise.resolve(cache);
-		}
+		// }
 	} else if ( pending[callbackName] ) {
 		return new Promise(resolve => {
 			pending[callbackName].finally(() => {
@@ -128,7 +128,7 @@ export let getScript = (url, disableCache) => {
 			cleanup();
 			if ( e.type == 'error' ) {
 				let error = new Error('Could not load script ' + url);
-				scriptCache[url] = error;
+				// scriptCache[url] = error;
 				reject(error);
 			}
 			pending[callbackName] = null;

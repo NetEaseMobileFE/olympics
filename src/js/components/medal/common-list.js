@@ -3,6 +3,7 @@ import shallowCompare from 'react-addons-shallow-compare';
 import CSSModules from 'react-css-modules';
 import styles from '../../../css/modules/medal/common-list.scss';
 import Loading from '../common/loading';
+import Empty from './empty';
 
 
 @CSSModules(styles)
@@ -125,7 +126,7 @@ export default class extends Component {
 				{
 					noMore !== true ? <Loading /> : null
 				}
-			</section> : <div styleName="empty">暂时还没有奖牌产生</div>
+			</section> : <Empty cn={styles.empty} text="Opps！奖牌找不到了" />
 		)
 	}
 }

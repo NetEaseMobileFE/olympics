@@ -6,9 +6,11 @@ import Clip from '../common/clip';
 import State from '../common/state';
 import Loading from '../common/loading';
 import ua from '../../utils/ua';
+import { getSearch } from '../../utils/util';
 
 
 const liveUrl = 'http://3g.163.com/ntes/special/0034073A/olympic2016_live.html';
+const search = getSearch();
 
 /**
  * 单场比赛对手情况
@@ -85,6 +87,9 @@ class Event extends Component {
 			href = `${liveUrl}?rsc=${rsc}`;
 			if ( live == 1 && roomId ) {
 				href += '&roomid=' + roomId;
+			}
+			if ( search && search.qd == 'sgoy' ) {
+				href += '&qd=sgoy';
 			}
 			if ( ua.isNewsApp ) {
 				href += '&__newsapp_target=_blank';

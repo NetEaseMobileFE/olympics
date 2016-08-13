@@ -59,8 +59,20 @@ class Organisation extends Component {
 		this.updateMedalList(mode);
 	};
 	
-	navigateTo = rsc => {
-		if ( rsc ) {
+	navigateTo = ({ rsc, report }) => {
+		let docid;
+		if ( typeof report == 'string' ) {
+			let matches = report.match(/\/([A-Z0-9]{16})\.html/);
+			docid = matches && matches.length ? matches[1] : null;
+		}
+		
+		if ( docid ) {
+			if ( iframeEl ) {
+				iframeEl.src = `newsapp://doc/${docid}`;
+			} else {
+				location.href = `http://c.m.163.com/news/a/${docid}.html`;
+			}
+		} else if ( rsc ) {
 			location.href = `http://3g.163.com/ntes/special/0034073A/olympic2016_live.html?rsc=${rsc}#!/doc`;
 		}
 	};
@@ -160,12 +172,17 @@ class Organisation extends Component {
 						}
 					}
 					
+					let aNum, bNum;
 					list.sort((a, b) => {
 						if ( a.medals[0].length > b.medals[0].length ) {
 							return -1;
 						} else if ( a.medals[0].length == b.medals[0].length ) {
-							if ( a.medals.reduce((p, c) => p + c.length, 0) > b.medals.reduce((p, c) => p + c.length, 0) ) {
+							aNum = a.medals.reduce((p, c) => p + c.length, 0);
+							bNum = b.medals.reduce((p, c) => p + c.length, 0);
+							if ( aNum > bNum ) {
 								return -1
+							} else if ( aNum == bNum && a.medals[1].length > b.medals[1].length) {
+								return -1;
 							}
 							return 1
 						}
@@ -220,6 +237,8 @@ function filterRecord(recordIndicators) {
 
 function getCompetitorData(cm) {
 	return {
+		rsc: getIn(cm, 'competitorMedal.scheduleRsc'),
+		report: getIn(cm, 'competitorMedal.report'),
 		medalType: cm.medalType,
 		recordIndicators: filterRecord(getIn(cm, 'competitorMedal.recordIndicators')),
 		discipline: cm.discipline,

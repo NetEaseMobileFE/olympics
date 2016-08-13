@@ -56,7 +56,7 @@ export default class extends Component {
 														})}
 													</div>
 												</td>
-												<td styleName="result" onClick={this.props.navigateTo.bind(this, v.rsc)}>
+												<td styleName="result" onClick={this.props.navigateTo.bind(this, { rsc: v.rsc, report: v.report })}>
 													<div>{v.scheduleResult}</div>
 													{v.recordIndicators ? <span styleName="record">{v.recordIndicators}</span>: null}
 												</td>

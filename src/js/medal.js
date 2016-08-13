@@ -15,6 +15,7 @@ import OrgList from './components/medal/organisation-list';
 import DisList from './components/medal/discipline-list';
 import { api, disciplines } from './components/medal/config';
 import DP from './components/common/discipline-picker';
+import ua from './utils/ua';
 
 
 const pageSize = 20;
@@ -26,6 +27,8 @@ const DISCIPLINE = 'discipline';
 const types = [MEDAL, CHINA, DISCIPLINE, PERSONAL];
 const minHeight = window.innerHeight - rem2px(4.88); // 用于保证列表滑动区域
 const thresholdScrollY = rem2px(5.1); // 滚动超出首屏，切换tab就回到顶部
+const iframeEl = ua.isNewsApp && document.getElementById('iframe');
+
 
 @CSSModules(styles)
 class Medal extends Component {
@@ -139,8 +142,20 @@ class Medal extends Component {
 		}
 	};
 	
-	navigateTo = rsc => {
-		if ( rsc ) {
+	navigateTo = ({ rsc, report }) => {
+		let docid;
+		if ( typeof report == 'string' ) {
+			let matches = report.match(/\/([A-Z0-9]{16})\.html/);
+			docid = matches && matches.length ? matches[1] : null;
+		}
+		
+		if ( docid ) {
+			if ( iframeEl ) {
+				iframeEl.src = `newsapp://doc/${docid}`;
+			} else {
+				location.href = `http://c.m.163.com/news/a/${docid}.html`;
+			}
+		} else if ( rsc ) {
 			location.href = `http://3g.163.com/ntes/special/0034073A/olympic2016_live.html?rsc=${rsc}#!/doc`;
 		}
 	};
@@ -211,8 +226,19 @@ class Medal extends Component {
 							noMore: true
 						}
 					});
-					this.loading[type] = false;
+				} else if ( type == CHINA ) {
+					const chinaData = this.state[CHINA];
+					this.setState({
+						[type]: {
+							list: [],
+							organisationName: chinaData.organisationName,
+							organisationImgUrl: chinaData.organisationImgUrl,
+							medals: chinaData.medals,
+							noMore: true
+						}
+					});
 				}
+				this.loading[type] = false;
 			}
 		});
 	}
@@ -299,12 +325,29 @@ class Medal extends Component {
 							}
 						}
 						
-						const disciplineData = this.state[CHINA];
+						let aNum, bNum;
+						list.sort((a, b) => {
+							if ( a.medals[0].length > b.medals[0].length ) {
+								return -1;
+							} else if ( a.medals[0].length == b.medals[0].length ) {
+								aNum = a.medals.reduce((p, c) => p + c.length, 0);
+								bNum = b.medals.reduce((p, c) => p + c.length, 0);
+								if ( aNum > bNum ) {
+									return -1
+								} else if ( aNum == bNum && a.medals[1].length > b.medals[1].length) {
+									return -1;
+								}
+								return 1
+							}
+							return 1;
+						});
+						
+						const chinaData = this.state[CHINA];
 						data = {
 							list,
-							organisationName: disciplineData.organisationName,
-							organisationImgUrl: disciplineData.organisationImgUrl,
-							medals: disciplineData.medals
+							organisationName: chinaData.organisationName,
+							organisationImgUrl: chinaData.organisationImgUrl,
+							medals: chinaData.medals
 						}
 					}
 				} else if ( type == DISCIPLINE && json.competitorMedalList ) {
@@ -320,6 +363,7 @@ class Medal extends Component {
 						}
 						
 						events[cm.scheduleRsc].medals.push({
+							report: cm.report,
 							rsc: cm.scheduleRsc,
 							medalType: cm.medalType,
 							organisation: cm.organisation,
@@ -484,6 +528,7 @@ function getDisciplineName(did) {
 function getCompetitorData(cm) {
 	return {
 		rsc: getIn(cm, 'competitorMedal.scheduleRsc'),
+		report: getIn(cm, 'competitorMedal.report'),
 		medalType: cm.medalType,
 		recordIndicators: filterRecord(getIn(cm, 'competitorMedal.recordIndicators')),
 		discipline: cm.discipline,
